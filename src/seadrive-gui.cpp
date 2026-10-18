@@ -504,6 +504,12 @@ void SeadriveGui::loginAccounts()
 {
     tray_icon_->show();
 
+    // Build the settings window in the background once startup is over, so
+    // that the first click on "Impostazioni" opens it at once.
+    QTimer::singleShot(3000, settings_dlg_, [this]() {
+        settings_dlg_->prebuild();
+    });
+
     if (first_use_ || account_mgr_->allAccounts().size() == 0) {
         do {
             QString username = readPreconfigureExpandedString(kPreconfigureUsername);

@@ -11,9 +11,9 @@ const int kPageMarginBottom = 32;
 const int kGroupSpacing = 20;
 const int kRowControlSpacing = 24;
 
-QLabel *wrappedLabel(const QString& text, const char *object_name)
+QLabel *wrappedLabel(const QString& text, const char *object_name, QWidget *parent = nullptr)
 {
-    QLabel *label = new QLabel(text);
+    QLabel *label = new QLabel(text, parent);
     label->setObjectName(object_name);
     label->setWordWrap(true);
     label->setTextFormat(Qt::PlainText);
@@ -118,10 +118,15 @@ QWidget *SettingsPage::addRow(const QString& title, const QString& description, 
     QVBoxLayout *text = new QVBoxLayout;
     text->setContentsMargins(0, 0, 0, 0);
     text->setSpacing(2);
-    QLabel *title_label = wrappedLabel(title, "rowTitle");
+    // Labels get the row as parent right away: a widget with no parent that
+    // is shown becomes a top-level window, which used to flash on screen
+    // (one per description) while the window was being built.
+    QLabel *title_label = wrappedLabel(title, "rowTitle", row);
     text->addWidget(title_label);
-    QLabel *desc_label = wrappedLabel(description, "rowDesc");
-    desc_label->setVisible(!description.isEmpty());
+    QLabel *desc_label = wrappedLabel(description, "rowDesc", row);
+    if (description.isEmpty()) {
+        desc_label->hide();
+    }
     text->addWidget(desc_label);
     inner->addLayout(text, 1);
 

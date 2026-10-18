@@ -62,6 +62,27 @@ void SettingsWindow::setVisible(bool visible)
     QWidget::setVisible(visible);
 }
 
+void SettingsWindow::prebuild()
+{
+    if (built_ || isVisible()) {
+        return;
+    }
+    ensureBuilt();
+    // Apply the style sheet and compute the layout now instead of at the
+    // first show.
+    ensurePolished();
+    // Fill the pages once: the first text layout (font fallback for long
+    // paths) is slow and would otherwise happen while the user waits.
+    for (SettingsPage *page : pages_) {
+        page->load();
+    }
+    if (layout()) {
+        layout()->activate();
+    }
+    // Create the native window too, still hidden.
+    winId();
+}
+
 void SettingsWindow::ensureBuilt()
 {
     if (built_) {

@@ -52,6 +52,10 @@ public:
     // Builds the content on first show.
     void setVisible(bool visible) override;
 
+    // Build and polish the content without showing it, so the first open
+    // is instant. Called once when the app is idle after startup.
+    void prebuild();
+
 protected:
     void showEvent(QShowEvent *event) override;
     void closeEvent(QCloseEvent *event) override;
