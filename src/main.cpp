@@ -15,6 +15,7 @@
 #include "utils/process.h"
 #include "seadrive-gui.h"
 #include "open-local-helper.h"
+#include "ui/settings-window.h"
 
 #if defined(Q_OS_WIN32)
 #include "utils/utils-win.h"
@@ -183,6 +184,7 @@ int main(int argc, char *argv[])
 
     // initialize i18n settings
     I18NHelper::getInstance()->init();
+    SettingsWindow::applySavedTheme();
 
     // check seadrive is running
     // start applet

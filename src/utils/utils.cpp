@@ -188,11 +188,17 @@ bool openInNativeExtension(const QString &path) {
 
 bool showInGraphicalShell(const QString& path) {
 #if defined(Q_OS_WIN32)
-    QStringList params;
-    if (!QFileInfo(path).isDir())
-        params << QLatin1String("/select,");
-    params << QDir::toNativeSeparators(path);
-    return QProcess::startDetached(QLatin1String("explorer.exe"), params);
+    // Build the command line by hand: explorer wants `/select,"C:\a b\c.txt"`
+    // as one token, and QProcess' own quoting of arguments with spaces
+    // ("/select," + "\"...\"") is not always understood by explorer.
+    const QString native = QDir::toNativeSeparators(QDir::cleanPath(path));
+    QProcess process;
+    process.setProgram(QLatin1String("explorer.exe"));
+    if (QFileInfo(path).isDir())
+        process.setNativeArguments(QString("\"%1\"").arg(native));
+    else
+        process.setNativeArguments(QString("/select,\"%1\"").arg(native));
+    return process.startDetached();
 #elif defined(Q_OS_MACOS)
     QStringList scriptArgs;
     scriptArgs << QLatin1String("-e")

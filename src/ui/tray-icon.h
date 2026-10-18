@@ -17,8 +17,8 @@ class Account;
 class ApiError;
 class LoginDialog;
 class TrayNotificationManager;
-class SyncErrorsDialog;
-class TransferProgressDialog;
+class TransferWindow;
+class SyncPanel;
 class SearchDialog;
 class EncryptedReposDialog;
 
@@ -65,6 +65,9 @@ public:
     QList<SyncError> syncErrors() const { return sync_errors_; }
 
     void setLoginActionEnabled(bool enabled);
+
+    // The popup panel opened by a left click on the tray icon (created lazily).
+    SyncPanel *syncPanel();
 
 public slots:
     void openHelp();
@@ -173,8 +176,8 @@ private:
     QMap<QString, QList<SyncError>> domain_errors_;
     QMap<QString, QList<SyncError>> domain_net_errors_;
     QList<SyncError> network_errors_;
-    SyncErrorsDialog *sync_errors_dialog_;
-    TransferProgressDialog * transfer_progress_dialog_;
+    TransferWindow *transfer_window_;
+    SyncPanel *sync_panel_;
     EncryptedReposDialog *enc_repo_dialog_;
     SearchDialog *search_dialog_;
 

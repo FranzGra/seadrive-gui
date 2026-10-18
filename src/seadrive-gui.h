@@ -16,7 +16,7 @@ class AccountManager;
 class MessageListener;
 class SeafileTrayIcon;
 class SettingsManager;
-class SettingsDialog;
+class SettingsWindow;
 class CertsManager;
 class MessagePoller;
 class AboutDialog;
@@ -85,7 +85,7 @@ public:
 
     SettingsManager *settingsManager() { return settings_mgr_; }
 
-    SettingsDialog *settingsDialog() { return settings_dlg_; }
+    SettingsWindow *settingsDialog() { return settings_dlg_; }
 
     AboutDialog *aboutDialog() { return about_dlg_; }
 
@@ -140,7 +140,7 @@ private:
 
     SettingsManager *settings_mgr_;
 
-    SettingsDialog *settings_dlg_;
+    SettingsWindow *settings_dlg_;
 
     AboutDialog *about_dlg_;
 

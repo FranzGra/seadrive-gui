@@ -12,6 +12,9 @@
 #include "rpc/rpc-client.h"
 #include "rpc/sync-error.h"
 #include "ui/tray-icon.h"
+#include "ui/sync-panel.h"
+#include "rpc/transfer-progress.h"
+#include "recent-files-store.h"
 #include "account.h"
 #include "account-mgr.h"
 
@@ -160,6 +163,29 @@ void MessagePoller::checkSyncStatus()
         gui->trayIcon()->rotate(false);
         gui->trayIcon()->setTransferRate(0, 0);
     }
+
+    // Feed the sync panel and the history of recent files (single source:
+    // RecentFilesStore is updated only here).
+    SyncPanel *panel = gui->trayIcon()->syncPanel();
+    panel->setSyncing(sync_status.is_syncing,
+                      sync_status.sent_bytes, sync_status.recv_bytes);
+
+    json_t *upload = nullptr;
+    json_t *download = nullptr;
+    if (!rpc_client_->getUploadProgress(&upload)) {
+        return;
+    }
+    if (!rpc_client_->getDownloadProgress(&download)) {
+        json_decref(upload);
+        return;
+    }
+    TransferProgress progress;
+    TransferProgress::fromJSON(upload, download, progress);
+    json_decref(upload);
+    json_decref(download);
+
+    RecentFilesStore::instance()->updateFromTransferProgress(progress);
+    panel->setTransfers(progress);
 }
 
 void MessagePoller::checkSyncErrors()

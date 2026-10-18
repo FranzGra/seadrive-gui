@@ -184,16 +184,7 @@
     <ClCompile Include="src\ui\search-bar.cpp">
       <Filter>Source Files\ui</Filter>
     </ClCompile>
-    <ClCompile Include="src\ui\settings-dialog.cpp">
-      <Filter>Source Files\ui</Filter>
-    </ClCompile>
     <ClCompile Include="src\ui\sharedlink-dialog.cpp">
-      <Filter>Source Files\ui</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ui\sync-errors-dialog.cpp">
-      <Filter>Source Files\ui</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ui\transfer-progress-dialog.cpp">
       <Filter>Source Files\ui</Filter>
     </ClCompile>
     <ClCompile Include="src\ui\tray-icon.cpp">
@@ -422,16 +413,7 @@
     <QtMoc Include="src\ui\search-bar.h">
       <Filter>Header Files\ui</Filter>
     </QtMoc>
-    <QtMoc Include="src\ui\settings-dialog.h">
-      <Filter>Header Files\ui</Filter>
-    </QtMoc>
     <QtMoc Include="src\ui\sharedlink-dialog.h">
-      <Filter>Header Files\ui</Filter>
-    </QtMoc>
-    <QtMoc Include="src\ui\sync-errors-dialog.h">
-      <Filter>Header Files\ui</Filter>
-    </QtMoc>
-    <QtMoc Include="src\ui\transfer-progress-dialog.h">
       <Filter>Header Files\ui</Filter>
     </QtMoc>
     <QtMoc Include="src\ui\tray-icon.h">
@@ -521,9 +503,6 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="ui\login-dialog.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ui\settings-dialog.ui">
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="ui\seadrive-root-dialog.ui">

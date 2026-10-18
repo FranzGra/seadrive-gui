@@ -14,13 +14,16 @@
 #include "utils/utils.h"
 #include "utils/utils-mac.h"
 #include "utils/file-utils.h"
-#include "src/ui/settings-dialog.h"
+#include "src/ui/settings-window.h"
 #include "src/ui/login-dialog.h"
 #include "src/ui/init-sync-dialog.h"
 #include "src/ui/about-dialog.h"
 #include "src/ui/encrypted-repos-dialog.h"
-#include "src/ui/sync-errors-dialog.h"
-#include "src/ui/transfer-progress-dialog.h"
+#include "src/ui/transfer-window.h"
+#include "src/ui/sync-panel.h"
+#include "src/ui/modern-menu.h"
+#include "QtAwesome.h"
+#include "recent-files-store.h"
 #include "src/ui/search-dialog.h"
 #include "api/api-error.h"
 #include "api/requests.h"
@@ -68,8 +71,8 @@ SeafileTrayIcon::SeafileTrayIcon(QObject *parent)
       login_dlg_(nullptr),
       up_rate_(0),
       down_rate_(0),
-      sync_errors_dialog_(nullptr),
-      transfer_progress_dialog_(nullptr),
+      transfer_window_(nullptr),
+      sync_panel_(nullptr),
       enc_repo_dialog_(nullptr),
       search_dialog_(nullptr),
       enable_login_action_(true)
@@ -164,29 +167,22 @@ void SeafileTrayIcon::createContextMenu()
     show_sync_errors_action_->setEnabled(false);
     show_enc_repos_action_->setEnabled(false);
 
-    context_menu_ = new QMenu(NULL);
-    context_menu_->addAction(transfer_rate_display_action_);
-    context_menu_->addAction(transfer_progress_action_);
-    context_menu_->addAction(show_sync_errors_action_);
-    context_menu_->addSeparator();
+    // Reduced right-click menu: everything else lives in the sync panel
+    // (left click) and in the settings window.
+    // Same look as the new screens (see modern-menu.h).
+    ModernMenu *menu = new ModernMenu(NULL);
+    quit_action_->setText(tr("Esci da SeaDrive"));
+    ModernMenu::decorateAction(transfer_progress_action_, icon_exchange);
+    ModernMenu::decorateAction(settings_action_, icon_cog);
+    ModernMenu::decorateAction(quit_action_, icon_off, true);
+    menu->addAction(transfer_progress_action_);
+    menu->addAction(settings_action_);
+    menu->addSeparator();
+    menu->addAction(quit_action_);
+    context_menu_ = menu;
 
-    context_menu_->addAction(show_enc_repos_action_);
-    context_menu_->addSeparator();
-
-    context_menu_->addAction(open_log_directory_action_);
-    context_menu_->addAction(search_action_);
-    context_menu_->addAction(settings_action_);
-
-    context_menu_->addSeparator();
+    // Still used by prepareContextMenu(), but no longer shown in the menu.
     account_menu_ = new QMenu(tr("Accounts"), NULL);
-    context_menu_->addMenu(account_menu_);
-
-    context_menu_->addSeparator();
-    context_menu_->addAction(about_action_);
-    context_menu_->addAction(open_help_action_);
-
-    context_menu_->addSeparator();
-    context_menu_->addAction(quit_action_);
 
     setContextMenu(context_menu_);
     connect(context_menu_, SIGNAL(aboutToShow()), this, SLOT(prepareContextMenu()));
@@ -212,19 +208,7 @@ void SeafileTrayIcon::prepareContextMenu()
     }
     global_sync_error_actions_.clear();
 
-    for (const SyncError& error : network_errors_) {
-        QString label = error.error_str;
-        if (!error.server.isEmpty()) {
-            label = QString("%1 - Disconnected").arg(error.server);
-        }
-
-        QAction *action = new QAction(label, this);
-        action->setEnabled(true);
-        context_menu_->insertAction(show_sync_errors_action_, action);
-        global_sync_error_actions_.append(action);
-    }
-
-    show_sync_errors_action_->setVisible(true);
+    // Network errors are shown in the sync panel, not in the menu any more.
 
     // Remove all menu items and recreate them.
     account_menu_->clear();
@@ -610,10 +594,12 @@ void SeafileTrayIcon::onActivated(QSystemTrayIcon::ActivationReason reason)
 #if !defined(Q_OS_MACOS)
     switch(reason) {
     case QSystemTrayIcon::Trigger: // single click
-        openUrl(QUrl::fromLocalFile(gui->seadriveRoot()));
-    case QSystemTrayIcon::MiddleClick:
+        syncPanel()->togglePanel(geometry());
+        break;
     case QSystemTrayIcon::DoubleClick:
-        // showMainWindow();
+        openUrl(QUrl::fromLocalFile(gui->seadriveRoot()));
+        break;
+    case QSystemTrayIcon::MiddleClick:
         break;
     default:
         return;
@@ -693,7 +679,7 @@ void SeafileTrayIcon::onMessageClicked()
         }
         if (gui->messagePoller(accounts.at(i).domainID())->lastEventType() == "file-download.start") {
             showTransferProgressDialog();
-            transfer_progress_dialog_->showDownloadTab();
+            transfer_window_->setFilter(TransferWindow::FilterInProgress);
             break;
         }
     }
@@ -826,14 +812,20 @@ void SeafileTrayIcon::setSyncErrors(const QString& domain_id, const QList<SyncEr
 
     network_errors_ = latest_network_errors_by_server.values();
 
+    syncPanel()->setErrorCount(sync_errors_.size());
+    syncPanel()->setConnected(network_errors_.isEmpty());
+    if (transfer_window_) {
+        transfer_window_->updateErrors();
+    }
+
     reloadTrayIcon();
 }
 
 void SeafileTrayIcon::setStateWithSyncErrors()
 {
     qint64 timestamp;
-    if(sync_errors_dialog_ != nullptr) {
-        timestamp = sync_errors_dialog_->getLastOpenSyncDialogTimestamp();
+    if(transfer_window_ != nullptr) {
+        timestamp = transfer_window_->getLastOpenSyncDialogTimestamp();
     } else {
         timestamp = gui->settingsManager()->getLastOpenSyncDialogTimestamp();
     }
@@ -858,29 +850,67 @@ void SeafileTrayIcon::setLoginActionEnabled(bool enabled)
 void SeafileTrayIcon::showSyncErrorsDialog()
 {
     gui->refreshQss();
-    if (sync_errors_dialog_ == nullptr) {
-        sync_errors_dialog_ = new SyncErrorsDialog;
+    if (transfer_window_ == nullptr) {
+        transfer_window_ = new TransferWindow();
     }
 
-    sync_errors_dialog_->updateErrors();
-    sync_errors_dialog_->show();
-    sync_errors_dialog_->raise();
-    sync_errors_dialog_->activateWindow();
+    transfer_window_->updateErrors();
+    transfer_window_->showWithFilter(TransferWindow::FilterErrors);
 }
 
 void SeafileTrayIcon::showTransferProgressDialog()
 {
-    if (transfer_progress_dialog_ == nullptr) {
-        transfer_progress_dialog_ = new TransferProgressDialog();
+    if (transfer_window_ == nullptr) {
+        transfer_window_ = new TransferWindow();
     }
 
     // A bug that changes default button styles is fixed here by
-    // delaying the dialog 10ms.
-    QTimer::singleShot(10, this, [&] {
-        transfer_progress_dialog_->show();
-        transfer_progress_dialog_->raise();
-        transfer_progress_dialog_->activateWindow();
+    // delaying the window 10ms.
+    QTimer::singleShot(10, this, [this] {
+        transfer_window_->showWithFilter(TransferWindow::FilterAll);
     });
+}
+
+SyncPanel *SeafileTrayIcon::syncPanel()
+{
+    if (sync_panel_ == nullptr) {
+        sync_panel_ = new SyncPanel();
+
+        connect(sync_panel_, &SyncPanel::settingsRequested,
+                this, &SeafileTrayIcon::showSettingsWindow);
+        connect(sync_panel_, &SyncPanel::transferWindowRequested,
+                this, &SeafileTrayIcon::showTransferProgressDialog);
+        connect(sync_panel_, &SyncPanel::syncErrorsRequested,
+                this, &SeafileTrayIcon::showSyncErrorsDialog);
+        connect(sync_panel_, &SyncPanel::openWebRequested, this, [] {
+            // Web interface of the active account (server URL as configured,
+            // e.g. http://192.168.1.6:8082 or the public domain).
+            auto accounts = gui->accountManager()->activeAccounts();
+            if (accounts.isEmpty() || !accounts.first().serverUrl.isValid()) {
+                qWarning("Open online: no active account");
+                return;
+            }
+            openUrl(accounts.first().serverUrl);
+        });
+        connect(sync_panel_, &SyncPanel::openFolderRequested, this, [] {
+            openUrl(QUrl::fromLocalFile(gui->seadriveRoot()));
+        });
+    }
+
+    // The root and the account may change after start (login, settings).
+    // Paths of recent files are relative to the sync root of the account
+    // (on Windows e.g. "<cache dir>/<account>"), not to the cache directory.
+    auto accounts = gui->accountManager()->activeAccounts();
+    sync_panel_->setRootPath(!accounts.isEmpty() && !accounts.first().syncRoot.isEmpty()
+                                 ? accounts.first().syncRoot
+                                 : gui->seadriveRoot());
+    if (!accounts.isEmpty()) {
+        const Account& account = accounts.first();
+        sync_panel_->setAccountName(account.accountInfo.name.isEmpty()
+                                        ? account.username
+                                        : account.accountInfo.name);
+    }
+    return sync_panel_;
 }
 
 void SeafileTrayIcon::showEncRepoDialog() {

@@ -174,14 +174,23 @@ SET(moc_headers
   src/ui/seafilelink-dialog.h
   src/ui/search-bar.h
   src/ui/search-dialog.h
-  src/ui/settings-dialog.h
   src/ui/sharedlink-dialog.h
   src/ui/uploadlink-dialog.h
-  src/ui/sync-errors-dialog.h
   src/ui/tray-icon.h
+  src/recent-files-store.h
+  src/ui/sync-panel.h
+  src/ui/transfer-window.h
+  src/ui/settings-window.h
+  src/ui/settings-pages/toggle-switch.h
+  src/ui/settings-pages/settings-page.h
+  src/ui/settings-pages/general-page.h
+  src/ui/settings-pages/sync-page.h
+  src/ui/settings-pages/account-page.h
+  src/ui/settings-pages/encrypted-repos-page.h
+  src/ui/settings-pages/network-page.h
+  src/ui/settings-pages/info-pages.h
   src/ui/about-dialog.h
   src/ui/encrypted-repos-dialog.h
-  src/ui/transfer-progress-dialog.h
   src/ui/uninstall-helper-dialog.h
   src/ui/sync-root-name-dialog.h
   src/open-local-helper.h
@@ -209,7 +218,6 @@ SET(ui_files
   ui/filter-menu.ui
   ui/init-sync-dialog.ui
   ui/login-dialog.ui
-  ui/settings-dialog.ui
   ui/about-dialog.ui
   ui/sync-root-name-dialog.ui
 )
@@ -316,14 +324,24 @@ SET(seadrive_gui_sources
   src/ui/seafilelink-dialog.cpp
   src/ui/search-bar.cpp
   src/ui/search-dialog.cpp
-  src/ui/settings-dialog.cpp
   src/ui/sharedlink-dialog.cpp
   src/ui/uploadlink-dialog.cpp
-  src/ui/sync-errors-dialog.cpp
   src/ui/tray-icon.cpp
+  src/recent-files-store.cpp
+  src/ui/sync-panel.cpp
+  src/ui/transfer-window.cpp
+  src/ui/modern-menu.cpp
+  src/ui/settings-window.cpp
+  src/ui/settings-pages/toggle-switch.cpp
+  src/ui/settings-pages/settings-page.cpp
+  src/ui/settings-pages/general-page.cpp
+  src/ui/settings-pages/sync-page.cpp
+  src/ui/settings-pages/account-page.cpp
+  src/ui/settings-pages/encrypted-repos-page.cpp
+  src/ui/settings-pages/network-page.cpp
+  src/ui/settings-pages/info-pages.cpp
   src/ui/about-dialog.cpp
   src/ui/encrypted-repos-dialog.cpp
-  src/ui/transfer-progress-dialog.cpp
   src/ui/uninstall-helper-dialog.cpp
   src/ui/sync-root-name-dialog.cpp
 

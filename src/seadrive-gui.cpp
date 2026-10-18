@@ -21,7 +21,7 @@
 #include "ui/tray-icon.h"
 #include "ui/login-dialog.h"
 #include "win-sso/auto-logon-dialog.h"
-#include "ui/settings-dialog.h"
+#include "ui/settings-window.h"
 #include "ui/about-dialog.h"
 #include "ui/init-sync-dialog.h"
 #include "daemon-mgr.h"
@@ -231,7 +231,7 @@ SeadriveGui::SeadriveGui(bool dev_mode)
     daemon_mgr_ = new DaemonManager();
     account_mgr_ = new AccountManager();
     settings_mgr_ = new SettingsManager();
-    settings_dlg_ = new SettingsDialog();
+    settings_dlg_ = new SettingsWindow();
     about_dlg_ = new AboutDialog();
     init_sync_dlg_ = new InitSyncDialog();
 
@@ -1011,11 +1011,7 @@ bool SeadriveGui::deletingConfirmationBox(const QString& text, const QString& in
     } else if (box.clickedButton() == noButton) {
         return false;
     } else if (box.clickedButton() == settingsButton) {
-        settings_dlg_->setCurrentTab(1);
-
-        settings_dlg_->show();
-        settings_dlg_->raise();
-        settings_dlg_->activateWindow();
+        settings_dlg_->showPage(SettingsWindow::PageSync);
 
         return false;
     }
