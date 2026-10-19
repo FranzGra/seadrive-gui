@@ -928,6 +928,32 @@ bool SeafileRpcClient::getGlobalSyncStatus(json_t **ret_obj)
     return true;
 }
 
+bool SeafileRpcClient::setAutoSync(bool enabled)
+{
+    if (!connected_) {
+        qWarning("Call searpc from disconnected client");
+        return false;
+    }
+
+    // Both return 0 on success, -1 when the daemon is not ready yet. The
+    // daemon does not remember the state: after a restart it syncs again.
+    const char *fname = enabled ? "seafile_enable_auto_sync"
+                                : "seafile_disable_auto_sync";
+    GError *error = NULL;
+    int ret = searpc_client_call__int (seadrive_rpc_client_, fname, &error, 0);
+    if (error) {
+        qWarning("failed to call %s: %s", fname,
+                 error->message ? error->message : "");
+        g_error_free(error);
+        return false;
+    }
+    if (ret != 0) {
+        qWarning("%s returned %d", fname, ret);
+        return false;
+    }
+    return true;
+}
+
 bool SeafileRpcClient::setCacheCleanIntervalMinutes(int interval)
 {
     if (!connected_) {

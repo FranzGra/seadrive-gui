@@ -178,6 +178,7 @@ SET(moc_headers
   src/ui/uploadlink-dialog.h
   src/ui/tray-icon.h
   src/recent-files-store.h
+  src/sync-pause.h
   src/ui/sync-panel.h
   src/ui/transfer-window.h
   src/ui/settings-window.h
@@ -328,6 +329,7 @@ SET(seadrive_gui_sources
   src/ui/uploadlink-dialog.cpp
   src/ui/tray-icon.cpp
   src/recent-files-store.cpp
+  src/sync-pause.cpp
   src/ui/sync-panel.cpp
   src/ui/transfer-window.cpp
   src/ui/modern-menu.cpp

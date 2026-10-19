@@ -113,6 +113,13 @@ public:
 
     bool getSeaDriveEvents(json_t **ret_obj);
 
+    // seafile_enable_auto_sync / seafile_disable_auto_sync: pause or resume
+    // the sync of every account. The current state is the field
+    // "auto_sync_enabled" of getGlobalSyncStatus().
+    bool setAutoSync(bool enabled);
+    bool enableAutoSync() { return setAutoSync(true); }
+    bool disableAutoSync() { return setAutoSync(false); }
+
     bool setCacheCleanIntervalMinutes(int interval);
 
     bool setCacheSizeLimitGB(int limit);

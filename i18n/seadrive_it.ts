@@ -1536,6 +1536,14 @@
         <translation>Esci da %1</translation>
     </message>
     <message>
+        <source>Pause sync</source>
+        <translation>Sospendi la sincronizzazione</translation>
+    </message>
+    <message>
+        <source>Resume sync</source>
+        <translation>Riprendi la sincronizzazione</translation>
+    </message>
+    <message>
         <source>Accounts</source>
         <translation>Utenti</translation>
     </message>
@@ -2221,6 +2229,14 @@
         <translation>Impostazioni</translation>
     </message>
     <message>
+        <source>Resume</source>
+        <translation>Riprendi</translation>
+    </message>
+    <message>
+        <source>Resume sync</source>
+        <translation>Riprendi la sincronizzazione</translation>
+    </message>
+    <message>
         <source>Recent files</source>
         <translation>Ultimi file</translation>
     </message>
@@ -2251,6 +2267,30 @@ I file che invii o ricevi compariranno qui.</translation>
     <message>
         <source>Downloaded</source>
         <translation>Ricevuto</translation>
+    </message>
+    <message>
+        <source>Pause sync</source>
+        <translation>Sospendi la sincronizzazione</translation>
+    </message>
+    <message>
+        <source>Paused</source>
+        <translation>In pausa</translation>
+    </message>
+    <message>
+        <source>Until you resume</source>
+        <translation>Finché non riprendi</translation>
+    </message>
+    <message>
+        <source>Resumes at %1</source>
+        <translation>Riprende alle %1</translation>
+    </message>
+    <message>
+        <source>Resumes tomorrow at %1</source>
+        <translation>Riprende domani alle %1</translation>
+    </message>
+    <message>
+        <source>Resumes on %1</source>
+        <translation>Riprende il %1</translation>
     </message>
     <message>
         <source>Not connected</source>
@@ -2301,6 +2341,28 @@ I file che invii o ricevi compariranno qui.</translation>
     <message>
         <source>Downloading</source>
         <translation>Ricezione in corso</translation>
+    </message>
+    <message>
+        <source>Pause for</source>
+        <translation>Sospendi per</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n minute(s)</source>
+        <translation>
+            <numerusform>%n minuto</numerusform>
+            <numerusform>%n minuti</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n hour(s)</source>
+        <translation>
+            <numerusform>%n ora</numerusform>
+            <numerusform>%n ore</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Until I resume</source>
+        <translation>Finché non riprendo</translation>
     </message>
     <message>
         <source>Just now</source>

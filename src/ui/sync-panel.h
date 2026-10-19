@@ -9,7 +9,9 @@
 
 class QLabel;
 class QFrame;
+class QMenu;
 class QProgressBar;
+class QPushButton;
 class QScrollArea;
 class QToolButton;
 class QVBoxLayout;
@@ -36,7 +38,8 @@ class QColor;
  *   - setRootPath(QString)                     SeaDrive root, used to open
  *                                              the folder of a clicked file
  *
- * Priority of the status box: not connected > syncing > errors > all synced.
+ * Priority of the status box: paused > not connected > syncing > errors >
+ * all synced. "Paused" comes from the daemon (SyncPauseManager).
  * The "Ultimi file" list reads RecentFilesStore::instance() and refreshes on
  * its changed() signal.
  */
@@ -53,6 +56,10 @@ public:
     // icon while the panel is open first deactivates it (and hides it):
     // this call then does not reopen it.
     void togglePanel(const QRect& trayGeometry = QRect());
+
+    // Fills `menu` with the "Pause for" entries (30 min, 2 h, 8 h, until
+    // resumed). Shared with the tray icon menu.
+    static void addPauseActions(QMenu *menu);
 
 public slots:
     void setAccountName(const QString& name);
@@ -85,6 +92,7 @@ private slots:
     void refreshList();
     void applyTheme();
     void tick();
+    void onPauseButtonClicked();
 
 private:
     Q_DISABLE_COPY(SyncPanel)
@@ -110,6 +118,8 @@ private:
     QLabel *title_label_;
     QToolButton *settings_button_;
     QToolButton *web_button_ = nullptr;
+    // Pause: opens the "Pause for" menu; while paused it resumes (play).
+    QToolButton *pause_button_ = nullptr;
 
     // Status box
     QFrame *status_box_;
@@ -117,6 +127,7 @@ private:
     QLabel *status_title_;
     QLabel *status_detail_;
     QProgressBar *status_progress_;
+    QPushButton *resume_button_;
 
     // Recent files
     QLabel *list_title_;
@@ -143,7 +154,7 @@ private:
     QDateTime last_check_;
     qint64 hidden_at_msec_;
 
-    enum StatusKind { StatusOk, StatusSyncing, StatusErrors, StatusOffline };
+    enum StatusKind { StatusOk, StatusSyncing, StatusErrors, StatusOffline, StatusPaused };
     StatusKind status_kind_;
 };
 

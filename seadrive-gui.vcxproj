@@ -67,6 +67,7 @@
     <ClCompile Include="src\ui\sync-root-name-dialog.cpp" />
     <ClCompile Include="src\ui\tray-icon.cpp" />
     <ClCompile Include="src\recent-files-store.cpp" />
+    <ClCompile Include="src\sync-pause.cpp" />
     <ClCompile Include="src\ui\sync-panel.cpp" />
     <ClCompile Include="src\ui\transfer-window.cpp" />
     <ClCompile Include="src\ui\modern-menu.cpp" />
@@ -161,6 +162,7 @@
     <QtMoc Include="src\win-sso\auto-logon-dialog.h" />
     <QtMoc Include="src\ui\tray-icon.h" />
     <QtMoc Include="src\recent-files-store.h" />
+    <QtMoc Include="src\sync-pause.h" />
     <QtMoc Include="src\ui\sync-panel.h" />
     <QtMoc Include="src\ui\transfer-window.h" />
     <QtMoc Include="src\ui\settings-window.h" />

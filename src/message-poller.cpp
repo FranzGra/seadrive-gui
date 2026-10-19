@@ -15,6 +15,7 @@
 #include "ui/sync-panel.h"
 #include "rpc/transfer-progress.h"
 #include "recent-files-store.h"
+#include "sync-pause.h"
 #include "account.h"
 #include "account-mgr.h"
 
@@ -154,7 +155,12 @@ void MessagePoller::checkSyncStatus()
         return;
     }
     GlobalSyncStatus sync_status = GlobalSyncStatus::fromJson(ret);
+    const int auto_sync = SyncPauseManager::autoSyncFromJson(ret);
     json_decref(ret);
+
+    if (auto_sync >= 0) {
+        SyncPauseManager::instance()->updateFromEngine(rpc_client_->domainID(), auto_sync == 1);
+    }
 
     if (sync_status.is_syncing) {
         gui->trayIcon()->rotate(true);

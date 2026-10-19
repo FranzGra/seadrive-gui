@@ -132,6 +132,10 @@ private:
     QAction *about_action_;
     QAction *open_help_action_;
 
+    QMenu *pause_menu_;
+    QAction *pause_menu_action_;
+    QAction *resume_action_;
+
 
     QTimer *rotate_timer_;
     QTimer *refresh_timer_;

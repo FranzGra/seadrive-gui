@@ -1,10 +1,13 @@
 #include <QtGlobal>
 #include <climits>
 
+#include <QAction>
 #include <QApplication>
+#include <QCursor>
 #include <QDir>
 #include <QFileInfo>
 #include <QFrame>
+#include <QGraphicsOpacityEffect>
 #include <QGuiApplication>
 #include <QHBoxLayout>
 #include <QIcon>
@@ -14,6 +17,7 @@
 #include <QPainter>
 #include <QPainterPath>
 #include <QProgressBar>
+#include <QPushButton>
 #include <QScreen>
 #include <QScrollArea>
 #include <QStyleHints>
@@ -31,6 +35,8 @@
 #include "QtAwesome.h"
 #include "utils/utils.h"
 #include "recent-files-store.h"
+#include "sync-pause.h"
+#include "modern-menu.h"
 #include "design-tokens.h"
 #include "glyph-icon.h"
 
@@ -106,6 +112,8 @@ SyncPanel::SyncPanel(QWidget *parent)
             this, &SyncPanel::refreshList);
     connect(QGuiApplication::styleHints(), &QStyleHints::colorSchemeChanged,
             this, &SyncPanel::applyTheme);
+    connect(SyncPauseManager::instance(), &SyncPauseManager::changed,
+            this, &SyncPanel::refreshStatus);
 
     applyTheme();
 }
@@ -132,6 +140,16 @@ void SyncPanel::createUi()
     title_label_->setTextFormat(Qt::RichText);
     title_label_->setWordWrap(true);
     header_layout->addWidget(title_label_, 1);
+
+    // Pause / resume the sync (all accounts: the daemon has one switch).
+    pause_button_ = new QToolButton(header);
+    pause_button_->setObjectName("spIconButton");
+    pause_button_->setCursor(Qt::PointingHandCursor);
+    pause_button_->setFixedSize(36, 36);
+    pause_button_->setIconSize(QSize(kIconSize, kIconSize));
+    pause_button_->setAutoRaise(true);
+    connect(pause_button_, &QToolButton::clicked, this, &SyncPanel::onPauseButtonClicked);
+    header_layout->addWidget(pause_button_, 0, Qt::AlignTop);
 
     // "Open online": opens the web interface of the account in the browser.
     web_button_ = new QToolButton(header);
@@ -199,6 +217,17 @@ void SyncPanel::createUi()
     status_text->addSpacing(2);
     status_text->addWidget(status_progress_);
     status_layout->addLayout(status_text, 1);
+
+    resume_button_ = new QPushButton(tr("Resume"), status_box_);
+    resume_button_->setObjectName("spResumeButton");
+    resume_button_->setCursor(Qt::PointingHandCursor);
+    resume_button_->setIconSize(QSize(12, 12));
+    resume_button_->setAccessibleName(tr("Resume sync"));
+    resume_button_->hide();
+    connect(resume_button_, &QPushButton::clicked, this, []() {
+        SyncPauseManager::instance()->resume();
+    });
+    status_layout->addWidget(resume_button_, 0, Qt::AlignVCenter);
 
     status_wrap_layout->addWidget(status_box_);
     root->addWidget(status_wrap);
@@ -435,6 +464,14 @@ void SyncPanel::applyTheme()
                      "QToolButton#spIconButton:focus { border: 1px solid %3; }")
                  .arg(px(kRadius), css(surfaceHover()), css(accentText()));
 
+    style += QString("QPushButton#spResumeButton { background: %1; color: %2;"
+                     " border: 1px solid %3; border-radius: %4; padding: 6px 12px;"
+                     " font-size: %5; }"
+                     "QPushButton#spResumeButton:hover { background: %6; }"
+                     "QPushButton#spResumeButton:focus { border: 1px solid %7; }")
+                 .arg(css(surfaceCard()), css(textPrimary()), css(border()), px(kRadius),
+                      px(kFontSmall), css(surfaceHover()), css(accentText()));
+
     style += QString("QProgressBar#spProgress { background: %1; border: none;"
                      " border-radius: 2px; }"
                      "QProgressBar#spProgress::chunk { background: %2; border-radius: 2px; }"
@@ -458,6 +495,7 @@ void SyncPanel::applyTheme()
 
     settings_button_->setIcon(faIcon(icon_cog, textSecondary()));
     web_button_->setIcon(faIcon(icon_globe, textSecondary()));
+    resume_button_->setIcon(faIcon(icon_play, textPrimary()));
     for (QFrame *button : {open_folder_button_, transfer_button_}) {
         QLabel *icon = button->findChild<QLabel *>("spFooterIcon");
         if (icon) {
@@ -569,7 +607,36 @@ void SyncPanel::refreshStatus()
     QString title_text, detail_text;
     bool show_progress = false;
 
-    if (!connected_) {
+    // Pause: the state comes from the daemon, the end time from the client.
+    SyncPauseManager *pause = SyncPauseManager::instance();
+    const bool paused = pause->isPaused();
+    pause_button_->setIcon(faIcon(paused ? icon_play : icon_pause, textSecondary()));
+    pause_button_->setToolTip(paused ? tr("Resume sync") : tr("Pause sync"));
+    pause_button_->setAccessibleName(pause_button_->toolTip());
+    pause_button_->setEnabled(pause->isStateKnown());
+    pause_button_->setVisible(pause->isStateKnown());
+
+    if (paused) {
+        status_kind_ = StatusPaused;
+        bg = surfaceHover();
+        fg = textSecondary();
+        icon_code = icon_pause;
+        title_text = tr("Paused");
+        const QDateTime until = pause->resumeTime();
+        if (!until.isValid()) {
+            detail_text = tr("Until you resume");
+        } else {
+            const qint64 days = QDate::currentDate().daysTo(until.date());
+            const QString hhmm = until.toString("HH:mm");
+            if (days <= 0) {
+                detail_text = tr("Resumes at %1").arg(hhmm);
+            } else if (days == 1) {
+                detail_text = tr("Resumes tomorrow at %1").arg(hhmm);
+            } else {
+                detail_text = tr("Resumes on %1").arg(until.toString("dd-MM-yyyy HH:mm"));
+            }
+        }
+    } else if (!connected_) {
         status_kind_ = StatusOffline;
         bg = surfaceHover();
         fg = textSecondary();
@@ -619,6 +686,23 @@ void SyncPanel::refreshStatus()
                 "QWidget#syncPanel QLabel#spStatusTitle { color: %4; }"
                 "QWidget#syncPanel QLabel#spStatusDetail { color: %4; }")
             .arg(css(bg), css(border()), px(kRadiusCard), css(fg)));
+    if (status_kind_ == StatusPaused) {
+        // Title in the normal text color, as in the other boxes the detail
+        // stays secondary.
+        status_box_->setStyleSheet(status_box_->styleSheet() +
+                                   QString("QWidget#syncPanel QLabel#spStatusTitle { color: %1; }")
+                                       .arg(css(textPrimary())));
+    }
+    resume_button_->setVisible(status_kind_ == StatusPaused);
+
+    // Files waiting while paused look dimmed.
+    if (paused && !list_container_->graphicsEffect()) {
+        QGraphicsOpacityEffect *effect = new QGraphicsOpacityEffect(list_container_);
+        effect->setOpacity(0.55);
+        list_container_->setGraphicsEffect(effect);
+    } else if (!paused && list_container_->graphicsEffect()) {
+        list_container_->setGraphicsEffect(nullptr);
+    }
     status_box_->setCursor(status_kind_ == StatusErrors ? Qt::PointingHandCursor
                                                         : Qt::ArrowCursor);
     status_icon_->setPixmap(GlyphIcon::pixmap(icon_code, fg, devicePixelRatioF()));
@@ -810,6 +894,11 @@ void SyncPanel::changeEvent(QEvent *event)
         // Lost the focus: behave like a flyout. Hide on the next event loop
         // turn, Qt does not like hiding a window inside its activation change.
         QTimer::singleShot(0, this, [this]() {
+            // A menu opened from the panel (pause, accounts) is not a
+            // reason to close it.
+            if (QApplication::activePopupWidget()) {
+                return;
+            }
             if (!isActiveWindow()) {
                 hide();
             }
@@ -872,6 +961,65 @@ bool SyncPanel::eventFilter(QObject *obj, QEvent *event)
     }
 
     return QWidget::eventFilter(obj, event);
+}
+
+void SyncPanel::addPauseActions(QMenu *menu)
+{
+    QAction *heading = menu->addAction(tr("Pause for"));
+    heading->setEnabled(false);
+
+    struct Choice {
+        int minutes;
+        QString text;
+    };
+    const QList<Choice> choices = {
+        {30, tr("%n minute(s)", nullptr, 30)},
+        {2 * 60, tr("%n hour(s)", nullptr, 2)},
+        {8 * 60, tr("%n hour(s)", nullptr, 8)},
+    };
+    for (const Choice& choice : choices) {
+        QAction *action = menu->addAction(choice.text);
+        ModernMenu::decorateAction(action, icon_time);
+        const int minutes = choice.minutes;
+        QObject::connect(action, &QAction::triggered, menu, [minutes]() {
+            SyncPauseManager::instance()->pauseFor(minutes);
+        });
+    }
+    menu->addSeparator();
+    QAction *until_resumed = menu->addAction(tr("Until I resume"));
+    ModernMenu::decorateAction(until_resumed, icon_pause);
+    QObject::connect(until_resumed, &QAction::triggered, menu, []() {
+        SyncPauseManager::instance()->pauseFor(0);
+    });
+}
+
+void SyncPanel::onPauseButtonClicked()
+{
+    SyncPauseManager *pause = SyncPauseManager::instance();
+    if (pause->isPaused()) {
+        pause->resume();
+        return;
+    }
+    ModernMenu menu(this);
+    addPauseActions(&menu);
+    // Below the button, right edge aligned with it.
+    menu.ensurePolished();
+    const QSize size = menu.sizeHint();
+    const QPoint pos = pause_button_->mapToGlobal(
+        QPoint(pause_button_->width() - size.width(), pause_button_->height() + 4));
+    QAction *chosen = menu.exec(pos);
+    if (!isVisible()) {
+        return;
+    }
+    // exec() takes the focus. Give it back when a duration was chosen or
+    // the menu was closed inside the panel, so the panel keeps working as a
+    // flyout; a click elsewhere closes the panel too.
+    if (chosen || geometry().contains(QCursor::pos())) {
+        activateWindow();
+        setFocus();
+    } else {
+        hide();
+    }
 }
 
 void SyncPanel::triggerAction(int action)

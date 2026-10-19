@@ -24,6 +24,7 @@
 #include "src/ui/modern-menu.h"
 #include "QtAwesome.h"
 #include "recent-files-store.h"
+#include "sync-pause.h"
 #include "src/ui/search-dialog.h"
 #include "api/api-error.h"
 #include "api/requests.h"
@@ -175,6 +176,22 @@ void SeafileTrayIcon::createContextMenu()
     ModernMenu::decorateAction(transfer_progress_action_, icon_exchange);
     ModernMenu::decorateAction(settings_action_, icon_cog);
     ModernMenu::decorateAction(quit_action_, icon_off, true);
+
+    // Pause: a submenu with the durations while syncing, "Resume" while
+    // paused (see prepareContextMenu()).
+    pause_menu_ = new ModernMenu(tr("Pause sync"), menu);
+    SyncPanel::addPauseActions(pause_menu_);
+    pause_menu_action_ = pause_menu_->menuAction();
+    ModernMenu::decorateAction(pause_menu_action_, icon_pause);
+    resume_action_ = new QAction(tr("Resume sync"), this);
+    ModernMenu::decorateAction(resume_action_, icon_play);
+    connect(resume_action_, &QAction::triggered, this, [] {
+        SyncPauseManager::instance()->resume();
+    });
+
+    menu->addAction(pause_menu_action_);
+    menu->addAction(resume_action_);
+    menu->addSeparator();
     menu->addAction(transfer_progress_action_);
     menu->addAction(settings_action_);
     menu->addSeparator();
@@ -191,6 +208,10 @@ void SeafileTrayIcon::createContextMenu()
 void SeafileTrayIcon::prepareContextMenu()
 {
     auto accounts = gui->accountManager()->allAccounts();
+
+    SyncPauseManager *pause = SyncPauseManager::instance();
+    pause_menu_action_->setVisible(pause->isStateKnown() && !pause->isPaused());
+    resume_action_->setVisible(pause->isStateKnown() && pause->isPaused());
 
     search_action_->setVisible(false);
 #if defined(Q_OS_MACOS) || defined(Q_OS_WIN32)
@@ -829,7 +850,10 @@ void SeafileTrayIcon::setStateWithSyncErrors()
     } else {
         timestamp = gui->settingsManager()->getLastOpenSyncDialogTimestamp();
     }
-    if (!network_errors_.isEmpty()) {
+    if (SyncPauseManager::instance()->isPaused()) {
+        // Small pause sign on the icon.
+        setState(STATE_DAEMON_AUTOSYNC_DISABLED);
+    } else if (!network_errors_.isEmpty()) {
         setState(STATE_HAS_SYNC_ERRORS);
     } else if(!sync_errors_.isEmpty()) {
         if(timestamp > sync_errors_[0].timestamp) {

@@ -1535,6 +1535,14 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Pause sync</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Resume sync</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Accounts</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2220,6 +2228,14 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Resume</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Resume sync</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Recent files</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2247,6 +2263,30 @@ Files you upload or download will appear here.</source>
     </message>
     <message>
         <source>Downloaded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pause sync</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Paused</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Until you resume</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Resumes at %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Resumes tomorrow at %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Resumes on %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2297,6 +2337,28 @@ Files you upload or download will appear here.</source>
     </message>
     <message>
         <source>Downloading</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pause for</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n minute(s)</source>
+        <translation>
+            <numerusform>%n minute</numerusform>
+            <numerusform>%n minutes</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n hour(s)</source>
+        <translation>
+            <numerusform>%n hour</numerusform>
+            <numerusform>%n hours</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Until I resume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
