@@ -833,8 +833,7 @@ void SeafileTrayIcon::setSyncErrors(const QString& domain_id, const QList<SyncEr
 
     network_errors_ = latest_network_errors_by_server.values();
 
-    syncPanel()->setErrorCount(sync_errors_.size());
-    syncPanel()->setConnected(network_errors_.isEmpty());
+    syncPanel()->setErrors(sync_errors_, network_errors_);
     if (transfer_window_) {
         transfer_window_->updateErrors();
     }
@@ -906,34 +905,50 @@ SyncPanel *SeafileTrayIcon::syncPanel()
                 this, &SeafileTrayIcon::showTransferProgressDialog);
         connect(sync_panel_, &SyncPanel::syncErrorsRequested,
                 this, &SeafileTrayIcon::showSyncErrorsDialog);
-        connect(sync_panel_, &SyncPanel::openWebRequested, this, [] {
-            // Web interface of the active account (server URL as configured,
-            // e.g. http://192.168.1.6:8082 or the public domain).
-            auto accounts = gui->accountManager()->activeAccounts();
-            if (accounts.isEmpty() || !accounts.first().serverUrl.isValid()) {
+        connect(sync_panel_, &SyncPanel::openWebRequested, this, [this] {
+            // Web interface of the account chosen in the panel (server URL
+            // as configured, e.g. http://192.168.1.6:8082 or the public
+            // domain).
+            const QUrl server = sync_panel_->currentAccount().server;
+            if (!server.isValid()) {
                 qWarning("Open online: no active account");
                 return;
             }
-            openUrl(accounts.first().serverUrl);
+            openUrl(server);
         });
-        connect(sync_panel_, &SyncPanel::openFolderRequested, this, [] {
-            openUrl(QUrl::fromLocalFile(gui->seadriveRoot()));
+        connect(sync_panel_, &SyncPanel::openFolderRequested, this, [this] {
+            // One account: the SeaDrive folder as before. More: the folder
+            // of the chosen account.
+            QString folder = gui->seadriveRoot();
+            if (sync_panel_->hasManyAccounts() &&
+                !sync_panel_->currentAccount().root.isEmpty()) {
+                folder = sync_panel_->currentAccount().root;
+            }
+            openUrl(QUrl::fromLocalFile(folder));
+        });
+        connect(sync_panel_, &SyncPanel::addAccountRequested,
+                this, [this] { showLoginDialog(); });
+        connect(sync_panel_, &SyncPanel::manageAccountsRequested, this, [] {
+            gui->settingsDialog()->showPage(SettingsWindow::PageAccount);
         });
     }
 
-    // The root and the account may change after start (login, settings).
-    // Paths of recent files are relative to the sync root of the account
-    // (on Windows e.g. "<cache dir>/<account>"), not to the cache directory.
-    auto accounts = gui->accountManager()->activeAccounts();
-    sync_panel_->setRootPath(!accounts.isEmpty() && !accounts.first().syncRoot.isEmpty()
-                                 ? accounts.first().syncRoot
-                                 : gui->seadriveRoot());
-    if (!accounts.isEmpty()) {
-        const Account& account = accounts.first();
-        sync_panel_->setAccountName(account.accountInfo.name.isEmpty()
-                                        ? account.username
-                                        : account.accountInfo.name);
+    // Accounts may change after start (login, logout, settings). Paths of
+    // recent files are relative to the sync root of the account (on
+    // Windows e.g. "<cache dir>/<account>"), not to the cache directory.
+    QList<SyncPanelAccount> panel_accounts;
+    const auto accounts = gui->accountManager()->activeAccounts();
+    for (const Account& account : accounts) {
+        SyncPanelAccount item;
+        item.id = account.getSignature();
+        item.name = account.accountInfo.name.isEmpty() ? account.username
+                                                        : account.accountInfo.name;
+        item.server = account.serverUrl;
+        item.username = account.username;
+        item.root = account.syncRoot.isEmpty() ? gui->seadriveRoot() : account.syncRoot;
+        panel_accounts.append(item);
     }
+    sync_panel_->setAccounts(panel_accounts);
     return sync_panel_;
 }
 

@@ -20,10 +20,12 @@
 #include <QPushButton>
 #include <QScreen>
 #include <QScrollArea>
+#include <QSettings>
 #include <QStyleHints>
 #include <QTimer>
 #include <QToolButton>
 #include <QVBoxLayout>
+#include <QWidgetAction>
 
 #if defined(Q_OS_WIN32)
 #ifndef NOMINMAX
@@ -39,6 +41,7 @@
 #include "modern-menu.h"
 #include "design-tokens.h"
 #include "glyph-icon.h"
+#include "settings-pages/account-page.h"
 
 #include "sync-panel.h"
 
@@ -58,6 +61,12 @@ const int kReopenGuardMSecs = 350;
 
 const char *kPropFilePath = "sp_file_path";
 const char *kPropAction = "sp_action";
+const char *kPropAccountId = "sp_account_id";
+const char *kSettingsGroup = "SyncPanel";
+const char *kAccountKey = "account";
+const int kAccountAvatarSize = 22;
+const int kMenuAvatarSize = 32;
+const int kMaxAccountNameWidth = 150;
 
 enum FooterAction {
     ActionOpenFolder = 1,
@@ -88,11 +97,9 @@ QString lastComponent(const QString& path)
 
 SyncPanel::SyncPanel(QWidget *parent)
     : QWidget(parent, Qt::Tool | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint),
-      connected_(true),
       syncing_(false),
       sent_rate_(0),
       recv_rate_(0),
-      error_count_(0),
       last_check_(QDateTime::currentDateTime()),
       hidden_at_msec_(0),
       status_kind_(StatusOk)
@@ -101,6 +108,11 @@ SyncPanel::SyncPanel(QWidget *parent)
     setAttribute(Qt::WA_TranslucentBackground);
     setWindowTitle(tr("SeaDrive"));
     setFixedSize(kPanelWidth, kPanelHeight);
+
+    QSettings settings;
+    settings.beginGroup(kSettingsGroup);
+    current_id_ = settings.value(kAccountKey).toString();
+    settings.endGroup();
 
     createUi();
 
@@ -135,11 +147,43 @@ void SyncPanel::createUi()
     header_layout->setContentsMargins(kPadding + 4, kPadding, kPadding - 4, 8);
     header_layout->setSpacing(8);
 
+    // "SeaDrive · name" with one account; "SeaDrive" + account selector
+    // with more (see refreshAccountButton()).
+    title_layout_ = new QHBoxLayout;
+    title_layout_->setContentsMargins(0, 0, 0, 0);
+    title_layout_->setSpacing(8);
     title_label_ = new QLabel(header);
     title_label_->setObjectName("spTitle");
     title_label_->setTextFormat(Qt::RichText);
     title_label_->setWordWrap(true);
-    header_layout->addWidget(title_label_, 1);
+    title_layout_->addWidget(title_label_, 1);
+
+    account_button_ = new QToolButton(header);
+    account_button_->setObjectName("spAccountButton");
+    account_button_->setCursor(Qt::PointingHandCursor);
+    account_button_->setFixedHeight(32);
+    account_button_->setAccessibleName(tr("Switch account"));
+    QHBoxLayout *chip = new QHBoxLayout(account_button_);
+    chip->setContentsMargins(5, 0, 8, 0);
+    chip->setSpacing(6);
+    account_avatar_ = new QLabel(account_button_);
+    account_avatar_->setFixedSize(kAccountAvatarSize, kAccountAvatarSize);
+    account_name_label_ = new QLabel(account_button_);
+    account_name_label_->setObjectName("spAccountName");
+    account_chevron_ = new QLabel(account_button_);
+    account_chevron_->setFixedSize(14, 14);
+    account_chevron_->setAlignment(Qt::AlignCenter);
+    for (QLabel *label : {account_avatar_, account_name_label_, account_chevron_}) {
+        label->setAttribute(Qt::WA_TransparentForMouseEvents);
+    }
+    chip->addWidget(account_avatar_);
+    chip->addWidget(account_name_label_);
+    chip->addWidget(account_chevron_);
+    connect(account_button_, &QToolButton::clicked, this, &SyncPanel::onAccountButtonClicked);
+    account_button_->hide();
+    title_layout_->addWidget(account_button_, 0, Qt::AlignVCenter);
+    title_layout_->addStretch(0);
+    header_layout->addLayout(title_layout_, 1);
 
     // Pause / resume the sync (all accounts: the daemon has one switch).
     pause_button_ = new QToolButton(header);
@@ -458,6 +502,14 @@ void SyncPanel::applyTheme()
                      "QFrame#spFooterButton:focus { border: 1px solid %3; }")
                  .arg(px(kRadius), css(surfaceHover()), css(accentText()));
 
+    style += QString("QToolButton#spAccountButton { background: %1; border: 1px solid transparent;"
+                     " border-radius: %2; }"
+                     "QToolButton#spAccountButton:hover { border: 1px solid %3; }"
+                     "QToolButton#spAccountButton:focus { border: 1px solid %4; }"
+                     "QWidget#syncPanel QLabel#spAccountName { font-size: %5; }")
+                 .arg(css(surfaceHover()), px(kRadius), css(border()), css(accentText()),
+                      px(kFontBody));
+
     style += QString("QToolButton#spIconButton { background: transparent; border: none;"
                      " border-radius: %1; }"
                      "QToolButton#spIconButton:hover { background: %2; }"
@@ -496,6 +548,9 @@ void SyncPanel::applyTheme()
     settings_button_->setIcon(faIcon(icon_cog, textSecondary()));
     web_button_->setIcon(faIcon(icon_globe, textSecondary()));
     resume_button_->setIcon(faIcon(icon_play, textPrimary()));
+    account_chevron_->setPixmap(faIcon(icon_chevron_down, textSecondary())
+                                    .pixmap(QSize(12, 12)));
+    refreshAccountButton();
     for (QFrame *button : {open_folder_button_, transfer_button_}) {
         QLabel *icon = button->findChild<QLabel *>("spFooterIcon");
         if (icon) {
@@ -525,26 +580,128 @@ void SyncPanel::paintEvent(QPaintEvent *)
 // State
 // ---------------------------------------------------------------------------
 
-void SyncPanel::setAccountName(const QString& name)
+void SyncPanel::setAccounts(const QList<SyncPanelAccount>& accounts)
 {
-    if (account_name_ == name) {
+    if (accounts == accounts_) {
         return;
     }
-    account_name_ = name;
+    accounts_ = accounts;
+    refreshAccountButton();
     refreshStatus();
+    refreshList();
 }
 
-void SyncPanel::setRootPath(const QString& root)
+SyncPanelAccount SyncPanel::currentAccount() const
 {
-    root_path_ = root;
+    for (const SyncPanelAccount& account : accounts_) {
+        if (account.id == current_id_) {
+            return account;
+        }
+    }
+    // Nothing chosen yet, or the chosen account was removed.
+    return accounts_.isEmpty() ? SyncPanelAccount() : accounts_.first();
 }
 
-void SyncPanel::setConnected(bool connected)
+void SyncPanel::selectAccount(const QString& id)
 {
-    if (connected_ == connected) {
+    if (id == currentAccount().id) {
         return;
     }
-    connected_ = connected;
+    current_id_ = id;
+    QSettings settings;
+    settings.beginGroup(kSettingsGroup);
+    settings.setValue(kAccountKey, id);
+    settings.endGroup();
+    refreshAccountButton();
+    refreshStatus();
+    refreshList();
+}
+
+void SyncPanel::refreshAccountButton()
+{
+    const bool many = hasManyAccounts();
+    account_button_->setVisible(many);
+    // One account: "SeaDrive · name" fills the row and may wrap. More:
+    // "SeaDrive" and the selector right after it, the space goes to the end.
+    title_label_->setWordWrap(!many);
+    title_layout_->setStretch(0, many ? 0 : 1);
+    title_layout_->setStretch(2, many ? 1 : 0);
+    if (!many) {
+        return;
+    }
+    const SyncPanelAccount account = currentAccount();
+    account_avatar_->setPixmap(
+        AccountDisplay::avatar(account.name, kAccountAvatarSize, devicePixelRatioF()));
+    account_name_label_->setText(account_name_label_->fontMetrics().elidedText(
+        account.name, Qt::ElideRight, kMaxAccountNameWidth));
+    account_button_->setToolTip(tr("Switch account"));
+    account_button_->setFixedWidth(account_button_->layout()->sizeHint().width());
+}
+
+bool SyncPanel::belongsTo(const SyncPanelAccount& account,
+                          const QString& server, const QString& username)
+{
+    // Unknown account (entries of older versions, some errors): shown for
+    // every account.
+    if (server.isEmpty()) {
+        return true;
+    }
+    const QUrl url = QUrl::fromUserInput(server);
+    auto port = [](const QUrl& u) {
+        return u.port(u.scheme() == QLatin1String("https") ? 443 : 80);
+    };
+    if (url.host().compare(account.server.host(), Qt::CaseInsensitive) != 0 ||
+        port(url) != port(account.server)) {
+        return false;
+    }
+    return username.isEmpty() || username == account.username;
+}
+
+bool SyncPanel::belongsToCurrent(const QString& server, const QString& username) const
+{
+    // With a single account everything belongs to it.
+    if (!hasManyAccounts()) {
+        return true;
+    }
+    return belongsTo(currentAccount(), server, username);
+}
+
+int SyncPanel::errorCountFor(const SyncPanelAccount& account) const
+{
+    if (!hasManyAccounts()) {
+        return errors_.size();
+    }
+    int count = 0;
+    for (const SyncError& error : errors_) {
+        if (belongsTo(account, error.server, QString())) {
+            count++;
+        }
+    }
+    return count;
+}
+
+bool SyncPanel::isConnected(const SyncPanelAccount& account) const
+{
+    if (!hasManyAccounts()) {
+        return network_errors_.isEmpty();
+    }
+    for (const SyncError& error : network_errors_) {
+        if (belongsTo(account, error.server, QString())) {
+            return false;
+        }
+    }
+    return true;
+}
+
+QString SyncPanel::rootPath() const
+{
+    return currentAccount().root;
+}
+
+void SyncPanel::setErrors(const QList<SyncError>& errors, const QList<SyncError>& networkErrors)
+{
+    errors_ = errors;
+    network_errors_ = networkErrors;
     refreshStatus();
 }
 
@@ -557,15 +714,6 @@ void SyncPanel::setSyncing(bool syncing, qint64 sentRate, qint64 recvRate)
     if (isVisible()) {
         refreshStatus();
     }
-}
-
-void SyncPanel::setErrorCount(int count)
-{
-    if (error_count_ == count) {
-        return;
-    }
-    error_count_ = count;
-    refreshStatus();
 }
 
 void SyncPanel::setTransfers(const TransferProgress& progress)
@@ -583,24 +731,35 @@ void SyncPanel::refreshStatus()
     // Header
     QString title = QString("<span style=\"font-weight:600; font-size:%1px;\">SeaDrive</span>")
                         .arg(kFontTitle);
-    if (!account_name_.isEmpty()) {
+    const SyncPanelAccount account = currentAccount();
+    if (!hasManyAccounts() && !account.name.isEmpty()) {
         title += QString(" <span style=\"color:%1; font-size:%2px;\">&middot; %3</span>")
                      .arg(textSecondary().name(), QString::number(kFontBody),
-                          account_name_.toHtmlEscaped());
+                          account.name.toHtmlEscaped());
     }
     title_label_->setText(title);
 
-    // Status box
-    int active = transfers_.uploading_files.size() + transfers_.downloading_files.size();
+    // Status box: state of the chosen account.
+    const bool connected = isConnected(account);
+    const int error_count = errorCountFor(account);
+    int active = 0;
     quint64 done = 0, total = 0;
-    for (const TransferringInfo& info : transfers_.uploading_files) {
-        done += info.transferred_bytes;
-        total += info.total_bytes;
+    for (const auto *list : {&transfers_.uploading_files, &transfers_.downloading_files}) {
+        for (const TransferringInfo& info : *list) {
+            if (!belongsToCurrent(info.server, info.username)) {
+                continue;
+            }
+            active++;
+            done += info.transferred_bytes;
+            total += info.total_bytes;
+        }
     }
-    for (const TransferringInfo& info : transfers_.downloading_files) {
-        done += info.transferred_bytes;
-        total += info.total_bytes;
-    }
+    // The daemon reports one "syncing" flag for every account: with more
+    // accounts it counts only when this one has files in progress, or when
+    // no account has any (the daemon is busy without a file list).
+    const int active_all =
+        transfers_.uploading_files.size() + transfers_.downloading_files.size();
+    const bool syncing = syncing_ && (!hasManyAccounts() || active > 0 || active_all == 0);
 
     QColor bg, fg;
     int icon_code;
@@ -636,14 +795,14 @@ void SyncPanel::refreshStatus()
                 detail_text = tr("Resumes on %1").arg(until.toString("dd-MM-yyyy HH:mm"));
             }
         }
-    } else if (!connected_) {
+    } else if (!connected) {
         status_kind_ = StatusOffline;
         bg = surfaceHover();
         fg = textSecondary();
         icon_code = icon_unlink;
         title_text = tr("Not connected");
         detail_text = tr("SeaDrive will retry on its own as soon as the server is reachable.");
-    } else if (syncing_ || active > 0) {
+    } else if (syncing || active > 0) {
         status_kind_ = StatusSyncing;
         bg = accentBg();
         fg = accentText();
@@ -664,12 +823,12 @@ void SyncPanel::refreshStatus()
             // Busy indicator: the daemon is working but has no byte count.
             status_progress_->setRange(0, 0);
         }
-    } else if (error_count_ > 0) {
+    } else if (error_count > 0) {
         status_kind_ = StatusErrors;
         bg = warningBg();
         fg = warningText();
         icon_code = icon_warning_sign;
-        title_text = tr("%n sync error(s)", nullptr, error_count_);
+        title_text = tr("%n sync error(s)", nullptr, error_count);
         detail_text = tr("Click here to see the details");
     } else {
         status_kind_ = StatusOk;
@@ -741,6 +900,9 @@ void SyncPanel::refreshList()
             if (active_rows >= kMaxActiveRows) {
                 return;
             }
+            if (!belongsToCurrent(info.server, info.username)) {
+                continue;
+            }
             QString path = info.file_path;
             path.replace('\\', '/');
             const QString folder = lastComponent(path.section('/', 0, -2));
@@ -763,6 +925,9 @@ void SyncPanel::refreshList()
     for (const RecentFileEntry& entry : entries) {
         if (recent_rows >= kMaxRecentRows) {
             break;
+        }
+        if (!belongsToCurrent(entry.server, entry.username)) {
+            continue;
         }
         const bool upload = entry.direction == RecentFileEntry::Upload;
         // The direction is in the pill: here only folder and time.
@@ -940,6 +1105,19 @@ bool SyncPanel::eventFilter(QObject *obj, QEvent *event)
         return QWidget::eventFilter(obj, event);
     }
 
+    const QVariant account_id = w->property(kPropAccountId);
+    if (account_id.isValid()) {
+        // A row of the account menu: choose it and close the menu.
+        selectAccount(account_id.toString());
+        for (QWidget *p = w->parentWidget(); p; p = p->parentWidget()) {
+            if (QMenu *menu = qobject_cast<QMenu *>(p)) {
+                menu->close();
+                break;
+            }
+        }
+        return true;
+    }
+
     if (w == status_box_) {
         if (status_kind_ == StatusErrors) {
             hide();
@@ -1008,10 +1186,15 @@ void SyncPanel::onPauseButtonClicked()
     const QPoint pos = pause_button_->mapToGlobal(
         QPoint(pause_button_->width() - size.width(), pause_button_->height() + 4));
     QAction *chosen = menu.exec(pos);
+    giveFocusBackAfterMenu(chosen != nullptr);
+}
+
+void SyncPanel::giveFocusBackAfterMenu(bool chosen)
+{
     if (!isVisible()) {
         return;
     }
-    // exec() takes the focus. Give it back when a duration was chosen or
+    // exec() takes the focus. Give it back when an entry was chosen or
     // the menu was closed inside the panel, so the panel keeps working as a
     // flyout; a click elsewhere closes the panel too.
     if (chosen || geometry().contains(QCursor::pos())) {
@@ -1020,6 +1203,115 @@ void SyncPanel::onPauseButtonClicked()
     } else {
         hide();
     }
+}
+
+QWidget *SyncPanel::createAccountMenuRow(const SyncPanelAccount& account, bool current)
+{
+    QFrame *row = new QFrame;
+    row->setObjectName("spAccountRow");
+    row->setAttribute(Qt::WA_Hover);
+    row->setCursor(Qt::PointingHandCursor);
+    row->setFocusPolicy(Qt::StrongFocus);
+    row->setProperty(kPropAccountId, account.id);
+    row->installEventFilter(this);
+
+    QHBoxLayout *layout = new QHBoxLayout(row);
+    layout->setContentsMargins(10, 8, 10, 8);
+    layout->setSpacing(kRowPadding);
+
+    QLabel *avatar = new QLabel(row);
+    avatar->setFixedSize(kMenuAvatarSize, kMenuAvatarSize);
+    avatar->setPixmap(AccountDisplay::avatar(account.name, kMenuAvatarSize, devicePixelRatioF()));
+    layout->addWidget(avatar, 0, Qt::AlignVCenter);
+
+    // Name, then a status dot with errors (if any) and the server.
+    const int errors = errorCountFor(account);
+    const bool connected = isConnected(account);
+    QColor dot = successText();
+    QString detail = account.server.host();
+    if (!connected) {
+        dot = textMuted();
+        detail = tr("Not connected") + QStringLiteral(" \u00b7 ") + detail;
+    } else if (errors > 0) {
+        dot = warningText();
+        detail = tr("%n error(s)", nullptr, errors) + QStringLiteral(" \u00b7 ") + detail;
+    }
+
+    QVBoxLayout *texts = new QVBoxLayout;
+    texts->setSpacing(2);
+    QLabel *name = new QLabel(account.name.toHtmlEscaped(), row);
+    name->setObjectName("spAccountRowName");
+    QLabel *desc = new QLabel(
+        QString("<span style=\"color:%1;\">&#9679;</span>&nbsp;%2")
+            .arg(dot.name(), detail.toHtmlEscaped()),
+        row);
+    desc->setObjectName("spAccountRowDetail");
+    desc->setTextFormat(Qt::RichText);
+    texts->addWidget(name);
+    texts->addWidget(desc);
+    layout->addLayout(texts, 1);
+
+    QLabel *check = new QLabel(row);
+    check->setFixedSize(kIconSize, kIconSize);
+    if (current) {
+        check->setPixmap(faIcon(icon_ok, accentText()).pixmap(QSize(16, 16)));
+    }
+    layout->addWidget(check, 0, Qt::AlignVCenter);
+
+    for (QLabel *label : row->findChildren<QLabel *>()) {
+        label->setAttribute(Qt::WA_TransparentForMouseEvents);
+    }
+
+    row->setAccessibleName(account.name + QStringLiteral(", ") + detail);
+    row->setStyleSheet(
+        QString("QFrame#spAccountRow { background: %1; border: 1px solid transparent;"
+                " border-radius: %2; }"
+                "QFrame#spAccountRow:hover { background: %3; }"
+                "QFrame#spAccountRow:focus { border: 1px solid %4; }"
+                "QLabel { background: transparent; color: %5; }"
+                "QLabel#spAccountRowName { font-size: %6; font-weight: 600; }"
+                "QLabel#spAccountRowDetail { font-size: %7; color: %8; }")
+            .arg(current ? css(accentBg()) : QStringLiteral("transparent"),
+                 px(kRadius - 2), current ? css(accentBg()) : css(surfaceHover()),
+                 css(accentText()), css(textPrimary()), px(kFontBody), px(kFontSmall),
+                 css(textSecondary())));
+    row->setMinimumWidth(260);
+    return row;
+}
+
+void SyncPanel::onAccountButtonClicked()
+{
+    if (!hasManyAccounts()) {
+        return;
+    }
+    ModernMenu menu(this);
+    QAction *heading = menu.addAction(tr("Accounts"));
+    heading->setEnabled(false);
+
+    const QString current = currentAccount().id;
+    for (const SyncPanelAccount& account : accounts_) {
+        QWidgetAction *action = new QWidgetAction(&menu);
+        action->setDefaultWidget(createAccountMenuRow(account, account.id == current));
+        menu.addAction(action);
+    }
+    menu.addSeparator();
+    QAction *add = menu.addIconAction(icon_plus, tr("Add account"));
+    QAction *manage = menu.addIconAction(icon_user, tr("Manage accounts"));
+
+    // Below the selector, left edge aligned with it.
+    QAction *chosen = menu.exec(
+        account_button_->mapToGlobal(QPoint(0, account_button_->height() + 4)));
+    if (chosen == add) {
+        hide();
+        emit addAccountRequested();
+        return;
+    }
+    if (chosen == manage) {
+        hide();
+        emit manageAccountsRequested();
+        return;
+    }
+    giveFocusBackAfterMenu(chosen != nullptr);
 }
 
 void SyncPanel::triggerAction(int action)
@@ -1042,10 +1334,11 @@ void SyncPanel::triggerAction(int action)
 
 QString SyncPanel::absolutePath(const QString& path) const
 {
-    if (QDir::isAbsolutePath(path) || root_path_.isEmpty()) {
+    const QString root = rootPath();
+    if (QDir::isAbsolutePath(path) || root.isEmpty()) {
         return QDir::cleanPath(path);
     }
-    return QDir::cleanPath(QDir(root_path_).filePath(path));
+    return QDir::cleanPath(QDir(root).filePath(path));
 }
 
 void SyncPanel::openFileFolder(const QString& path)
@@ -1069,10 +1362,11 @@ void SyncPanel::openFileFolder(const QString& path)
         dir = parent;
     }
     // Never climb above the SeaDrive root.
-    if (!root_path_.isEmpty() &&
-        (dir.isEmpty() || !QDir::cleanPath(dir).startsWith(QDir::cleanPath(root_path_),
+    const QString root = rootPath();
+    if (!root.isEmpty() &&
+        (dir.isEmpty() || !QDir::cleanPath(dir).startsWith(QDir::cleanPath(root),
                                                           Qt::CaseInsensitive))) {
-        dir = root_path_;
+        dir = root;
     }
     if (!dir.isEmpty() && QFileInfo(dir).isDir()) {
         openUrl(QUrl::fromLocalFile(dir));

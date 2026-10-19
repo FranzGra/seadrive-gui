@@ -9,6 +9,7 @@
 
 class QTimer;
 class TransferProgress;
+struct TransferredInfo;
 
 /**
  * One file recently uploaded to / downloaded from the server.
@@ -26,6 +27,15 @@ struct RecentFileEntry {
     Direction direction = Upload;
     QDateTime time;
     qint64 size = 0;
+    // Account of the transfer, as reported by the daemon. Empty for entries
+    // saved by older versions (shown for every account).
+    QString server;
+    QString username;
+
+    bool sameFile(const RecentFileEntry& other) const {
+        return path == other.path && direction == other.direction &&
+               server == other.server && username == other.username;
+    }
 };
 
 /**
@@ -72,8 +82,8 @@ private:
     void load();
     void scheduleSave();
     QString storePath() const;
-    bool containsPath(const QString& path, RecentFileEntry::Direction dir) const;
-    void processList(const QStringList& paths,
+    bool containsFile(const RecentFileEntry& entry) const;
+    void processList(const QList<TransferredInfo>& files,
                      RecentFileEntry::Direction dir,
                      QSet<QString> *previous,
                      bool *added);

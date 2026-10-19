@@ -4,11 +4,14 @@
 #include <QWidget>
 #include <QDateTime>
 #include <QList>
+#include <QUrl>
 
 #include "rpc/transfer-progress.h"
+#include "rpc/sync-error.h"
 
 class QLabel;
 class QFrame;
+class QHBoxLayout;
 class QMenu;
 class QProgressBar;
 class QPushButton;
@@ -18,6 +21,21 @@ class QVBoxLayout;
 class QTimer;
 class QIcon;
 class QColor;
+
+// One account as shown by the panel (filled by the tray icon from the
+// account manager).
+struct SyncPanelAccount {
+    QString id;        // Account::getSignature(): remembers the choice
+    QString name;      // display name
+    QUrl server;
+    QString username;
+    QString root;      // sync root of the account
+
+    bool operator==(const SyncPanelAccount& o) const {
+        return id == o.id && name == o.name && server == o.server &&
+               username == o.username && root == o.root;
+    }
+};
 
 /**
  * The main popup of the client, OneDrive style: it opens with a left click
@@ -30,13 +48,15 @@ class QColor;
  *
  * State is pushed from the outside (MessagePoller):
  *
- *   - setConnected(bool)                       false -> grey "Non connesso"
+ *   - setAccounts(QList<SyncPanelAccount>)     accounts for the header
+ *   - setErrors(errors, networkErrors)         all accounts; the panel
+ *                                              keeps those of the chosen one
  *   - setSyncing(bool, sentRate, recvRate)     rates in bytes/s
- *   - setErrorCount(int)                       > 0 -> yellow box
  *   - setTransfers(const TransferProgress&)    files in progress (bars)
- *   - setAccountName(QString)                  shown in the header
- *   - setRootPath(QString)                     SeaDrive root, used to open
- *                                              the folder of a clicked file
+ *
+ * With one account the header reads "SeaDrive · name" as before. With two
+ * or more the name becomes a selector (avatar, name, chevron): status box,
+ * file list, "Open folder" and "Open online" follow the chosen account.
  *
  * Priority of the status box: paused > not connected > syncing > errors >
  * all synced. "Paused" comes from the daemon (SyncPauseManager).
@@ -61,15 +81,20 @@ public:
     // resumed). Shared with the tray icon menu.
     static void addPauseActions(QMenu *menu);
 
+    // The chosen account (the first one if none was chosen yet). Empty id
+    // when there is no account.
+    SyncPanelAccount currentAccount() const;
+    bool hasManyAccounts() const { return accounts_.size() >= 2; }
+
 public slots:
-    void setAccountName(const QString& name);
-    void setRootPath(const QString& root);
-    void setConnected(bool connected);
+    void setAccounts(const QList<SyncPanelAccount>& accounts);
+    void setErrors(const QList<SyncError>& errors, const QList<SyncError>& networkErrors);
     void setSyncing(bool syncing, qint64 sentRate, qint64 recvRate);
-    void setErrorCount(int count);
     void setTransfers(const TransferProgress& progress);
 
 signals:
+    void addAccountRequested();
+    void manageAccountsRequested();
     void settingsRequested();
     void openWebRequested();
     void openFolderRequested();
@@ -93,6 +118,7 @@ private slots:
     void applyTheme();
     void tick();
     void onPauseButtonClicked();
+    void onAccountButtonClicked();
 
 private:
     Q_DISABLE_COPY(SyncPanel)
@@ -108,6 +134,18 @@ private:
     void clearList();
     void openFileFolder(const QString& path);
     QString absolutePath(const QString& path) const;
+    QString rootPath() const;
+    void giveFocusBackAfterMenu(bool chosen);
+
+    // Accounts
+    void selectAccount(const QString& id);
+    void refreshAccountButton();
+    bool belongsToCurrent(const QString& server, const QString& username) const;
+    static bool belongsTo(const SyncPanelAccount& account,
+                          const QString& server, const QString& username);
+    int errorCountFor(const SyncPanelAccount& account) const;
+    bool isConnected(const SyncPanelAccount& account) const;
+    QWidget *createAccountMenuRow(const SyncPanelAccount& account, bool current);
 
     static QString relativeTime(const QDateTime& time);
     static QString formatRate(qint64 rate);
@@ -116,6 +154,12 @@ private:
 
     // Header
     QLabel *title_label_;
+    QHBoxLayout *title_layout_ = nullptr;
+    // Account selector, shown with two accounts or more.
+    QToolButton *account_button_ = nullptr;
+    QLabel *account_avatar_ = nullptr;
+    QLabel *account_name_label_ = nullptr;
+    QLabel *account_chevron_ = nullptr;
     QToolButton *settings_button_;
     QToolButton *web_button_ = nullptr;
     // Pause: opens the "Pause for" menu; while paused it resumes (play).
@@ -143,13 +187,13 @@ private:
 
     QTimer *tick_timer_;
 
-    QString account_name_;
-    QString root_path_;
-    bool connected_;
+    QList<SyncPanelAccount> accounts_;
+    QString current_id_;
+    QList<SyncError> errors_;
+    QList<SyncError> network_errors_;
     bool syncing_;
     qint64 sent_rate_;
     qint64 recv_rate_;
-    int error_count_;
     TransferProgress transfers_;
     QDateTime last_check_;
     qint64 hidden_at_msec_;

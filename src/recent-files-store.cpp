@@ -104,8 +104,7 @@ void RecentFilesStore::addEntry(const RecentFileEntry& e)
     // The same file transferred again moves to the top instead of being
     // listed twice.
     for (int i = 0; i < entries_.size(); i++) {
-        if (entries_[i].path == entry.path &&
-            entries_[i].direction == entry.direction) {
+        if (entries_[i].sameFile(entry)) {
             entries_.removeAt(i);
             break;
         }
@@ -120,18 +119,17 @@ void RecentFilesStore::addEntry(const RecentFileEntry& e)
     emit changed();
 }
 
-bool RecentFilesStore::containsPath(const QString& path,
-                                    RecentFileEntry::Direction dir) const
+bool RecentFilesStore::containsFile(const RecentFileEntry& file) const
 {
     for (const RecentFileEntry& entry : entries_) {
-        if (entry.path == path && entry.direction == dir) {
+        if (entry.sameFile(file)) {
             return true;
         }
     }
     return false;
 }
 
-void RecentFilesStore::processList(const QStringList& paths,
+void RecentFilesStore::processList(const QList<TransferredInfo>& files,
                                    RecentFileEntry::Direction dir,
                                    QSet<QString> *previous,
                                    bool *added)
@@ -141,17 +139,18 @@ void RecentFilesStore::processList(const QStringList& paths,
 
     // The daemon lists the most recent file first: walk the list backwards
     // so that, after prepending, the newest one ends up on top.
-    for (int i = paths.size() - 1; i >= 0; i--) {
-        const QString path = normalizedPath(paths.at(i));
-        if (path.isEmpty() || current.contains(path)) {
+    for (int i = files.size() - 1; i >= 0; i--) {
+        const TransferredInfo& info = files.at(i);
+        const QString path = normalizedPath(info.file_path);
+        // Same path in two accounts = two different files.
+        const QString key = info.server + QLatin1Char('|') + info.username +
+                            QLatin1Char('|') + path;
+        if (path.isEmpty() || current.contains(key)) {
             continue;
         }
-        current.insert(path);
+        current.insert(key);
 
-        if (previous->contains(path)) {
-            continue;
-        }
-        if (first_update_ && containsPath(path, dir)) {
+        if (previous->contains(key)) {
             continue;
         }
 
@@ -161,9 +160,15 @@ void RecentFilesStore::processList(const QStringList& paths,
         entry.direction = dir;
         entry.time = now;
         entry.size = 0;
+        entry.server = info.server;
+        entry.username = info.username;
+
+        if (first_update_ && containsFile(entry)) {
+            continue;
+        }
 
         for (int j = 0; j < entries_.size(); j++) {
-            if (entries_[j].path == path && entries_[j].direction == dir) {
+            if (entries_[j].sameFile(entry)) {
                 entries_.removeAt(j);
                 break;
             }
@@ -178,17 +183,9 @@ void RecentFilesStore::processList(const QStringList& paths,
 void RecentFilesStore::updateFromTransferProgress(const TransferProgress& up,
                                                   const TransferProgress& down)
 {
-    QStringList uploaded, downloaded;
-    for (const TransferredInfo& info : up.uploaded_files) {
-        uploaded << info.file_path;
-    }
-    for (const TransferredInfo& info : down.downloaded_files) {
-        downloaded << info.file_path;
-    }
-
     bool added = false;
-    processList(uploaded, RecentFileEntry::Upload, &last_uploaded_, &added);
-    processList(downloaded, RecentFileEntry::Download, &last_downloaded_, &added);
+    processList(up.uploaded_files, RecentFileEntry::Upload, &last_uploaded_, &added);
+    processList(down.downloaded_files, RecentFileEntry::Download, &last_downloaded_, &added);
     first_update_ = false;
 
     if (added) {
@@ -253,6 +250,8 @@ void RecentFilesStore::load()
         entry.time = QDateTime::fromMSecsSinceEpoch(
             (qint64)obj.value("time").toDouble());
         entry.size = (qint64)obj.value("size").toDouble();
+        entry.server = obj.value("server").toString();
+        entry.username = obj.value("username").toString();
         entries_.append(entry);
         if (entries_.size() >= kMaxEntries) {
             break;
@@ -270,6 +269,10 @@ void RecentFilesStore::save()
         obj.insert("direction", directionToString(entry.direction));
         obj.insert("time", (double)entry.time.toMSecsSinceEpoch());
         obj.insert("size", (double)entry.size);
+        if (!entry.server.isEmpty()) {
+            obj.insert("server", entry.server);
+            obj.insert("username", entry.username);
+        }
         array.append(obj);
     }
 

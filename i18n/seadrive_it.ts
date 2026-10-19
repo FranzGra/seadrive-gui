@@ -2221,6 +2221,10 @@
         <translation>SeaDrive</translation>
     </message>
     <message>
+        <source>Switch account</source>
+        <translation>Cambia account</translation>
+    </message>
+    <message>
         <source>Open SeaDrive in the browser</source>
         <translation>Apri SeaDrive nel browser</translation>
     </message>
@@ -2363,6 +2367,25 @@ I file che invii o ricevi compariranno qui.</translation>
     <message>
         <source>Until I resume</source>
         <translation>Finché non riprendo</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n error(s)</source>
+        <translation>
+            <numerusform>%n errore</numerusform>
+            <numerusform>%n errori</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Accounts</source>
+        <translation>Account</translation>
+    </message>
+    <message>
+        <source>Add account</source>
+        <translation>Aggiungi account</translation>
+    </message>
+    <message>
+        <source>Manage accounts</source>
+        <translation>Gestisci account</translation>
     </message>
     <message>
         <source>Just now</source>

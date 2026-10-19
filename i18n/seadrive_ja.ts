@@ -2219,6 +2219,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Switch account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Open SeaDrive in the browser</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2354,6 +2358,24 @@ Files you upload or download will appear here.</source>
     </message>
     <message>
         <source>Until I resume</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n error(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Accounts</source>
+        <translation type="unfinished">アカウント</translation>
+    </message>
+    <message>
+        <source>Add account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Manage accounts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
