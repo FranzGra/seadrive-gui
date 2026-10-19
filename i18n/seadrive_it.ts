@@ -197,6 +197,94 @@
     </message>
 </context>
 <context>
+    <name>CachePage</name>
+    <message>
+        <source>Cache</source>
+        <translation>Cache</translation>
+    </message>
+    <message>
+        <source>Disk space for the files downloaded from the server.</source>
+        <translation>Spazio sul disco per i file scaricati dal server.</translation>
+    </message>
+    <message>
+        <source>Space used</source>
+        <translation>Spazio occupato</translation>
+    </message>
+    <message>
+        <source>Over the limit</source>
+        <translation>Oltre il limite</translation>
+    </message>
+    <message>
+        <source>Limits</source>
+        <translation>Limiti</translation>
+    </message>
+    <message>
+        <source>Maximum size</source>
+        <translation>Dimensione massima</translation>
+    </message>
+    <message>
+        <source> GB</source>
+        <translation> GB</translation>
+    </message>
+    <message>
+        <source>Above this limit, the least used downloaded files are freed.</source>
+        <translation>Oltre il limite si liberano i file scaricati meno usati.</translation>
+    </message>
+    <message>
+        <source>Automatic cleanup</source>
+        <translation>Pulizia automatica</translation>
+    </message>
+    <message>
+        <source>Check the cache automatically</source>
+        <translation>Controlla la cache da sola</translation>
+    </message>
+    <message>
+        <source>Frees space when the cache is over the limit.</source>
+        <translation>Libera spazio quando la cache supera il limite.</translation>
+    </message>
+    <message>
+        <source>Every</source>
+        <translation>Ogni</translation>
+    </message>
+    <message>
+        <source>How often to check whether the cache is over the limit.</source>
+        <translation>Ogni quanto controllare se la cache supera il limite.</translation>
+    </message>
+    <message>
+        <source>of %1</source>
+        <translation>di %1</translation>
+    </message>
+    <message>
+        <source>Unable to read the space used right now.</source>
+        <translation>Al momento non riesco a leggere lo spazio occupato.</translation>
+    </message>
+    <message>
+        <source>of %1 · %2%</source>
+        <translation>di %1 · %2%</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n downloaded file(s)</source>
+        <translation>
+            <numerusform>%n file scaricato</numerusform>
+            <numerusform>%n file scaricati</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>minute(s)</source>
+        <translation>
+            <numerusform>minuto</numerusform>
+            <numerusform>minuti</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>hour(s)</source>
+        <translation>
+            <numerusform>ora</numerusform>
+            <numerusform>ore</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
     <name>DaemonManager</name>
     <message>
         <source>%1 failed to initialize</source>
@@ -1887,6 +1975,10 @@
         <translation>Sincronizzazione</translation>
     </message>
     <message>
+        <source>Cache</source>
+        <translation>Cache</translation>
+    </message>
+    <message>
         <source>Accounts</source>
         <translation>Account</translation>
     </message>
@@ -2068,7 +2160,11 @@
     </message>
     <message>
         <source>Transfer status, speed limits and cache.</source>
-        <translation>Stato dei trasferimenti, limiti di velocità e cache.</translation>
+        <translation type="vanished">Stato dei trasferimenti, limiti di velocità e cache.</translation>
+    </message>
+    <message>
+        <source>Transfer status and speed limits.</source>
+        <translation>Stato dei trasferimenti e limiti di velocità.</translation>
     </message>
     <message>
         <source>Status</source>
@@ -2144,31 +2240,31 @@
     </message>
     <message>
         <source>Cache</source>
-        <translation>Cache</translation>
+        <translation type="vanished">Cache</translation>
     </message>
     <message>
         <source> GB</source>
-        <translation> GB</translation>
+        <translation type="vanished"> GB</translation>
     </message>
     <message>
         <source>Cache size limit</source>
-        <translation>Dimensione massima della cache</translation>
+        <translation type="vanished">Dimensione massima della cache</translation>
     </message>
     <message>
         <source>Above this limit, the least used downloaded files are freed.</source>
-        <translation>Oltre questo limite i file scaricati meno usati vengono liberati.</translation>
+        <translation type="vanished">Oltre questo limite i file scaricati meno usati vengono liberati.</translation>
     </message>
     <message>
         <source> min</source>
-        <translation> min</translation>
+        <translation type="vanished"> min</translation>
     </message>
     <message>
         <source>Cache clean interval</source>
-        <translation>Intervallo di pulizia della cache</translation>
+        <translation type="vanished">Intervallo di pulizia della cache</translation>
     </message>
     <message>
         <source>How often to check whether the cache is over the limit.</source>
-        <translation>Ogni quanto controllare se la cache supera il limite.</translation>
+        <translation type="vanished">Ogni quanto controllare se la cache supera il limite.</translation>
     </message>
     <message>
         <source>Advanced</source>

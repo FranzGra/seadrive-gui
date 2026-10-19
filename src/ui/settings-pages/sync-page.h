@@ -11,7 +11,7 @@ class QTimer;
 class ToggleSwitch;
 
 // "Sincronizzazione": current transfer and errors (from the old tray menu),
-// speed limits, cache and advanced sync options.
+// speed limits and advanced sync options. The cache has its own page.
 class SyncPage : public SettingsPage
 {
     Q_OBJECT
@@ -41,8 +41,6 @@ private:
 
     QSpinBox *download_limit_;
     QSpinBox *upload_limit_;
-    QSpinBox *cache_interval_;
-    QSpinBox *cache_size_;
     QSpinBox *delete_threshold_;
     ToggleSwitch *sync_temp_;
     ToggleSwitch *cert_verify_disabled_;

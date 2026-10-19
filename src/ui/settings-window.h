@@ -26,6 +26,7 @@ public:
     enum Page {
         PageGeneral = 0,
         PageSync,
+        PageCache,
         PageAccount,
         PageEncrypted,
         PageNetwork,

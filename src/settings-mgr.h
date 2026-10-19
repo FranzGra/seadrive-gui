@@ -94,6 +94,13 @@ public:
     void setCacheCleanIntervalMinutes(int interval);
     int getCacheCleanIntervalMinutes();
 
+    // Automatic cache cleanup on/off. The daemon has no switch for it:
+    // when off it gets a very long interval (kCacheCleanOffMinutes), the
+    // interval chosen by the user stays saved for when it is turned on.
+    void setCacheCleanEnabled(bool enabled);
+    bool getCacheCleanEnabled();
+    static const int kCacheCleanOffMinutes = 30 * 24 * 60;
+
     void setCacheSizeLimitGB(int limit);
     int getCacheSizeLimitGB();
 

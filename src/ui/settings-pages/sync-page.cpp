@@ -21,7 +21,7 @@ const int kSaveDelayMSecs = 600;
 
 SyncPage::SyncPage(QWidget *parent)
     : SettingsPage(tr("Sync"),
-                   tr("Transfer status, speed limits and cache."),
+                   tr("Transfer status and speed limits."),
                    parent),
       loading_(false),
       search_row_(nullptr)
@@ -82,27 +82,6 @@ SyncPage::SyncPage(QWidget *parent)
     saveOnChange(upload_limit_, [](int v) {
         SettingsManager *mgr = gui->settingsManager();
         if ((int)mgr->maxUploadRatio() != v) mgr->setMaxUploadRatio(v);
-    });
-
-    // --- Cache
-    addGroup(tr("Cache"));
-
-    cache_size_ = makeSpin(1, 10000, tr(" GB"));
-    addRow(tr("Cache size limit"),
-           tr("Above this limit, the least used downloaded files are freed."),
-           cache_size_);
-    saveOnChange(cache_size_, [](int v) {
-        SettingsManager *mgr = gui->settingsManager();
-        if (mgr->getCacheSizeLimitGB() != v) mgr->setCacheSizeLimitGB(v);
-    });
-
-    cache_interval_ = makeSpin(1, 14400, tr(" min"));
-    addRow(tr("Cache clean interval"),
-           tr("How often to check whether the cache is over the limit."),
-           cache_interval_);
-    saveOnChange(cache_interval_, [](int v) {
-        SettingsManager *mgr = gui->settingsManager();
-        if (mgr->getCacheCleanIntervalMinutes() != v) mgr->setCacheCleanIntervalMinutes(v);
     });
 
     // --- Advanced
@@ -176,8 +155,6 @@ void SyncPage::load()
 
     download_limit_->setValue(mgr->maxDownloadRatio());
     upload_limit_->setValue(mgr->maxUploadRatio());
-    cache_interval_->setValue(mgr->getCacheCleanIntervalMinutes());
-    cache_size_->setValue(mgr->getCacheSizeLimitGB());
     delete_threshold_->setValue(mgr->getDeleteConfirmThreshold());
     sync_temp_->setCheckedImmediate(mgr->syncExtraTempFile());
     cert_verify_disabled_->setCheckedImmediate(mgr->getHttpSyncCertVerifyDisabled());

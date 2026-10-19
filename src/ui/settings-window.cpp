@@ -14,6 +14,7 @@
 #include "src/ui/settings-pages/settings-page.h"
 #include "src/ui/settings-pages/general-page.h"
 #include "src/ui/settings-pages/sync-page.h"
+#include "src/ui/settings-pages/cache-page.h"
 #include "src/ui/settings-pages/account-page.h"
 #include "src/ui/settings-pages/encrypted-repos-page.h"
 #include "src/ui/settings-pages/network-page.h"
@@ -103,6 +104,7 @@ void SettingsWindow::ensureBuilt()
     // Order must match enum Page.
     pages_ << new GeneralPage
            << new SyncPage
+           << new CachePage
            << new AccountPage
            << new EncryptedReposPage
            << new NetworkPage
@@ -175,6 +177,7 @@ QWidget *SettingsWindow::createSidebar()
 
     v->addWidget(addNavItem(PageGeneral, tr("General"), icon_cog));
     v->addWidget(addNavItem(PageSync, tr("Sync"), icon_refresh));
+    v->addWidget(addNavItem(PageCache, tr("Cache"), icon_hdd));
     v->addWidget(addNavItem(PageAccount, tr("Accounts"), icon_user));
     v->addWidget(addNavItem(PageEncrypted, tr("Encrypted Libraries"), icon_lock));
     v->addWidget(addNavItem(PageNetwork, tr("Network and proxy"), icon_globe));
@@ -264,7 +267,7 @@ void SettingsWindow::showPage(Page page)
 void SettingsWindow::setCurrentTab(int index)
 {
     switch (index) {
-    case 1:  // Advanced: cache, delete confirmation, certificate
+    case 1:  // Advanced: delete confirmation, certificate (cache: own page)
         setCurrentPage(PageSync);
         break;
     case 3:  // Network

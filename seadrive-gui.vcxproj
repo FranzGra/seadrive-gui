@@ -76,6 +76,7 @@
     <ClCompile Include="src\ui\settings-pages\settings-page.cpp" />
     <ClCompile Include="src\ui\settings-pages\general-page.cpp" />
     <ClCompile Include="src\ui\settings-pages\sync-page.cpp" />
+    <ClCompile Include="src\ui\settings-pages\cache-page.cpp" />
     <ClCompile Include="src\ui\settings-pages\account-page.cpp" />
     <ClCompile Include="src\ui\settings-pages\encrypted-repos-page.cpp" />
     <ClCompile Include="src\ui\settings-pages\network-page.cpp" />
@@ -170,6 +171,7 @@
     <QtMoc Include="src\ui\settings-pages\settings-page.h" />
     <QtMoc Include="src\ui\settings-pages\general-page.h" />
     <QtMoc Include="src\ui\settings-pages\sync-page.h" />
+    <QtMoc Include="src\ui\settings-pages\cache-page.h" />
     <QtMoc Include="src\ui\settings-pages\account-page.h" />
     <QtMoc Include="src\ui\settings-pages\encrypted-repos-page.h" />
     <QtMoc Include="src\ui\settings-pages\network-page.h" />

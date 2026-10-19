@@ -197,6 +197,91 @@
     </message>
 </context>
 <context>
+    <name>CachePage</name>
+    <message>
+        <source>Cache</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disk space for the files downloaded from the server.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Space used</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Over the limit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Limits</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maximum size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> GB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Above this limit, the least used downloaded files are freed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Automatic cleanup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check the cache automatically</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Frees space when the cache is over the limit.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Every</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>How often to check whether the cache is over the limit.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>of %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to read the space used right now.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>of %1 · %2%</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n downloaded file(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>minute(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>hour(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+</context>
+<context>
     <name>DaemonManager</name>
     <message>
         <source>%1 failed to initialize</source>
@@ -1888,6 +1973,10 @@
         <translation type="unfinished">동기화</translation>
     </message>
     <message>
+        <source>Cache</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Accounts</source>
         <translation type="unfinished">계정</translation>
     </message>
@@ -2067,7 +2156,7 @@
         <translation type="unfinished">동기화</translation>
     </message>
     <message>
-        <source>Transfer status, speed limits and cache.</source>
+        <source>Transfer status and speed limits.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2140,34 +2229,6 @@
     </message>
     <message>
         <source>Upload speed limit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cache</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source> GB</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cache size limit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Above this limit, the least used downloaded files are freed.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source> min</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cache clean interval</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>How often to check whether the cache is over the limit.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

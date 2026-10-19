@@ -186,6 +186,7 @@ SET(moc_headers
   src/ui/settings-pages/settings-page.h
   src/ui/settings-pages/general-page.h
   src/ui/settings-pages/sync-page.h
+  src/ui/settings-pages/cache-page.h
   src/ui/settings-pages/account-page.h
   src/ui/settings-pages/encrypted-repos-page.h
   src/ui/settings-pages/network-page.h
@@ -338,6 +339,7 @@ SET(seadrive_gui_sources
   src/ui/settings-pages/settings-page.cpp
   src/ui/settings-pages/general-page.cpp
   src/ui/settings-pages/sync-page.cpp
+  src/ui/settings-pages/cache-page.cpp
   src/ui/settings-pages/account-page.cpp
   src/ui/settings-pages/encrypted-repos-page.cpp
   src/ui/settings-pages/network-page.cpp

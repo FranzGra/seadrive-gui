@@ -28,6 +28,7 @@ const char *kMaxDownloadRatio = "maxDownloadRatio";
 const char *kMaxUploadRatio = "maxUploadRatio";
 const char *kCacheCleanInterval = "cacheCleanInterval";
 const char *kCacheSizeLimit = "cacheSizeLimit";
+const char *kCacheCleanEnabled = "cacheCleanEnabled";
 const char *kSyncExtraTempFile = "syncExtraTempFile";
 const char *kDisableVerifyCert = "disableVerifyCert";
 const char *kDeleteConfirmThreshold = "deleteConfirmThreshold";
@@ -303,20 +304,43 @@ void SettingsManager::setCacheCleanIntervalMinutes(int interval)
         cache_clean_limit_minutes_ = interval;
     }
 
+    // Cleanup turned off: the daemon only gets a very long interval.
+    const int daemon_interval = getCacheCleanEnabled() ? interval : kCacheCleanOffMinutes;
+
 #ifdef Q_OS_MACOS
     auto accounts = gui->accountManager()->activeAccounts();
     for (int i = 0; i <  accounts.size(); i++) {
         SeafileRpcClient *rpc_client = gui->rpcClient(accounts.at(i).domainID());
         if (rpc_client) {
-            rpc_client->setCacheCleanIntervalMinutes(interval);
+            rpc_client->setCacheCleanIntervalMinutes(daemon_interval);
         }
     }
 #else
     SeafileRpcClient *rpc_client = gui->rpcClient(EMPTY_DOMAIN_ID);
     if (rpc_client) {
-        rpc_client->setCacheCleanIntervalMinutes(interval);
+        rpc_client->setCacheCleanIntervalMinutes(daemon_interval);
     }
 #endif
+}
+
+void SettingsManager::setCacheCleanEnabled(bool enabled)
+{
+    QSettings settings;
+    settings.beginGroup(kSettingsGroup);
+    settings.setValue(kCacheCleanEnabled, enabled);
+    settings.endGroup();
+
+    // Sends the interval (or the "off" one) to the daemon.
+    setCacheCleanIntervalMinutes(getCacheCleanIntervalMinutes());
+}
+
+bool SettingsManager::getCacheCleanEnabled()
+{
+    QSettings settings;
+    settings.beginGroup(kSettingsGroup);
+    bool enabled = settings.value(kCacheCleanEnabled, true).toBool();
+    settings.endGroup();
+    return enabled;
 }
 
 int SettingsManager::getCacheCleanIntervalMinutes()
