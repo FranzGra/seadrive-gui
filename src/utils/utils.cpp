@@ -366,9 +366,100 @@ delete_from_auto_start(const wchar_t *appname)
     return 0;
 }
 
+// Portable install (D:\Programmi\SeaDrive-Franz): the GUI is started by the
+// launcher script avvia-seadrive-franz.vbs next to the exe, which also starts
+// the bundled engine. In that case auto start must use the launcher, under
+// the Run value name "SeaDrive Franz", not the bare exe under "SeaDrive".
+static const wchar_t *kFranzLauncherName = L"avvia-seadrive-franz.vbs";
+static const wchar_t *kFranzRunValueName = L"SeaDrive Franz";
+
+static bool
+get_exe_dir(std::wstring *dir)
+{
+    wchar_t exe_path[MAX_PATH];
+    DWORD n = GetModuleFileNameW(NULL, exe_path, MAX_PATH);
+    if (n == 0 || n >= MAX_PATH) {
+        return false;
+    }
+    std::wstring p(exe_path);
+    size_t pos = p.find_last_of(L"\\/");
+    if (pos == std::wstring::npos) {
+        return false;
+    }
+    *dir = p.substr(0, pos);
+    return true;
+}
+
+static bool
+get_franz_launcher(std::wstring *vbs_path)
+{
+    std::wstring dir;
+    if (!get_exe_dir(&dir)) {
+        return false;
+    }
+    std::wstring vbs = dir + L"\\" + kFranzLauncherName;
+    DWORD attrs = GetFileAttributesW(vbs.c_str());
+    if (attrs == INVALID_FILE_ATTRIBUTES || (attrs & FILE_ATTRIBUTE_DIRECTORY)) {
+        return false;
+    }
+    *vbs_path = vbs;
+    return true;
+}
+
+static bool
+read_run_value(const wchar_t *name, std::wstring *value)
+{
+    HKEY hKey;
+    if (get_win_run_key(&hKey) != ERROR_SUCCESS) {
+        return false;
+    }
+    wchar_t buf[2048] = {0};
+    DWORD len = sizeof(buf) - sizeof(wchar_t);
+    LONG result = RegQueryValueExW(hKey, name, NULL, NULL, (LPBYTE)buf, &len);
+    RegCloseKey(hKey);
+    if (result != ERROR_SUCCESS) {
+        return false;
+    }
+    if (value) {
+        *value = buf;
+    }
+    return true;
+}
+
+static std::wstring
+to_lower_w(const std::wstring &s)
+{
+    std::wstring r(s);
+    for (auto &c : r) {
+        c = towlower(c);
+    }
+    return r;
+}
+
+// Remove a "SeaDrive" Run value written by an earlier build of this client,
+// but only if it points into our own install directory (never touch the
+// official client's entry in C:\Program Files).
+static void
+remove_stale_brand_entry()
+{
+    std::wstring brand = getBrand().toStdWString();
+    std::wstring value, dir;
+    if (!read_run_value(brand.c_str(), &value) || !get_exe_dir(&dir)) {
+        return;
+    }
+    if (to_lower_w(value).find(to_lower_w(dir) + L"\\") != std::wstring::npos) {
+        delete_from_auto_start(brand.c_str());
+    }
+}
+
 int
 get_seafile_auto_start()
 {
+    std::wstring vbs;
+    if (get_franz_launcher(&vbs)) {
+        return read_run_value(kFranzRunValueName, NULL) ? 1 : 0;
+    }
+
     HKEY hKey;
     LONG result = get_win_run_key(&hKey);
     if (result != ERROR_SUCCESS) {
@@ -397,6 +488,25 @@ int
 set_seafile_auto_start(bool on)
 {
     int result = 0;
+
+    std::wstring vbs;
+    if (get_franz_launcher(&vbs)) {
+        remove_stale_brand_entry();
+        if (on) {
+            wchar_t sysdir[MAX_PATH];
+            UINT n = GetSystemDirectoryW(sysdir, MAX_PATH);
+            std::wstring wscript = (n > 0 && n < MAX_PATH)
+                ? std::wstring(sysdir) + L"\\wscript.exe"
+                : std::wstring(L"wscript.exe");
+            std::wstring cmd = wscript + L" \"" + vbs + L"\"";
+            return add_to_auto_start(kFranzRunValueName, cmd.c_str());
+        }
+        if (!read_run_value(kFranzRunValueName, NULL)) {
+            return 0;
+        }
+        return delete_from_auto_start(kFranzRunValueName);
+    }
+
     if (on) {
         /* turn on auto start  */
         wchar_t applet_path[MAX_PATH];
