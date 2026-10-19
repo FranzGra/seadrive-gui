@@ -1,111 +1,113 @@
-## seadrive-gui
+# seadrive-gui — UI redesign (fork)
 
-GUI part of seafile drive.
+A fork of [haiwen/seadrive-gui](https://github.com/haiwen/seadrive-gui), the desktop client of SeaDrive.
+Branch: `redesign-ui`. Based on upstream `master` at version 3.0.27.
 
-## Internationalization
+This fork changes only the interface. The sync engine (`seadrive.exe`) is the official one and is not touched.
 
-You are welcome to add translation in your language.
+> Unofficial. Not affiliated with or endorsed by Seafile Ltd.
 
-### Contribute your translation
+## Why
 
-Please submit translations via Transifex:
+I use SeaDrive every day with my own Seafile server. It works well. The interface felt old next to other sync clients:
+small dialogs, little feedback on what is syncing, errors that are hard to read.
+
+So I rebuilt the main screens in a flat, minimal style, close to what people know from OneDrive.
+Same features, clearer layout.
+
+## Before / After
+
+
+| Screen | Before | After |
+|---|---|---|
+| Tray panel | — (left click only opened the folder) | `after-tray.png` |
+| Tray panel, dark theme | — | `after-tray-dark.png` |
+| Tray panel, paused | — | `after-tray-paused.png` |
+| Account selector (2+ accounts) | — | `after-account-selector.png` |
+| Transfer status | `before-transfer.png` | `after-transfer.png` |
+| Transfer status, errors | `before-errors.png` | `after-errors.png` |
+| Settings, General | `before-settings.png` | `after-settings-general.png` |
+| Settings, Cache | — | `after-settings-cache.png` |
+| Context menu (tray icon) | `before-menu.png` | `after-menu.png` |
+
+![Tray panel, after](docs/screenshots/after-tray.png)
+
+## Features
+
+### Tray panel (new)
+- Sync status at the top: in progress, all synced, paused, errors.
+- Recent files with direction: **Sent** (local change uploaded) or **Received** (remote change downloaded).
+- Buttons: Open folder, Transfer status, Open online (globe), Settings.
+- Pause sync: 30 min, 2 h, 8 h, or until resumed. The pause survives a daemon restart.
+- Account selector when you have two accounts or more.
+
+### Transfer status window (new)
+- One window for transfers and errors. Replaces the old progress and sync-errors dialogs.
+- Filter pills, search box.
+- Readable error messages, with a link to open the folder.
+
+### Settings window (new)
+- Sidebar: General, Sync, Cache, Accounts, Encrypted Libraries, Network and proxy, Logs and diagnostics, About.
+- Toggle switches. Changes are saved right away.
+- Light, dark or system theme.
+- New **Cache** page: space used (bar), size limit, automatic cleanup.
+
+### Other
+- Modern context menus.
+- Shared design tokens (`src/ui/design-tokens.h`) for colors and sizes, light and dark.
+- All new text goes through `tr()`. Existing upstream strings are reused where the meaning is the same, so the 29 existing translations keep working. New strings: Italian is complete, other languages fall back to English.
+- Fix: "Open folder" for errors without a library, and for paths with spaces.
+- Settings window opens in about 0.1 s (prepared in the background after startup).
+
+## What I did not add
+
+There is no "Sync now" button. The daemon is closed source and has no RPC to force a sync.
+A button that does nothing would be dishonest, so it is not there.
+
+## Build on Windows
+
+Upstream ships `seadrive-gui.sln` / `seadrive-gui.vcxproj` (updated in this branch with the new files)
+and a `CMakeLists.txt` (also updated). The upstream README only documents the Linux build.
+
+What I used:
+
+| Part | Version |
+|---|---|
+| Qt | 6.10.3, `msvc2022_64`, with Qt WebEngine and Core5Compat (installed with aqtinstall) |
+| Compiler | Visual Studio 2022 Build Tools, x64 |
+| Dependencies | vcpkg, manifest `vcpkg.json` (glib, jansson, openssl, pthreads, getopt, sqlite3), triplet `x64-windows` |
+| libsearpc | [haiwen/libsearpc](https://github.com/haiwen/libsearpc), built as a static library |
+| Generator | CMake + Ninja |
 
 Steps:
 
-1. Visit the webpage of Transifex ([https://explore.transifex.com/haiwen/seadrive-gui/](https://explore.transifex.com/haiwen/seadrive-gui/)).
+1. Install Qt 6.10 (msvc2022_64 + WebEngine) and VS 2022 Build Tools.
+2. Install the dependencies with vcpkg from the repo root: `vcpkg install --triplet x64-windows`.
+3. Clone libsearpc next to this repo.
+4. Build. TODO: I built with a small external CMake file that mirrors `seadrive-gui.vcxproj` (Release|x64) and also compiles libsearpc and the `.qm` translations. I still need to check whether the repo `CMakeLists.txt` or the `.sln` builds on Windows without it, and document the exact commands.
+5. Compile translations: `lrelease i18n/*.ts` (the `.qm` files are in `.gitignore` and are required by `seadrive-gui.qrc`).
+6. Deploy Qt next to the exe: `windeployqt seadrive-gui.exe`.
+7. Put `seadrive.exe` (the daemon) next to `seadrive-gui.exe`. You can take it from the official SeaDrive installer; I tested with daemon 3.0.26.
 
-2. Click the "Join this project" button in the bottom right corner.
+Qt 6.5 or later is required (the theme uses `QStyleHints::colorScheme()`).
 
-3. Use an email or GitHub account(recommended) to create an account.
+## Known limits
 
-4. Select a language and click 'Join project' to join the language translation.
+- Tested on Windows 11 only. macOS and Linux: not tested.
+- No "Sync now" (see above).
+- Cache space is read from the daemon's `cache.db` (read only). If the file is missing or locked, the page shows a dash.
+- The daemon has no switch to turn off cache cleanup. "Off" sets a 30-day interval.
+- New strings are translated only in Italian.
+- The "Start with Windows" option has an extra path for my personal launcher script (`avvia-seadrive-franz.vbs`). Without that file it behaves like upstream. TODO: remove or make generic before any upstream PR.
 
-5. After accepted by the project maintainer, then you can upload your file or translate online.
+## License
 
-## Build
+Apache License 2.0, same as upstream. See [LICENSE](LICENSE).
 
-### Linux
+## Credits
 
-#### Preparation
+- [Seafile / haiwen](https://github.com/haiwen) for Seafile, SeaDrive and the original `seadrive-gui`.
+- The translators of the upstream project on [Transifex](https://explore.transifex.com/haiwen/seadrive-gui/).
+- [QtAwesome](https://github.com/gamecreature/QtAwesome), already bundled upstream.
 
-The following list is what you need to install on your development machine. You should install all of them before you build seadrive-gui.
-
-Package names are according to Ubuntu 14.04. For other Linux distros, please find their corresponding names yourself.
-
-* autoconf/automake/libtool
-* libevent-dev ( 2.0 or later )
-* libcurl4-openssl-dev  (1.0.0 or later)
-* libgtk2.0-dev ( 2.24 or later)
-* uuid-dev
-* intltool (0.40 or later)
-* libsqlite3-dev (3.7 or later)
-* valac  (only needed if you build from git repo)
-* libjansson-dev
-* qtchooser
-* qtbase5-dev
-* libqt5webkit5-dev
-* qttools5-dev
-* qttools5-dev-tools
-* valac
-* cmake
-* python-simplejson
-* libssl-dev
-
-```bash
-sudo apt-get install autoconf automake libtool libevent-dev libcurl4-openssl-dev libgtk2.0-dev uuid-dev intltool libsqlite3-dev valac libjansson-dev cmake qtchooser qtbase5-dev libqt5webkit5-dev qttools5-dev qttools5-dev-tools libssl-dev
-```
-
-For a fresh Fedora or CentOS installation, the following will install all dependencies via YUM:
-
-```bash
-sudo yum install wget gcc libevent-devel openssl-devel gtk2-devel libuuid-devel sqlite-devel jansson-devel intltool cmake libtool vala gcc-c++ qt5-qtbase-devel qt5-qttools-devel qt5-qtwebkit-devel libcurl-devel openssl-devel
-```
-
-#### Building
-
-1. First you should get the latest source of libsearpc/seadrive/seadrive-gui,
-Download the source tarball of the latest tag from
-
-* https://github.com/haiwen/libsearpc/tags (use v3.2-latest)
-* https://github.com/haiwen/seadrive-fuse/tags
-* https://github.com/haiwen/seadrive-gui/tags
-
-For example, if the latest released seadrive gui client is 2.0.6, then just use the v2.0.6 tags of the three  projects. You should get three tarballs:
-
-* libsearpc-v3.2-latest.tar.gz
-* seadrive-fuse-2.0.6.tar.gz
-* seadrive-gui-2.0.6.tar.gz
-
-```bash
-shopt -s expand_aliases
-export version=2.0.6
-alias wget='wget --content-disposition -nc'
-wget https://github.com/haiwen/libsearpc/archive/v3.2-latest.tar.gz
-wget https://github.com/haiwen/seadrive-fuse/archive/v${version}.tar.gz
-wget https://github.com/haiwen/seadrive-gui/archive/v${version}.tar.gz
-```
-
-2. Now uncompress them
-
-```bash
-tar xf libsearpc-3.2-latest.tar.gz
-tar xf seadrive-fuse-${version}.tar.gz
-tar xf seadrive-gui-${version}.tar.gz
-```
-
-3. Build Seadrive gui
-
-To build seadrive gui client you need first build libsearpc seadrive-fuse. To compile seadrive-fuse please refer to the link https://github.com/haiwen/seadrive-fuse/blob/master/README.md
-
-```bash
-set paths
-export PREFIX=/usr
-export PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH"
-export PATH="$PREFIX/bin:$PATH"
-
-cd seadrive-gui-${version}
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PREFIX .
-make
-sudo make install
-cd ..
-```
+Redesign by Francesco Granzini ([@FranzGra](https://github.com/FranzGra)).
