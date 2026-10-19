@@ -15,40 +15,40 @@
 // ---------------------------------------------------------------------------
 
 LogsPage::LogsPage(QWidget *parent)
-    : SettingsPage(tr("Log e diagnostica"),
-                   tr("Informazioni utili quando qualcosa non funziona."),
+    : SettingsPage(tr("Logs and diagnostics"),
+                   tr("Useful information when something does not work."),
                    parent)
 {
-    addGroup(tr("Log"));
+    addGroup(tr("Logs"));
 
     QWidget *buttons = new QWidget;
     QHBoxLayout *bl = new QHBoxLayout(buttons);
     bl->setContentsMargins(0, 0, 0, 0);
     bl->setSpacing(8);
-    QPushButton *open_btn = makeButton(tr("Apri cartella"));
-    QPushButton *copy_btn = makeButton(tr("Copia percorso"));
+    QPushButton *open_btn = makeButton(tr("Open folder"));
+    QPushButton *copy_btn = makeButton(tr("Copy path"));
     bl->addWidget(open_btn);
     bl->addWidget(copy_btn);
     connect(open_btn, SIGNAL(clicked()), this, SLOT(openLogFolder()));
     connect(copy_btn, SIGNAL(clicked()), this, SLOT(copyLogPath()));
 
-    log_row_ = addRow(tr("Cartella dei log"), QString(), buttons);
-    open_btn->setAccessibleName(tr("Apri la cartella dei log"));
-    copy_btn->setAccessibleName(tr("Copia il percorso della cartella dei log"));
+    log_row_ = addRow(tr("Logs folder"), QString(), buttons);
+    open_btn->setAccessibleName(tr("Open the logs folder"));
+    copy_btn->setAccessibleName(tr("Copy the path of the logs folder"));
 
-    addGroup(tr("Assistenza"));
+    addGroup(tr("Support"));
 
-    QPushButton *diag_btn = makeButton(tr("Copia"));
-    diag_btn->setAccessibleName(tr("Copia le informazioni per l'assistenza"));
-    addRow(tr("Informazioni per l'assistenza"),
-           tr("Copia versione, sistema e server in uso, da incollare in una segnalazione."),
+    QPushButton *diag_btn = makeButton(tr("Copy"));
+    diag_btn->setAccessibleName(tr("Copy the support information"));
+    addRow(tr("Support information"),
+           tr("Copies the version, system and servers in use, to paste into a report."),
            diag_btn);
     connect(diag_btn, SIGNAL(clicked()), this, SLOT(copyDiagnostics()));
 
-    QPushButton *errors_btn = makeButton(tr("Mostra"));
-    errors_btn->setAccessibleName(tr("Mostra gli errori di sincronizzazione"));
-    addRow(tr("Errori di sincronizzazione"),
-           tr("L'elenco dei file con problemi di caricamento o download."),
+    QPushButton *errors_btn = makeButton(tr("Show"));
+    errors_btn->setAccessibleName(tr("Show file sync errors"));
+    addRow(tr("File Sync Errors"),
+           tr("The list of files with upload or download problems."),
            errors_btn);
     connect(errors_btn, &QPushButton::clicked, this, [] {
         gui->trayIcon()->showSyncErrorsDialog();
@@ -87,7 +87,7 @@ void LogsPage::openLogFolder()
 void LogsPage::copyLogPath()
 {
     QGuiApplication::clipboard()->setText(QDir::toNativeSeparators(logDir()));
-    copied_note_->setText(tr("Percorso copiato negli appunti."));
+    copied_note_->setText(tr("Path copied to the clipboard."));
     copied_note_->setVisible(true);
 }
 
@@ -105,7 +105,7 @@ void LogsPage::copyDiagnostics()
     lines << QString("Log: %1").arg(QDir::toNativeSeparators(logDir()));
 
     QGuiApplication::clipboard()->setText(lines.join('\n'));
-    copied_note_->setText(tr("Informazioni copiate negli appunti."));
+    copied_note_->setText(tr("Information copied to the clipboard."));
     copied_note_->setVisible(true);
 }
 
@@ -123,8 +123,8 @@ QString AboutPage::versionText()
 }
 
 AboutPage::AboutPage(QWidget *parent)
-    : SettingsPage(tr("Informazioni"),
-                   tr("Versione, guida e licenze."),
+    : SettingsPage(tr("About"),
+                   tr("Version, help and licenses."),
                    parent)
 {
     using namespace DesignTokens;
@@ -144,7 +144,7 @@ AboutPage::AboutPage(QWidget *parent)
     QLabel *name = new QLabel(getBrand());
     name->setObjectName("productName");
     name->setWordWrap(true);
-    QLabel *version = new QLabel(tr("Versione %1").arg(versionText()));
+    QLabel *version = new QLabel(tr("Version %1").arg(versionText()));
     version->setObjectName("rowDesc");
     version->setWordWrap(true);
     version->setTextInteractionFlags(Qt::TextSelectableByMouse);
@@ -153,19 +153,19 @@ AboutPage::AboutPage(QWidget *parent)
     hl->addLayout(tl, 1);
     addWideRow(header);
 
-    addGroup(tr("Aiuto"));
+    addGroup(tr("Help"));
 
-    QPushButton *help_btn = makeButton(tr("Apri guida"));
-    addRow(tr("Guida online"),
-           tr("Il manuale di %1 sul sito di Seafile.").arg(getBrand()),
+    QPushButton *help_btn = makeButton(tr("Open help"));
+    addRow(tr("Online help"),
+           tr("The %1 manual on the Seafile website.").arg(getBrand()),
            help_btn);
     connect(help_btn, &QPushButton::clicked, this, [] {
         gui->trayIcon()->openHelp();
     });
 
-    QPushButton *about_btn = makeButton(tr("Mostra"));
-    addRow(tr("Informazioni su %1").arg(getBrand()),
-           tr("Versione completa, licenza e crediti."),
+    QPushButton *about_btn = makeButton(tr("Show"));
+    addRow(tr("About %1").arg(getBrand()),
+           tr("Full version, license and credits."),
            about_btn);
     connect(about_btn, &QPushButton::clicked, this, [] {
         gui->trayIcon()->showAboutDialog();

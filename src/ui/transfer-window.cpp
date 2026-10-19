@@ -49,11 +49,6 @@ struct JsonPointerCustomDeleter {
     }
 };
 
-QString tw(const char *text)
-{
-    return QCoreApplication::translate("TransferWindow", text);
-}
-
 // Short, plain status text for a sync error, shown in the error rows. The
 // file name is already in the row, so it is not repeated here. The long
 // English texts of SyncError::syncErrorIdToErrorStr() stay untouched for the
@@ -61,42 +56,42 @@ QString tw(const char *text)
 QString shortSyncErrorText(int error_id)
 {
     switch (error_id) {
-    case SYNC_ERROR_ID_FILE_LOCKED_BY_APP:     return tw("Aperto in un altro programma");
-    case SYNC_ERROR_ID_FOLDER_LOCKED_BY_APP:   return tw("Cartella in uso da un altro programma");
-    case SYNC_ERROR_ID_FILE_LOCKED:            return tw("Bloccato da un altro utente");
-    case SYNC_ERROR_ID_INVALID_PATH:           return tw("Percorso non valido");
-    case SYNC_ERROR_ID_INDEX_ERROR:            return tw("Errore durante l'indicizzazione");
-    case SYNC_ERROR_ID_ACCESS_DENIED:          return tw("Permessi insufficienti sulla libreria");
-    case SYNC_ERROR_ID_QUOTA_FULL:             return tw("Spazio sul server esaurito");
-    case SYNC_ERROR_ID_NETWORK:                return tw("Errore di rete");
-    case SYNC_ERROR_ID_RESOLVE_PROXY:          return tw("Proxy non raggiungibile");
-    case SYNC_ERROR_ID_RESOLVE_HOST:           return tw("Server non trovato");
-    case SYNC_ERROR_ID_CONNECT:                return tw("Connessione al server non riuscita");
-    case SYNC_ERROR_ID_SSL:                    return tw("Errore del certificato (SSL)");
-    case SYNC_ERROR_ID_TX:                     return tw("Trasferimento interrotto");
-    case SYNC_ERROR_ID_TX_TIMEOUT:             return tw("Trasferimento scaduto: il server non risponde");
-    case SYNC_ERROR_ID_UNHANDLED_REDIRECT:     return tw("Il server ha reindirizzato la richiesta");
-    case SYNC_ERROR_ID_SERVER:                 return tw("Errore interno del server");
-    case SYNC_ERROR_ID_LOCAL_DATA_CORRUPT:     return tw("Dati locali danneggiati");
-    case SYNC_ERROR_ID_WRITE_LOCAL_DATA:       return tw("Impossibile scrivere sul disco");
-    case SYNC_ERROR_ID_PERM_NOT_SYNCABLE:      return tw("Solo nel cloud per i permessi: non sincronizzato");
-    case SYNC_ERROR_ID_NO_WRITE_PERMISSION:    return tw("Libreria in sola lettura");
-    case SYNC_ERROR_ID_FOLDER_PERM_DENIED:     return tw("Cartella senza permesso di modifica");
-    case SYNC_ERROR_ID_PATH_END_SPACE_PERIOD:  return tw("Il nome finisce con uno spazio o un punto");
-    case SYNC_ERROR_ID_PATH_INVALID_CHARACTER: return tw("Il nome contiene caratteri non validi (| :)");
-    case SYNC_ERROR_ID_UPDATE_TO_READ_ONLY_REPO: return tw("Libreria in sola lettura: non verrà caricato");
-    case SYNC_ERROR_ID_CONFLICT:               return tw("Modificato da due parti: salvata una copia in conflitto");
-    case SYNC_ERROR_ID_UPDATE_NOT_IN_REPO:     return tw("Non è in una libreria: non verrà caricato");
-    case SYNC_ERROR_ID_LIBRARY_TOO_LARGE:      return tw("Libreria con troppi file: non sincronizzata");
-    case SYNC_ERROR_ID_MOVE_NOT_IN_REPO:       return tw("Si può spostare solo dentro o tra librerie");
-    case SYNC_ERROR_ID_DEL_CONFIRMATION_PENDING: return tw("In attesa di conferma per eliminare");
-    case SYNC_ERROR_ID_INVALID_PATH_ON_WINDOWS: return tw("Il nome contiene simboli non ammessi da Windows");
-    case SYNC_ERROR_ID_TOO_MANY_FILES:         return tw("Limite di file della libreria raggiunto");
-    case SYNC_ERROR_ID_BLOCK_MISSING:          return tw("Invio non riuscito: controlla la rete o il firewall");
-    case SYNC_ERROR_ID_CHECKOUT_FILE:          return tw("Download non riuscito: controlla spazio e permessi");
-    case SYNC_ERROR_ID_CASE_CONFLICT:          return tw("Conflitto tra maiuscole e minuscole: non scaricato");
-    case SYNC_ERROR_ID_RENAME_WORKTREE:        return tw("Impossibile rinominare: ci sono file aperti");
-    case SYNC_ERROR_ID_GENERAL_ERROR:          return tw("Errore sconosciuto");
+    case SYNC_ERROR_ID_FILE_LOCKED_BY_APP:     return QCoreApplication::translate("TransferWindow", "Open in another program");
+    case SYNC_ERROR_ID_FOLDER_LOCKED_BY_APP:   return QCoreApplication::translate("TransferWindow", "Folder in use by another program");
+    case SYNC_ERROR_ID_FILE_LOCKED:            return QCoreApplication::translate("TransferWindow", "Locked by another user");
+    case SYNC_ERROR_ID_INVALID_PATH:           return QCoreApplication::translate("TransferWindow", "Invalid path");
+    case SYNC_ERROR_ID_INDEX_ERROR:            return QCoreApplication::translate("TransferWindow", "Error when indexing files");
+    case SYNC_ERROR_ID_ACCESS_DENIED:          return QCoreApplication::translate("TransferWindow", "You don't have enough permission for this library");
+    case SYNC_ERROR_ID_QUOTA_FULL:             return QCoreApplication::translate("TransferWindow", "The storage quota has been used up");
+    case SYNC_ERROR_ID_NETWORK:                return QCoreApplication::translate("TransferWindow", "Network error");
+    case SYNC_ERROR_ID_RESOLVE_PROXY:          return QCoreApplication::translate("TransferWindow", "Failed to resolve network proxy");
+    case SYNC_ERROR_ID_RESOLVE_HOST:           return QCoreApplication::translate("TransferWindow", "Failed to resolve remote server");
+    case SYNC_ERROR_ID_CONNECT:                return QCoreApplication::translate("TransferWindow", "Failed to connect to server");
+    case SYNC_ERROR_ID_SSL:                    return QCoreApplication::translate("TransferWindow", "SSL error");
+    case SYNC_ERROR_ID_TX:                     return QCoreApplication::translate("TransferWindow", "Error in network transmission");
+    case SYNC_ERROR_ID_TX_TIMEOUT:             return QCoreApplication::translate("TransferWindow", "Timeout in network transmission");
+    case SYNC_ERROR_ID_UNHANDLED_REDIRECT:     return QCoreApplication::translate("TransferWindow", "Failed to handle http redirection");
+    case SYNC_ERROR_ID_SERVER:                 return QCoreApplication::translate("TransferWindow", "Server internal error");
+    case SYNC_ERROR_ID_LOCAL_DATA_CORRUPT:     return QCoreApplication::translate("TransferWindow", "Local data is corrupt");
+    case SYNC_ERROR_ID_WRITE_LOCAL_DATA:       return QCoreApplication::translate("TransferWindow", "Failed to write local data");
+    case SYNC_ERROR_ID_PERM_NOT_SYNCABLE:      return QCoreApplication::translate("TransferWindow", "Syncing is denied by cloud-only permission settings");
+    case SYNC_ERROR_ID_NO_WRITE_PERMISSION:    return QCoreApplication::translate("TransferWindow", "Do not have write permission to the library");
+    case SYNC_ERROR_ID_FOLDER_PERM_DENIED:     return QCoreApplication::translate("TransferWindow", "Folder without write permission");
+    case SYNC_ERROR_ID_PATH_END_SPACE_PERIOD:  return QCoreApplication::translate("TransferWindow", "The name ends with a space or a period");
+    case SYNC_ERROR_ID_PATH_INVALID_CHARACTER: return QCoreApplication::translate("TransferWindow", "The name contains invalid characters (| :)");
+    case SYNC_ERROR_ID_UPDATE_TO_READ_ONLY_REPO: return QCoreApplication::translate("TransferWindow", "Read-only library: it will not be uploaded");
+    case SYNC_ERROR_ID_CONFLICT:               return QCoreApplication::translate("TransferWindow", "Changed on both sides: saved as a conflict copy");
+    case SYNC_ERROR_ID_UPDATE_NOT_IN_REPO:     return QCoreApplication::translate("TransferWindow", "Not in a library: it will not be uploaded");
+    case SYNC_ERROR_ID_LIBRARY_TOO_LARGE:      return QCoreApplication::translate("TransferWindow", "Library cannot be synced since it has too many files.");
+    case SYNC_ERROR_ID_MOVE_NOT_IN_REPO:       return QCoreApplication::translate("TransferWindow", "You can only move within or between libraries");
+    case SYNC_ERROR_ID_DEL_CONFIRMATION_PENDING: return QCoreApplication::translate("TransferWindow", "Waiting for confirmation to delete files");
+    case SYNC_ERROR_ID_INVALID_PATH_ON_WINDOWS: return QCoreApplication::translate("TransferWindow", "The name contains symbols not allowed by Windows");
+    case SYNC_ERROR_ID_TOO_MANY_FILES:         return QCoreApplication::translate("TransferWindow", "Library file limit reached");
+    case SYNC_ERROR_ID_BLOCK_MISSING:          return QCoreApplication::translate("TransferWindow", "Failed to upload file blocks. Please check network or firewall.");
+    case SYNC_ERROR_ID_CHECKOUT_FILE:          return QCoreApplication::translate("TransferWindow", "Failed to download file. Please check disk space or folder permissions");
+    case SYNC_ERROR_ID_CASE_CONFLICT:          return QCoreApplication::translate("TransferWindow", "Upper/lower case conflict: not downloaded");
+    case SYNC_ERROR_ID_RENAME_WORKTREE:        return QCoreApplication::translate("TransferWindow", "Failed to change library name since some files are opened in it");
+    case SYNC_ERROR_ID_GENERAL_ERROR:          return QCoreApplication::translate("TransferWindow", "Unknown error");
     default:                                   return QString();
     }
 }
@@ -127,7 +122,7 @@ QString parentPath(const QString& path)
 QString displayFolder(const QString& folder)
 {
     if (folder.isEmpty())
-        return tw("Cartella principale");
+        return QCoreApplication::translate("TransferWindow", "Root folder");
     return QDir::toNativeSeparators(folder);
 }
 
@@ -137,13 +132,13 @@ QString relativeTime(const QDateTime& time)
         return QString();
     qint64 secs = time.secsTo(QDateTime::currentDateTime());
     if (secs < 60)
-        return tw("adesso");
+        return QCoreApplication::translate("TransferWindow", "Just now");
     if (secs < 3600)
-        return tw("%1 min fa").arg(secs / 60);
+        return QCoreApplication::translate("TransferWindow", "%1 min ago").arg(secs / 60);
     if (secs < 24 * 3600)
-        return tw("%1 h fa").arg(secs / 3600);
+        return QCoreApplication::translate("TransferWindow", "%1 h ago").arg(secs / 3600);
     if (time.date().daysTo(QDate::currentDate()) == 1)
-        return tw("ieri");
+        return QCoreApplication::translate("TransferWindow", "Yesterday");
     return time.toString("dd-MM-yyyy");
 }
 
@@ -334,7 +329,7 @@ void TransferRow::setData(const TransferRowData& data)
 
     QString tip = data_.file_path.isEmpty() ? data_.name
                                             : QDir::toNativeSeparators(data_.file_path);
-    tip += "\n" + tr("Doppio clic per aprire la cartella");
+    tip += "\n" + tr("Double-click to open the folder");
     setToolTip(tip);
 
     if (layout_changed)
@@ -529,7 +524,7 @@ void TransferRow::paintEvent(QPaintEvent *)
     const QFont name_font = pixelFont(font(), DT::kFontBody, true);
     const QFont small_font = pixelFont(font(), DT::kFontSmall);
 
-    // "Inviato" / "Ricevuto" pill, same color as the arrow.
+    // "Uploaded" / "Downloaded" pill, same color as the arrow.
     if (!data_.pill.isEmpty() && !g.pill.isEmpty()) {
         painter.setPen(Qt::NoPen);
         painter.setBrush(badge_bg);
@@ -604,7 +599,7 @@ TransferWindow::TransferWindow(QWidget *parent)
       down_rate_(0)
 {
     setObjectName("transferWindow");
-    setWindowTitle(tr("Stato del trasferimento"));
+    setWindowTitle(tr("Transfer Progress"));
     setWindowIcon(QIcon(":/images/seafile.png"));
     setAttribute(Qt::WA_StyledBackground, true);
     setMinimumSize(QSize(480, 400));
@@ -641,14 +636,14 @@ void TransferWindow::createHeader(QVBoxLayout *layout)
     header->setContentsMargins(0, 0, 0, 0);
     header->setSpacing(DT::kPadding);
 
-    title_label_ = new QLabel(tr("Stato del trasferimento"));
+    title_label_ = new QLabel(tr("Transfer Progress"));
     title_label_->setObjectName("twTitle");
     title_label_->setWordWrap(true);
 
     rate_label_ = new QLabel;
     rate_label_->setObjectName("twRate");
     rate_label_->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-    rate_label_->setToolTip(tr("Velocità di ricezione e di invio"));
+    rate_label_->setToolTip(tr("Download and upload speed"));
 
     header->addWidget(title_label_, 1);
     header->addWidget(rate_label_, 0, Qt::AlignRight | Qt::AlignVCenter);
@@ -679,7 +674,7 @@ void TransferWindow::createFilters(QVBoxLayout *layout)
 
     search_edit_ = new QLineEdit;
     search_edit_->setObjectName("twSearch");
-    search_edit_->setPlaceholderText(tr("Cerca un file"));
+    search_edit_->setPlaceholderText(tr("Search for a file"));
     search_edit_->setClearButtonEnabled(true);
     // Minimum 240 px; it stretches to the full line when it wraps alone.
     search_edit_->setMinimumWidth(240);
@@ -825,7 +820,7 @@ void TransferWindow::applyStyle()
     help_link_->setText(QString("<a href=\"%1\" style=\"color:%2; text-decoration:none;\">%3</a>")
                             .arg(help_link_->property("help_url").toString(),
                                  DT::accentText().name(),
-                                 tr("Cosa significano gli errori di sincronizzazione")));
+                                 tr("Descriptions for sync errors")));
 
     for (TransferRow *row : rows_)
         row->update();
@@ -973,11 +968,13 @@ void TransferWindow::pollTransfers()
         row.progress = info.total_bytes > 0
             ? int(qBound<quint64>(0, info.transferred_bytes * 100 / info.total_bytes, 100))
             : 0;
-        row.status = (upload ? tw("Invio") : tw("Ricezione")) +
-                     QString::fromUtf8(" \xc2\xb7 ") + QString("%1%").arg(row.progress);
+        row.status = (upload ? QCoreApplication::translate("TransferWindow", "Uploading · %1%")
+                             : QCoreApplication::translate("TransferWindow", "Downloading · %1%"))
+                         .arg(row.progress);
         if (info.total_bytes > 0) {
-            row.detail = tw("%1 di %2").arg(readableFileSize(info.transferred_bytes),
-                                            readableFileSize(info.total_bytes));
+            row.detail = QCoreApplication::translate("TransferWindow", "%1 of %2")
+                             .arg(readableFileSize(info.transferred_bytes),
+                                  readableFileSize(info.total_bytes));
         }
         row.sort_time = QDateTime::currentMSecsSinceEpoch();
         rows.append(row);
@@ -1076,7 +1073,7 @@ QList<TransferRowData> TransferWindow::collectRows() const
         row.folder = displayFolder(entry.folder.isEmpty() ? parentPath(entry.path)
                                                           : normalizedPath(entry.folder));
         // Direction in the pill, time and size in the status line.
-        row.pill = upload ? tw("Inviato") : tw("Ricevuto");
+        row.pill = upload ? QCoreApplication::translate("TransferWindow", "Uploaded") : QCoreApplication::translate("TransferWindow", "Downloaded");
         row.status = relativeTime(entry.time);
         if (entry.size > 0) {
             QString size = readableFileSize(entry.size);
@@ -1162,13 +1159,13 @@ void TransferWindow::updateFilterLabels()
     int errors = errors_.size();
     int in_progress = in_progress_.size();
 
-    filter_buttons_[FilterAll]->setText(tr("Tutti"));
+    filter_buttons_[FilterAll]->setText(tr("All"));
     filter_buttons_[FilterInProgress]->setText(
-        in_progress > 0 ? tr("In corso (%1)").arg(in_progress) : tr("In corso"));
-    filter_buttons_[FilterUploaded]->setText(tr("Inviati"));
-    filter_buttons_[FilterDownloaded]->setText(tr("Ricevuti"));
+        in_progress > 0 ? tr("In progress (%1)").arg(in_progress) : tr("In progress"));
+    filter_buttons_[FilterUploaded]->setText(tr("Uploaded", "filter"));
+    filter_buttons_[FilterDownloaded]->setText(tr("Downloaded", "filter"));
     filter_buttons_[FilterErrors]->setText(
-        errors > 0 ? tr("Errori (%1)").arg(errors) : tr("Errori"));
+        errors > 0 ? tr("Errors (%1)").arg(errors) : tr("Errors"));
 
     QPushButton *error_button = filter_buttons_[FilterErrors];
     bool warning = errors > 0;
@@ -1187,20 +1184,20 @@ void TransferWindow::updateEmptyView()
     }
 
     if (!search_text_.isEmpty()) {
-        empty_title_->setText(tr("Nessun file trovato"));
-        empty_text_->setText(tr("Nessun file corrisponde a \"%1\".").arg(search_text_));
+        empty_title_->setText(tr("No files found"));
+        empty_text_->setText(tr("No files match \"%1\".").arg(search_text_));
     } else if (filter_ == FilterErrors) {
-        empty_title_->setText(tr("Nessun errore"));
-        empty_text_->setText(tr("Tutti i file si sincronizzano correttamente."));
+        empty_title_->setText(tr("No errors"));
+        empty_text_->setText(tr("All files are syncing correctly."));
     } else if (filter_ == FilterUploaded) {
-        empty_title_->setText(tr("Nessun file inviato"));
-        empty_text_->setText(tr("I file che carichi sul server compaiono qui, con l'ora dell'invio."));
+        empty_title_->setText(tr("No uploaded files"));
+        empty_text_->setText(tr("Files you upload to the server appear here, with the upload time."));
     } else if (filter_ == FilterDownloaded) {
-        empty_title_->setText(tr("Nessun file ricevuto"));
-        empty_text_->setText(tr("I file che scarichi dal server compaiono qui, con l'ora della ricezione."));
+        empty_title_->setText(tr("No downloaded files"));
+        empty_text_->setText(tr("Files you download from the server appear here, with the download time."));
     } else {
-        empty_title_->setText(tr("Nessun trasferimento in corso"));
-        empty_text_->setText(tr("Quando SeaDrive invia o riceve un file, qui vedi l'avanzamento e, alla fine, quando è stato completato."));
+        empty_title_->setText(tr("No transfers in progress"));
+        empty_text_->setText(tr("When SeaDrive uploads or downloads a file, you see its progress here and, at the end, when it was completed."));
     }
     stack_->setCurrentIndex(INDEX_EMPTY_VIEW);
 }
@@ -1400,10 +1397,10 @@ void TransferWindow::onRowContextMenu(TransferRow *row, const QPoint& global_pos
     const TransferRowData data = row->data();
 
     ModernMenu menu(this);
-    QAction *open_action = menu.addIconAction(icon_folder_open, tr("Apri la cartella"));
+    QAction *open_action = menu.addIconAction(icon_folder_open, tr("Open folder"));
     QAction *delete_action = nullptr;
     if (data.kind == TransferRowData::Error)
-        delete_action = menu.addIconAction(icon_trash, tr("Rimuovi l'errore dall'elenco"));
+        delete_action = menu.addIconAction(icon_trash, tr("Remove the error from the list"));
 
     QAction *chosen = menu.exec(global_pos);
     if (chosen == open_action) {
@@ -1421,7 +1418,7 @@ void TransferWindow::deleteSyncError(const SyncError& error)
         return;
     }
     if (!rpc_client->deleteFileSyncError(error.repo_id, error.path, error.error_id)) {
-        gui->messageBox(tr("Impossibile rimuovere l'errore di sincronizzazione"));
+        gui->messageBox(tr("Delete file sync error failed"));
         return;
     }
     refresh();

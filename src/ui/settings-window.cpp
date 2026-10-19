@@ -44,7 +44,7 @@ SettingsWindow::SettingsWindow(QWidget *parent)
 {
     setObjectName("settingsWindow");
     setAttribute(Qt::WA_StyledBackground, true);
-    setWindowTitle(tr("Impostazioni di %1").arg(getBrand()));
+    setWindowTitle(tr("%1 Settings").arg(getBrand()));
     setWindowIcon(QIcon(":/images/seafile.png"));
     setMinimumSize(720, 500);
     resize(920, 660);
@@ -173,13 +173,13 @@ QWidget *SettingsWindow::createSidebar()
     nav_group_->setExclusive(true);
     connect(nav_group_, SIGNAL(idClicked(int)), this, SLOT(onNavClicked(int)));
 
-    v->addWidget(addNavItem(PageGeneral, tr("Generale"), icon_cog));
-    v->addWidget(addNavItem(PageSync, tr("Sincronizzazione"), icon_refresh));
-    v->addWidget(addNavItem(PageAccount, tr("Account"), icon_user));
-    v->addWidget(addNavItem(PageEncrypted, tr("Librerie cifrate"), icon_lock));
-    v->addWidget(addNavItem(PageNetwork, tr("Rete e proxy"), icon_globe));
-    v->addWidget(addNavItem(PageLogs, tr("Log e diagnostica"), icon_file_text));
-    v->addWidget(addNavItem(PageAbout, tr("Informazioni"), icon_info_sign));
+    v->addWidget(addNavItem(PageGeneral, tr("General"), icon_cog));
+    v->addWidget(addNavItem(PageSync, tr("Sync"), icon_refresh));
+    v->addWidget(addNavItem(PageAccount, tr("Accounts"), icon_user));
+    v->addWidget(addNavItem(PageEncrypted, tr("Encrypted Libraries"), icon_lock));
+    v->addWidget(addNavItem(PageNetwork, tr("Network and proxy"), icon_globe));
+    v->addWidget(addNavItem(PageLogs, tr("Logs and diagnostics"), icon_file_text));
+    v->addWidget(addNavItem(PageAbout, tr("About"), icon_info_sign));
 
     v->addStretch(1);
 
@@ -189,7 +189,7 @@ QWidget *SettingsWindow::createSidebar()
     v->addWidget(sep);
     v->addSpacing(8);
 
-    quit_btn_ = new QPushButton(tr("Esci da %1").arg(getBrand()));
+    quit_btn_ = new QPushButton(tr("Quit %1").arg(getBrand()));
     quit_btn_->setObjectName("navQuit");
     quit_btn_->setCursor(Qt::PointingHandCursor);
     quit_btn_->setIconSize(QSize(kNavIconSize, kNavIconSize));
@@ -343,13 +343,13 @@ void SettingsWindow::refreshHeader()
         name = AccountDisplay::displayName(account);
         AccountDisplay::Status st = AccountDisplay::status(account);
         connected = (st == AccountDisplay::StatusConnected);
-        status_text = connected ? tr("Connesso") : tr("Non connesso");
+        status_text = connected ? tr("Connected") : tr("Not connected");
         if (all.size() > 1) {
-            status_text += QString::fromUtf8(" · ") + tr("%1 account").arg(all.size());
+            status_text += QString::fromUtf8(" · ") + tr("%n account(s)", nullptr, int(all.size()));
         }
     } else {
-        name = tr("Nessun account");
-        status_text = tr("Non connesso");
+        name = tr("No accounts");
+        status_text = tr("Not connected");
     }
 
     header_name_ = name;
@@ -368,7 +368,7 @@ void SettingsWindow::refreshHeader()
 
 void SettingsWindow::onQuitClicked()
 {
-    if (!gui->yesOrNoBox(tr("Vuoi chiudere %1? L'unità virtuale non sarà disponibile finché non lo riapri.")
+    if (!gui->yesOrNoBox(tr("Do you want to quit %1? The virtual drive will not be available until you open it again.")
                              .arg(getBrand()),
                          this, false)) {
         return;

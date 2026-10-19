@@ -136,8 +136,8 @@ void SyncPanel::createUi()
     // "Open online": opens the web interface of the account in the browser.
     web_button_ = new QToolButton(header);
     web_button_->setObjectName("spIconButton");
-    web_button_->setToolTip(tr("Apri SeaDrive nel browser"));
-    web_button_->setAccessibleName(tr("Apri SeaDrive nel browser"));
+    web_button_->setToolTip(tr("Open SeaDrive in the browser"));
+    web_button_->setAccessibleName(tr("Open SeaDrive in the browser"));
     web_button_->setCursor(Qt::PointingHandCursor);
     web_button_->setFixedSize(36, 36);
     web_button_->setIconSize(QSize(kIconSize, kIconSize));
@@ -150,8 +150,8 @@ void SyncPanel::createUi()
 
     settings_button_ = new QToolButton(header);
     settings_button_->setObjectName("spIconButton");
-    settings_button_->setToolTip(tr("Impostazioni"));
-    settings_button_->setAccessibleName(tr("Impostazioni"));
+    settings_button_->setToolTip(tr("Settings"));
+    settings_button_->setAccessibleName(tr("Settings"));
     settings_button_->setCursor(Qt::PointingHandCursor);
     settings_button_->setFixedSize(36, 36);
     settings_button_->setIconSize(QSize(kIconSize, kIconSize));
@@ -204,7 +204,7 @@ void SyncPanel::createUi()
     root->addWidget(status_wrap);
 
     // --- Recent files -------------------------------------------------------
-    list_title_ = new QLabel(tr("Ultimi file"), this);
+    list_title_ = new QLabel(tr("Recent files"), this);
     list_title_->setObjectName("spSectionTitle");
     list_title_->setContentsMargins(kPadding + 4, 0, kPadding, 6);
     root->addWidget(list_title_);
@@ -223,8 +223,8 @@ void SyncPanel::createUi()
     list_layout_->setContentsMargins(8, 0, 8, 8);
     list_layout_->setSpacing(2);
 
-    empty_label_ = new QLabel(tr("Nessun file trasferito di recente.\n"
-                                 "I file che invii o ricevi compariranno qui."),
+    empty_label_ = new QLabel(tr("No recently transferred files.\n"
+                                 "Files you upload or download will appear here."),
                               list_container_);
     empty_label_->setObjectName("spEmpty");
     empty_label_->setWordWrap(true);
@@ -244,10 +244,10 @@ void SyncPanel::createUi()
     footer_layout->setSpacing(4);
 
     open_folder_button_ = createFooterButton(icon_folder_open,
-                                             tr("Apri cartella"),
+                                             tr("Open folder"),
                                              ActionOpenFolder);
     transfer_button_ = createFooterButton(icon_exchange,
-                                          tr("Stato trasferimento"),
+                                          tr("Transfer progress"),
                                           ActionTransfers);
     footer_layout->addWidget(open_folder_button_, 1);
     footer_layout->addWidget(transfer_button_, 1);
@@ -301,7 +301,7 @@ QWidget *SyncPanel::createFileRow(const QString& path,
     row->setAttribute(Qt::WA_Hover);
     row->setCursor(Qt::PointingHandCursor);
     row->setFocusPolicy(Qt::StrongFocus);
-    row->setToolTip(tr("Apri la cartella che contiene il file\n%1")
+    row->setToolTip(tr("Open the folder containing the file\n%1")
                         .arg(QDir::toNativeSeparators(path)));
     row->installEventFilter(this);
 
@@ -337,10 +337,10 @@ QWidget *SyncPanel::createFileRow(const QString& path,
     meta_label->setWordWrap(true);
     meta_label->setAttribute(Qt::WA_TransparentForMouseEvents);
     if (progressPercent < 0) {
-        // Completed file: "Inviato" / "Ricevuto" pill, same color as the arrow.
+        // Completed file: "Uploaded" / "Downloaded" pill, same color as the arrow.
         QHBoxLayout *meta_line = new QHBoxLayout;
         meta_line->setSpacing(8);
-        QLabel *pill = new QLabel(upload ? tr("Inviato") : tr("Ricevuto"), row);
+        QLabel *pill = new QLabel(upload ? tr("Uploaded") : tr("Downloaded"), row);
         pill->setObjectName(upload ? "spPillSent" : "spPillReceived");
         pill->setFixedHeight(kPillHeight);
         pill->setAlignment(Qt::AlignCenter);
@@ -574,17 +574,17 @@ void SyncPanel::refreshStatus()
         bg = surfaceHover();
         fg = textSecondary();
         icon_code = icon_unlink;
-        title_text = tr("Non connesso");
-        detail_text = tr("SeaDrive riproverà da solo appena il server sarà raggiungibile.");
+        title_text = tr("Not connected");
+        detail_text = tr("SeaDrive will retry on its own as soon as the server is reachable.");
     } else if (syncing_ || active > 0) {
         status_kind_ = StatusSyncing;
         bg = accentBg();
         fg = accentText();
         icon_code = icon_refresh;
-        title_text = tr("Sincronizzazione in corso");
+        title_text = tr("Syncing");
         QString rates = tr("↓ %1   ↑ %2").arg(formatRate(recv_rate_), formatRate(sent_rate_));
         if (active > 0) {
-            detail_text = (active == 1 ? tr("1 file") : tr("%1 file").arg(active))
+            detail_text = tr("%n file(s)", nullptr, active)
                           + QStringLiteral(" · ") + rates;
         } else {
             detail_text = rates;
@@ -602,17 +602,15 @@ void SyncPanel::refreshStatus()
         bg = warningBg();
         fg = warningText();
         icon_code = icon_warning_sign;
-        title_text = error_count_ == 1
-                         ? tr("1 errore di sincronizzazione")
-                         : tr("%1 errori di sincronizzazione").arg(error_count_);
-        detail_text = tr("Clicca qui per vedere i dettagli");
+        title_text = tr("%n sync error(s)", nullptr, error_count_);
+        detail_text = tr("Click here to see the details");
     } else {
         status_kind_ = StatusOk;
         bg = successBg();
         fg = successText();
         icon_code = icon_check_sign;
-        title_text = tr("Tutto sincronizzato");
-        detail_text = tr("Puoi lavorare · ultimo controllo %1").arg(relativeTime(last_check_));
+        title_text = tr("Everything is synced");
+        detail_text = tr("You can work · last check %1").arg(relativeTime(last_check_));
     }
 
     status_box_->setStyleSheet(
@@ -663,7 +661,7 @@ void SyncPanel::refreshList()
             path.replace('\\', '/');
             const QString folder = lastComponent(path.section('/', 0, -2));
             const int percent = toPercent(info.transferred_bytes, info.total_bytes);
-            QString meta = upload ? tr("Invio in corso") : tr("Ricezione in corso");
+            QString meta = upload ? tr("Uploading") : tr("Downloading");
             if (!folder.isEmpty()) {
                 meta += QStringLiteral(" · ") + folder;
             }
@@ -945,22 +943,22 @@ QString SyncPanel::relativeTime(const QDateTime& time)
     const QDateTime now = QDateTime::currentDateTime();
     const qint64 secs = time.secsTo(now);
     if (secs < 60) {
-        return tr("adesso");
+        return tr("Just now");
     }
     if (secs < 3600) {
         const int mins = int(secs / 60);
-        return mins == 1 ? tr("1 minuto fa") : tr("%1 minuti fa").arg(mins);
+        return mins == 1 ? tr("1 minute ago") : tr("%1 minutes ago").arg(mins);
     }
     const qint64 days = time.date().daysTo(now.date());
     if (days == 0) {
         const int hours = int(secs / 3600);
-        return hours == 1 ? tr("1 ora fa") : tr("%1 ore fa").arg(hours);
+        return hours == 1 ? tr("1 hour ago") : tr("%1 hours ago").arg(hours);
     }
     if (days == 1) {
-        return tr("ieri alle %1").arg(time.toString("HH:mm"));
+        return tr("Yesterday at %1").arg(time.toString("HH:mm"));
     }
     if (days < 7) {
-        return tr("%1 giorni fa").arg(days);
+        return tr("%1 days ago").arg(days);
     }
     return time.toString("dd-MM-yyyy");
 }

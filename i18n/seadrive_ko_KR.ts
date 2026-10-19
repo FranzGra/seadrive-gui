@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="ko_KR">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="ko_KR">
 <context>
     <name>AboutDialog</name>
     <message>
@@ -23,10 +25,144 @@
     </message>
 </context>
 <context>
+    <name>AboutPage</name>
+    <message>
+        <source>About</source>
+        <translation type="unfinished">정보</translation>
+    </message>
+    <message>
+        <source>Version, help and licenses.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Version %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Online help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The %1 manual on the Seafile website.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>About %1</source>
+        <translation type="unfinished">%1 정보</translation>
+    </message>
+    <message>
+        <source>Full version, license and credits.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>AccountManager</name>
     <message>
         <source>failed to open account database</source>
         <translation>계정 데이터베이스 열기에 실패했습니다</translation>
+    </message>
+</context>
+<context>
+    <name>AccountPage</name>
+    <message>
+        <source>Connected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not connected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Login required</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Accounts</source>
+        <translation type="unfinished">계정</translation>
+    </message>
+    <message>
+        <source>The accounts connected to %1 and their status.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connected accounts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add an account</source>
+        <translation type="unfinished">계정 추가</translation>
+    </message>
+    <message>
+        <source>No accounts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add an account to start using %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Space used: %1 of %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Login</source>
+        <translation type="unfinished">로그인</translation>
+    </message>
+    <message>
+        <source>Log in to %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Resync</source>
+        <translation type="unfinished">다시 동기화</translation>
+    </message>
+    <message>
+        <source>Resync account %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">삭제</translation>
+    </message>
+    <message>
+        <source>Remove account %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Failed to connect to background process, please try again later</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There are changes being uploaded under the account, please try again later</source>
+        <translation type="unfinished">계정에 업로드한 내용이 바뀌었습니다. 나중에 다시 시도하세요</translation>
+    </message>
+    <message>
+        <source>Are you sure to resync account from &quot;%1&quot;? After resyncing account, you can still find downloaded files at ~/Library/CloudStorage.</source>
+        <translation type="unfinished">정말로 &quot;%1&quot;(에)서 계정을 다시 동기화할까요? 계정을 다시 동기화하더라도 ~/Library/CloudStorage에서 다운로드한 파일을 찾아볼 수 있습니다.</translation>
+    </message>
+    <message>
+        <source>Are you sure to resync account from &quot;%1&quot;? Downloaded and uploading files will not be removed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure to remove account from &quot;%1&quot;? Downloaded and uploading files will not be removed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure to remove account from &quot;%1&quot;? After removing account, you can still find downloaded files at ~/Library/CloudStorage.</source>
+        <translation type="unfinished">정말로 &quot;%1&quot; 계정을 제거할까요? 계정을 제거하더라도 ~/Library/CloudStorage 위치에서 다운로드한 파일을 찾을 수 있습니다.</translation>
     </message>
 </context>
 <context>
@@ -84,6 +220,65 @@
     <message>
         <source>No Encrypted Library.</source>
         <translation>라이브러리를 암호화하지 않았습니다.</translation>
+    </message>
+</context>
+<context>
+    <name>EncryptedReposPage</name>
+    <message>
+        <source>Encrypted Libraries</source>
+        <translation type="unfinished">암호화 라이브러리</translation>
+    </message>
+    <message>
+        <source>Encrypted libraries open in the virtual drive only after you unlock them with their password.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When you lock a library, the key saved on this computer is deleted.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No Encrypted Library.</source>
+        <translation type="unfinished">라이브러리를 암호화하지 않았습니다.</translation>
+    </message>
+    <message>
+        <source>Password-protected libraries of your accounts will appear here.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unlocked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Locked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lock</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lock library %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unlock…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unlock library %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unlock library</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password for library &quot;%1&quot;:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>After locking, the local key of this library is deleted and the library can no longer be accessed in the virtual drive. Do you want to continue?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -191,6 +386,133 @@
     <message>
         <source>Markdown</source>
         <translation>마크다운</translation>
+    </message>
+</context>
+<context>
+    <name>GeneralPage</name>
+    <message>
+        <source>General</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Startup, notifications, language and appearance of %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Startup and notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Auto start %1 after login</source>
+        <translation type="unfinished">로그인 후 %1 자동 시작</translation>
+    </message>
+    <message>
+        <source>Opens %1 automatically when you sign in to the computer.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify when libraries are synchronized</source>
+        <translation type="unfinished">라이브러리를 동기화하면 알림</translation>
+    </message>
+    <message>
+        <source>Enable Explorer Extension</source>
+        <translation type="unfinished">Explorer 확장 기능 활성화</translation>
+    </message>
+    <message>
+        <source>Shows the file status and the %1 items in the right-click menu.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide Windows incompatibility paths Message</source>
+        <translation type="unfinished">윈도우 비호환 경로 알림 메시지 숨기기</translation>
+    </message>
+    <message>
+        <source>Don&apos;t show the message when a file name is not valid on Windows.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Appearance and language</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>System language</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Language</source>
+        <translation type="unfinished">언어</translation>
+    </message>
+    <message>
+        <source>%1 must be restarted to apply it.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Same as system</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Light</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dark</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Light or dark colors for the %1 windows.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Folder</source>
+        <translation type="unfinished">폴더</translation>
+    </message>
+    <message>
+        <source>Open</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cache folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You have changed language, Restart to apply it?</source>
+        <translation type="unfinished">언어를 바꿨습니다. 다시 시작해서 적용할까요?</translation>
+    </message>
+    <message>
+        <source>Please choose the cache folder</source>
+        <translation type="unfinished">캐시 폴더를 선택하세요</translation>
+    </message>
+    <message>
+        <source>You have changed %1 cache folder. Restart to apply it?</source>
+        <translation type="unfinished">%1 캐시 폴더를 바꿨습니다. 다시 시작해서 적용할까요?</translation>
+    </message>
+    <message>
+        <source>You have changed cache directory. Restart to apply it?</source>
+        <translation type="unfinished">캐시 디렉터리를 바꿨습니다. 다시 시작해서 적용할까요?</translation>
     </message>
 </context>
 <context>
@@ -381,7 +703,86 @@
     </message>
     <message>
         <source>A sync root folder with this name already exists.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>LogsPage</name>
+    <message>
+        <source>Logs and diagnostics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Useful information when something does not work.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Logs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Logs folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open the logs folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy the path of the logs folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Support</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy the support information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Support information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copies the version, system and servers in use, to paste into a report.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show file sync errors</source>
+        <translation type="unfinished">파일 동기화 오류 표시</translation>
+    </message>
+    <message>
+        <source>File Sync Errors</source>
+        <translation type="unfinished">파일 동기화 오류</translation>
+    </message>
+    <message>
+        <source>The list of files with upload or download problems.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Path copied to the clipboard.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Information copied to the clipboard.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -477,6 +878,97 @@
     <message>
         <source>Confirm to delete library &quot;%1&quot; ?</source>
         <translation>&quot;%1&quot; 라이브러리를 삭제할까요?</translation>
+    </message>
+</context>
+<context>
+    <name>NetworkPage</name>
+    <message>
+        <source>Network and proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>How %1 connects to the servers. Changes are saved automatically.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation type="unfinished">없음</translation>
+    </message>
+    <message>
+        <source>HTTP Proxy</source>
+        <translation type="unfinished">HTTP 프록시</translation>
+    </message>
+    <message>
+        <source>Socks5 Proxy</source>
+        <translation type="unfinished">Socks5 프록시</translation>
+    </message>
+    <message>
+        <source>System Proxy</source>
+        <translation type="unfinished">시스템 프록시</translation>
+    </message>
+    <message>
+        <source>Proxy type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&quot;System Proxy&quot; uses the computer settings.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>proxy.example.com</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Server</source>
+        <translation type="unfinished">서버</translation>
+    </message>
+    <message>
+        <source>Name or IP address of the proxy.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Port</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Proxy server requires a password</source>
+        <translation type="unfinished">프록시 서버에 암호가 필요합니다</translation>
+    </message>
+    <message>
+        <source>Username</source>
+        <translation type="unfinished">사용자 이름</translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation type="unfinished">암호</translation>
+    </message>
+    <message>
+        <source>Proxy status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The proxy host address can&apos;t be empty</source>
+        <translation type="unfinished">프록시 호스트 주소를 비워둘 수 없습니다</translation>
+    </message>
+    <message>
+        <source>The proxy port is incorrect</source>
+        <translation type="unfinished">프록시 포트가 올바르지 않습니다</translation>
+    </message>
+    <message>
+        <source>Proxy username can&apos;t be empty</source>
+        <translation type="unfinished">프록시 사용자 이름을 비워둘 수 없습니다</translation>
+    </message>
+    <message>
+        <source>Proxy password can&apos;t be empty</source>
+        <translation type="unfinished">프록시 암호를 비워둘 수 없습니다</translation>
+    </message>
+    <message>
+        <source>Proxy settings saved.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1041,6 +1533,10 @@
         <translation>온라인 도움말(&amp;O)</translation>
     </message>
     <message>
+        <source>Quit %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Accounts</source>
         <translation>계정</translation>
     </message>
@@ -1370,6 +1866,67 @@
     </message>
 </context>
 <context>
+    <name>SettingsWindow</name>
+    <message>
+        <source>%1 Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sync</source>
+        <translation type="unfinished">동기화</translation>
+    </message>
+    <message>
+        <source>Accounts</source>
+        <translation type="unfinished">계정</translation>
+    </message>
+    <message>
+        <source>Encrypted Libraries</source>
+        <translation type="unfinished">암호화 라이브러리</translation>
+    </message>
+    <message>
+        <source>Network and proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Logs and diagnostics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>About</source>
+        <translation type="unfinished">정보</translation>
+    </message>
+    <message>
+        <source>Quit %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not connected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n account(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>No accounts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to quit %1? The virtual drive will not be available until you open it again.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SharedLinkDialog</name>
     <message>
         <source>Share Link</source>
@@ -1416,11 +1973,11 @@
     </message>
     <message>
         <source>A sync root folder with this name already exists.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Unable to fetch account information: %1</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1481,18 +2038,292 @@
     </message>
     <message>
         <source>Server</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished">서버</translation>
     </message>
 </context>
 <context>
     <name>SyncErrorsTableView</name>
     <message>
         <source>delete</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Delete file sync error failed</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SyncPage</name>
+    <message>
+        <source>Sync</source>
+        <translation type="unfinished">동기화</translation>
+    </message>
+    <message>
+        <source>Transfer status, speed limits and cache.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Details</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transfers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No transfers in progress.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show transfer progress</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No errors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show file sync errors</source>
+        <translation type="unfinished">파일 동기화 오류 표시</translation>
+    </message>
+    <message>
+        <source>File Sync Errors</source>
+        <translation type="unfinished">파일 동기화 오류</translation>
+    </message>
+    <message>
+        <source>Files that could not be uploaded or downloaded.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search files</source>
+        <translation type="unfinished">파일 검색</translation>
+    </message>
+    <message>
+        <source>Search the files of your libraries on the server.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Speed limits</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> KB/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Download speed limit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>0 means no limit.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Upload speed limit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cache</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> GB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cache size limit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Above this limit, the least used downloaded files are freed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> min</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cache clean interval</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>How often to check whether the cache is over the limit.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Advanced</source>
+        <translation type="unfinished">고급</translation>
+    </message>
+    <message>
+        <source> files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Confirm before deleting many files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Asks for confirmation when more files than this are deleted at once.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable sync temporary files of MSOffice/Libreoffice</source>
+        <translation type="unfinished">MS 오피스/리버오피스 임시 파일 동기화 활성화</translation>
+    </message>
+    <message>
+        <source>Also uploads the temporary files created by Microsoft Office and LibreOffice.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do not verify server certificate in HTTPS syncing</source>
+        <translation type="unfinished">HTTPS 동기화시 서버 인증서 검증하지 않음</translation>
+    </message>
+    <message>
+        <source>Not recommended: turns off the HTTPS certificate check while syncing.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Up %1, Down %2</source>
+        <translation type="unfinished">송신 %1, 수신 %2</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n error(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+</context>
+<context>
+    <name>SyncPanel</name>
+    <message>
+        <source>SeaDrive</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open SeaDrive in the browser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation type="unfinished">설정</translation>
+    </message>
+    <message>
+        <source>Recent files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No recently transferred files.
+Files you upload or download will appear here.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transfer progress</source>
+        <translation type="unfinished">전송 진행 상황</translation>
+    </message>
+    <message>
+        <source>Open the folder containing the file
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Uploaded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Downloaded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not connected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SeaDrive will retry on its own as soon as the server is reachable.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Syncing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>↓ %1   ↑ %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n file(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n sync error(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Click here to see the details</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Everything is synced</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You can work · last check %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Uploading</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Downloading</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Just now</source>
+        <translation type="unfinished">방금</translation>
+    </message>
+    <message>
+        <source>1 minute ago</source>
+        <translation type="unfinished">1분 전</translation>
+    </message>
+    <message>
+        <source>%1 minutes ago</source>
+        <translation type="unfinished">%1분 전</translation>
+    </message>
+    <message>
+        <source>1 hour ago</source>
+        <translation type="unfinished">1시간 전</translation>
+    </message>
+    <message>
+        <source>%1 hours ago</source>
+        <translation type="unfinished">%1시간 전</translation>
+    </message>
+    <message>
+        <source>Yesterday at %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 days ago</source>
+        <translation type="unfinished">%1일 전</translation>
     </message>
 </context>
 <context>
@@ -1523,7 +2354,7 @@
     </message>
     <message>
         <source>A sync root folder with this name already exists.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1566,6 +2397,298 @@
     <message>
         <source>Download</source>
         <translation>다운로드</translation>
+    </message>
+</context>
+<context>
+    <name>TransferRow</name>
+    <message>
+        <source>Double-click to open the folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TransferWindow</name>
+    <message>
+        <source>Open in another program</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Folder in use by another program</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Locked by another user</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invalid path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error when indexing files</source>
+        <translation type="unfinished">파일 색인 중 오류</translation>
+    </message>
+    <message>
+        <source>You don&apos;t have enough permission for this library</source>
+        <translation type="unfinished">라이브러리를 다룰 충분한 권한이 없습니다</translation>
+    </message>
+    <message>
+        <source>The storage quota has been used up</source>
+        <translation type="unfinished">저장공간 제한을 채웠습니다</translation>
+    </message>
+    <message>
+        <source>Network error</source>
+        <translation type="unfinished">네트워크 오류</translation>
+    </message>
+    <message>
+        <source>Failed to resolve network proxy</source>
+        <translation type="unfinished">네트워크 프록시 해석에 실패했습니다</translation>
+    </message>
+    <message>
+        <source>Failed to resolve remote server</source>
+        <translation type="unfinished">원격 서버 해석에 실패했습니다</translation>
+    </message>
+    <message>
+        <source>Failed to connect to server</source>
+        <translation type="unfinished">서버 연결에 실패했습니다</translation>
+    </message>
+    <message>
+        <source>SSL error</source>
+        <translation type="unfinished">SSL 오류</translation>
+    </message>
+    <message>
+        <source>Error in network transmission</source>
+        <translation type="unfinished">네트워크 전송 오류</translation>
+    </message>
+    <message>
+        <source>Timeout in network transmission</source>
+        <translation type="unfinished">네트워크 전송 시간 초과</translation>
+    </message>
+    <message>
+        <source>Failed to handle http redirection</source>
+        <translation type="unfinished">http 경로 변경 처리에 실패했습니다</translation>
+    </message>
+    <message>
+        <source>Server internal error</source>
+        <translation type="unfinished">서버 내부 오류</translation>
+    </message>
+    <message>
+        <source>Local data is corrupt</source>
+        <translation type="unfinished">로컬 데이터가 깨졌습니다</translation>
+    </message>
+    <message>
+        <source>Failed to write local data</source>
+        <translation type="unfinished">로컬 데이터 기록에 실패했습니다</translation>
+    </message>
+    <message>
+        <source>Syncing is denied by cloud-only permission settings</source>
+        <translation type="unfinished">클라우드 전용 권한 설정으로 동기화가 막혔습니다</translation>
+    </message>
+    <message>
+        <source>Do not have write permission to the library</source>
+        <translation type="unfinished">라이브러리 쓰기 권한이 없습니다</translation>
+    </message>
+    <message>
+        <source>Folder without write permission</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The name ends with a space or a period</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The name contains invalid characters (| :)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Read-only library: it will not be uploaded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Changed on both sides: saved as a conflict copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not in a library: it will not be uploaded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Library cannot be synced since it has too many files.</source>
+        <translation type="unfinished">파일이 너무 많아 라이브러리를 동기화할 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>You can only move within or between libraries</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Waiting for confirmation to delete files</source>
+        <translation type="unfinished">파일 삭제 확인을 기다리는 중</translation>
+    </message>
+    <message>
+        <source>The name contains symbols not allowed by Windows</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Library file limit reached</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Failed to upload file blocks. Please check network or firewall.</source>
+        <translation type="unfinished">파일 블록 업로드에 실패했습니다. 네트워크 또는 방화벽을 확인하세요.</translation>
+    </message>
+    <message>
+        <source>Failed to download file. Please check disk space or folder permissions</source>
+        <translation type="unfinished">파일 다운로드에 실패했습니다. 디스크 용량 또는 폴더 권한을 확인하세요</translation>
+    </message>
+    <message>
+        <source>Upper/lower case conflict: not downloaded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Failed to change library name since some files are opened in it</source>
+        <translation type="unfinished">일부 파일이 열려 있기 때문에 라이브러리 이름을 변경할 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Unknown error</source>
+        <translation type="unfinished">알 수 없는 오류</translation>
+    </message>
+    <message>
+        <source>Root folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Just now</source>
+        <translation type="unfinished">방금</translation>
+    </message>
+    <message>
+        <source>%1 min ago</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 h ago</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Yesterday</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transfer Progress</source>
+        <translation type="unfinished">전송 진행 상황</translation>
+    </message>
+    <message>
+        <source>Download and upload speed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search for a file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Descriptions for sync errors</source>
+        <translation type="unfinished">동기화 오류 설명</translation>
+    </message>
+    <message>
+        <source>Uploading · %1%</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Downloading · %1%</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 of %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Uploaded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Downloaded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>In progress (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>In progress</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Uploaded</source>
+        <comment>filter</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Downloaded</source>
+        <comment>filter</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No files found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No files match &quot;%1&quot;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No errors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All files are syncing correctly.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No uploaded files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Files you upload to the server appear here, with the upload time.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No downloaded files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Files you download from the server appear here, with the download time.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No transfers in progress</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When SeaDrive uploads or downloads a file, you see its progress here and, at the end, when it was completed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove the error from the list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete file sync error failed</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="de_DE">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="de_DE">
 <context>
     <name>AboutDialog</name>
     <message>
@@ -23,10 +25,144 @@
     </message>
 </context>
 <context>
+    <name>AboutPage</name>
+    <message>
+        <source>About</source>
+        <translation type="unfinished">Über</translation>
+    </message>
+    <message>
+        <source>Version, help and licenses.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Version %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Online help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The %1 manual on the Seafile website.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>About %1</source>
+        <translation type="unfinished">Über %1</translation>
+    </message>
+    <message>
+        <source>Full version, license and credits.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>AccountManager</name>
     <message>
         <source>failed to open account database</source>
         <translation>Fehler beim Aufruf der Kontodatenbank</translation>
+    </message>
+</context>
+<context>
+    <name>AccountPage</name>
+    <message>
+        <source>Connected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not connected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Login required</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Accounts</source>
+        <translation type="unfinished">Konten</translation>
+    </message>
+    <message>
+        <source>The accounts connected to %1 and their status.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connected accounts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add an account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No accounts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add an account to start using %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Space used: %1 of %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Login</source>
+        <translation type="unfinished">Anmelden</translation>
+    </message>
+    <message>
+        <source>Log in to %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Resync</source>
+        <translation type="unfinished">Neu synchronisieren</translation>
+    </message>
+    <message>
+        <source>Resync account %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Löschen</translation>
+    </message>
+    <message>
+        <source>Remove account %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Failed to connect to background process, please try again later</source>
+        <translation type="unfinished">Der Hintergrundprozess konnte nicht aufgerufen werden. Bitte versuchen Sie es später noch einmal</translation>
+    </message>
+    <message>
+        <source>There are changes being uploaded under the account, please try again later</source>
+        <translation type="unfinished">Gerade werden im Konto Änderungen hochgeladen. Bitte versuchen sie es später noch einmal.</translation>
+    </message>
+    <message>
+        <source>Are you sure to resync account from &quot;%1&quot;? After resyncing account, you can still find downloaded files at ~/Library/CloudStorage.</source>
+        <translation type="unfinished">Möchten Sie wirklich den Account aus &quot;%1&quot; neu synchronisieren? Wenn Sie den Account neu synchronisieren, können Sie heruntergeladene Dateien weiterhin finden unter  ~/Library/CloudStorage.</translation>
+    </message>
+    <message>
+        <source>Are you sure to resync account from &quot;%1&quot;? Downloaded and uploading files will not be removed</source>
+        <translation type="unfinished">Möchten Sie wirklich den Account aus &quot;%1&quot; neu synchronisieren? Heruntergeladene und hochgeladene Dateien werden nicht gelöscht.</translation>
+    </message>
+    <message>
+        <source>Are you sure to remove account from &quot;%1&quot;? Downloaded and uploading files will not be removed.</source>
+        <translation type="unfinished">Möchten Sie wirklich den Account aus &quot;%1&quot; entfernen? Heruntergeladene und hochgeladene Dateien werden nicht gelöscht.</translation>
+    </message>
+    <message>
+        <source>Are you sure to remove account from &quot;%1&quot;? After removing account, you can still find downloaded files at ~/Library/CloudStorage.</source>
+        <translation type="unfinished">Möchten Sie wirklich den Account aus &quot;%1&quot; entfernen? Wenn Sie den Account austragen, können Sie heruntergeladene Dateien weiterhin finden unter  ~/Library/CloudStorage.</translation>
     </message>
 </context>
 <context>
@@ -84,6 +220,65 @@
     <message>
         <source>No Encrypted Library.</source>
         <translation>Es sind keine verschlüsselten Bibliotheken vorhanden.</translation>
+    </message>
+</context>
+<context>
+    <name>EncryptedReposPage</name>
+    <message>
+        <source>Encrypted Libraries</source>
+        <translation type="unfinished">Verschlüsselte Bibliotheken</translation>
+    </message>
+    <message>
+        <source>Encrypted libraries open in the virtual drive only after you unlock them with their password.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When you lock a library, the key saved on this computer is deleted.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No Encrypted Library.</source>
+        <translation type="unfinished">Es sind keine verschlüsselten Bibliotheken vorhanden.</translation>
+    </message>
+    <message>
+        <source>Password-protected libraries of your accounts will appear here.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unlocked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Locked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lock</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lock library %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unlock…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unlock library %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unlock library</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password for library &quot;%1&quot;:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>After locking, the local key of this library is deleted and the library can no longer be accessed in the virtual drive. Do you want to continue?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -191,6 +386,133 @@
     <message>
         <source>Markdown</source>
         <translation>Markdown</translation>
+    </message>
+</context>
+<context>
+    <name>GeneralPage</name>
+    <message>
+        <source>General</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Startup, notifications, language and appearance of %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Startup and notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Auto start %1 after login</source>
+        <translation type="unfinished">%1 nach der Anmeldung automatisch starten</translation>
+    </message>
+    <message>
+        <source>Opens %1 automatically when you sign in to the computer.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify when libraries are synchronized</source>
+        <translation type="unfinished">Benachrichtigen, wenn Bibliotheken synchronisiert sind</translation>
+    </message>
+    <message>
+        <source>Enable Explorer Extension</source>
+        <translation type="unfinished">Die Explorer-Symbole anzeigen</translation>
+    </message>
+    <message>
+        <source>Shows the file status and the %1 items in the right-click menu.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide Windows incompatibility paths Message</source>
+        <translation type="unfinished">Hinweis auf nicht kompatible Windows-Pfade ausblenden</translation>
+    </message>
+    <message>
+        <source>Don&apos;t show the message when a file name is not valid on Windows.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Appearance and language</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>System language</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Language</source>
+        <translation type="unfinished">Sprache</translation>
+    </message>
+    <message>
+        <source>%1 must be restarted to apply it.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Same as system</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Light</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dark</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Light or dark colors for the %1 windows.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Folder</source>
+        <translation type="unfinished">Ordner</translation>
+    </message>
+    <message>
+        <source>Open</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cache folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You have changed language, Restart to apply it?</source>
+        <translation type="unfinished">Sie haben die Sprache geändert. Jetzt Neustart zum Ausführen?</translation>
+    </message>
+    <message>
+        <source>Please choose the cache folder</source>
+        <translation type="unfinished">Wählen Sie einen Ordner für den Zwischenspeicher</translation>
+    </message>
+    <message>
+        <source>You have changed %1 cache folder. Restart to apply it?</source>
+        <translation type="unfinished">Sie haben den Ordner für den %1 Zwischenspeicher geändert. Möchten Sie das jetzt aktivieren mit einem Neustart?</translation>
+    </message>
+    <message>
+        <source>You have changed cache directory. Restart to apply it?</source>
+        <translation type="unfinished">Sie haben den Ordner für den Zwischenspeicher geändert. Möchten Sie das jetzt aktivieren mit einem Neustart?</translation>
     </message>
 </context>
 <context>
@@ -385,6 +707,85 @@
     </message>
 </context>
 <context>
+    <name>LogsPage</name>
+    <message>
+        <source>Logs and diagnostics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Useful information when something does not work.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Logs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Logs folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open the logs folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy the path of the logs folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Support</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy the support information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Support information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copies the version, system and servers in use, to paste into a report.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show file sync errors</source>
+        <translation type="unfinished">Fehler bei der Dateisynchronisation anzeigen</translation>
+    </message>
+    <message>
+        <source>File Sync Errors</source>
+        <translation type="unfinished">Fehler bei der Dateisynchronisation</translation>
+    </message>
+    <message>
+        <source>The list of files with upload or download problems.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Path copied to the clipboard.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Information copied to the clipboard.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MessagePoller</name>
     <message>
         <source>&quot;%1&quot; is synchronized</source>
@@ -477,6 +878,97 @@
     <message>
         <source>Confirm to delete library &quot;%1&quot; ?</source>
         <translation>Möchten Sie die Bibliothek &quot;%1&quot; löschen?</translation>
+    </message>
+</context>
+<context>
+    <name>NetworkPage</name>
+    <message>
+        <source>Network and proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>How %1 connects to the servers. Changes are saved automatically.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation type="unfinished">Kein Proxy</translation>
+    </message>
+    <message>
+        <source>HTTP Proxy</source>
+        <translation type="unfinished">HTTP-Proxy</translation>
+    </message>
+    <message>
+        <source>Socks5 Proxy</source>
+        <translation type="unfinished">Socks5-Proxy</translation>
+    </message>
+    <message>
+        <source>System Proxy</source>
+        <translation type="unfinished">Proxy-Einstellungen des Systems</translation>
+    </message>
+    <message>
+        <source>Proxy type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&quot;System Proxy&quot; uses the computer settings.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>proxy.example.com</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Server</source>
+        <translation type="unfinished">Server</translation>
+    </message>
+    <message>
+        <source>Name or IP address of the proxy.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Port</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Proxy server requires a password</source>
+        <translation type="unfinished">Für den Proxy-Server ist ein Passwort erforderlich</translation>
+    </message>
+    <message>
+        <source>Username</source>
+        <translation type="unfinished">Benutzername</translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation type="unfinished">Passwort</translation>
+    </message>
+    <message>
+        <source>Proxy status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The proxy host address can&apos;t be empty</source>
+        <translation type="unfinished">Adresse des Proxy-Servers erforderlich</translation>
+    </message>
+    <message>
+        <source>The proxy port is incorrect</source>
+        <translation type="unfinished">Port des Proxy-Servers ist fehlerhaft</translation>
+    </message>
+    <message>
+        <source>Proxy username can&apos;t be empty</source>
+        <translation type="unfinished">Nutzername für den Proxy-Server erforderlich</translation>
+    </message>
+    <message>
+        <source>Proxy password can&apos;t be empty</source>
+        <translation type="unfinished">Passwort für den Proxy-Server erforderlich</translation>
+    </message>
+    <message>
+        <source>Proxy settings saved.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1041,6 +1533,10 @@
         <translation>&amp;On­line­hil­fe</translation>
     </message>
     <message>
+        <source>Quit %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Accounts</source>
         <translation>Konten</translation>
     </message>
@@ -1370,6 +1866,68 @@
     </message>
 </context>
 <context>
+    <name>SettingsWindow</name>
+    <message>
+        <source>%1 Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sync</source>
+        <translation type="unfinished">Synchronisieren</translation>
+    </message>
+    <message>
+        <source>Accounts</source>
+        <translation type="unfinished">Konten</translation>
+    </message>
+    <message>
+        <source>Encrypted Libraries</source>
+        <translation type="unfinished">Verschlüsselte Bibliotheken</translation>
+    </message>
+    <message>
+        <source>Network and proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Logs and diagnostics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>About</source>
+        <translation type="unfinished">Über</translation>
+    </message>
+    <message>
+        <source>Quit %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not connected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n account(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>No accounts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to quit %1? The virtual drive will not be available until you open it again.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SharedLinkDialog</name>
     <message>
         <source>Share Link</source>
@@ -1481,7 +2039,7 @@
     </message>
     <message>
         <source>Server</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished">Server</translation>
     </message>
 </context>
 <context>
@@ -1493,6 +2051,283 @@
     <message>
         <source>Delete file sync error failed</source>
         <translation>Löschung konnte nicht synchronisiert werden</translation>
+    </message>
+</context>
+<context>
+    <name>SyncPage</name>
+    <message>
+        <source>Sync</source>
+        <translation type="unfinished">Synchronisieren</translation>
+    </message>
+    <message>
+        <source>Transfer status, speed limits and cache.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Details</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transfers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No transfers in progress.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show transfer progress</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No errors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show file sync errors</source>
+        <translation type="unfinished">Fehler bei der Dateisynchronisation anzeigen</translation>
+    </message>
+    <message>
+        <source>File Sync Errors</source>
+        <translation type="unfinished">Fehler bei der Dateisynchronisation</translation>
+    </message>
+    <message>
+        <source>Files that could not be uploaded or downloaded.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search files</source>
+        <translation type="unfinished">Dateien durchsuchen</translation>
+    </message>
+    <message>
+        <source>Search the files of your libraries on the server.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Speed limits</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> KB/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Download speed limit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>0 means no limit.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Upload speed limit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cache</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> GB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cache size limit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Above this limit, the least used downloaded files are freed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> min</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cache clean interval</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>How often to check whether the cache is over the limit.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Advanced</source>
+        <translation type="unfinished">Erweitert</translation>
+    </message>
+    <message>
+        <source> files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Confirm before deleting many files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Asks for confirmation when more files than this are deleted at once.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable sync temporary files of MSOffice/Libreoffice</source>
+        <translation type="unfinished">Temporäre Dateien von MS Office und LibreOffice synchronisieren</translation>
+    </message>
+    <message>
+        <source>Also uploads the temporary files created by Microsoft Office and LibreOffice.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do not verify server certificate in HTTPS syncing</source>
+        <translation type="unfinished">Server-Zertifikat bei https-Synchronisierung nicht überprüfen</translation>
+    </message>
+    <message>
+        <source>Not recommended: turns off the HTTPS certificate check while syncing.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Up %1, Down %2</source>
+        <translation type="unfinished">Hochladen %1, Herunterladen %2</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n error(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+</context>
+<context>
+    <name>SyncPanel</name>
+    <message>
+        <source>SeaDrive</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open SeaDrive in the browser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation type="unfinished">Einstellungen</translation>
+    </message>
+    <message>
+        <source>Recent files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No recently transferred files.
+Files you upload or download will appear here.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transfer progress</source>
+        <translation type="unfinished">Verlauf des Datentransfers</translation>
+    </message>
+    <message>
+        <source>Open the folder containing the file
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Uploaded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Downloaded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not connected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SeaDrive will retry on its own as soon as the server is reachable.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Syncing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>↓ %1   ↑ %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n file(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n sync error(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Click here to see the details</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Everything is synced</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You can work · last check %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Uploading</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Downloading</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Just now</source>
+        <translation type="unfinished">gerade eben</translation>
+    </message>
+    <message>
+        <source>1 minute ago</source>
+        <translation type="unfinished">vor 1 Minute</translation>
+    </message>
+    <message>
+        <source>%1 minutes ago</source>
+        <translation type="unfinished">vor %1 Minuten</translation>
+    </message>
+    <message>
+        <source>1 hour ago</source>
+        <translation type="unfinished">vor 1 Stunde</translation>
+    </message>
+    <message>
+        <source>%1 hours ago</source>
+        <translation type="unfinished">vor %1 Stunden</translation>
+    </message>
+    <message>
+        <source>Yesterday at %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 days ago</source>
+        <translation type="unfinished">vor %1 Tagen</translation>
     </message>
 </context>
 <context>
@@ -1566,6 +2401,298 @@
     <message>
         <source>Download</source>
         <translation>Herunterladen</translation>
+    </message>
+</context>
+<context>
+    <name>TransferRow</name>
+    <message>
+        <source>Double-click to open the folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TransferWindow</name>
+    <message>
+        <source>Open in another program</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Folder in use by another program</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Locked by another user</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invalid path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error when indexing files</source>
+        <translation type="unfinished">Fehler bei der Indizierung von Dateien</translation>
+    </message>
+    <message>
+        <source>You don&apos;t have enough permission for this library</source>
+        <translation type="unfinished">Sie haben keine ausreichenden Rechte, um auf diese Bibliothek zuzugreifen.</translation>
+    </message>
+    <message>
+        <source>The storage quota has been used up</source>
+        <translation type="unfinished">Das Speicherkontingent ist aufgebraucht.</translation>
+    </message>
+    <message>
+        <source>Network error</source>
+        <translation type="unfinished">Netzwerkfehler</translation>
+    </message>
+    <message>
+        <source>Failed to resolve network proxy</source>
+        <translation type="unfinished">Adresse des Netzwerk-Proxy nicht gefunden</translation>
+    </message>
+    <message>
+        <source>Failed to resolve remote server</source>
+        <translation type="unfinished">Die Adresse des Servers wurde nicht gefunden.</translation>
+    </message>
+    <message>
+        <source>Failed to connect to server</source>
+        <translation type="unfinished">Die Verbindung mit dem Server ist fehlgeschlagen.</translation>
+    </message>
+    <message>
+        <source>SSL error</source>
+        <translation type="unfinished">SSL-Fehler</translation>
+    </message>
+    <message>
+        <source>Error in network transmission</source>
+        <translation type="unfinished">Fehler bei der Übertragung im Netzwerk</translation>
+    </message>
+    <message>
+        <source>Timeout in network transmission</source>
+        <translation type="unfinished">Zeitüberschreitung bei der Übertragung im Netzwerk</translation>
+    </message>
+    <message>
+        <source>Failed to handle http redirection</source>
+        <translation type="unfinished">Fehler bei der HTTP-Umleitung</translation>
+    </message>
+    <message>
+        <source>Server internal error</source>
+        <translation type="unfinished">Interner Serverfehler</translation>
+    </message>
+    <message>
+        <source>Local data is corrupt</source>
+        <translation type="unfinished">Lokale Daten sind defekt.</translation>
+    </message>
+    <message>
+        <source>Failed to write local data</source>
+        <translation type="unfinished">Lokale Daten konnten nicht geschrieben werden.</translation>
+    </message>
+    <message>
+        <source>Syncing is denied by cloud-only permission settings</source>
+        <translation type="unfinished">Synchronisieren ist nicht möglich, solange die Zugriffsrechte auf nur-online beschränkt sind</translation>
+    </message>
+    <message>
+        <source>Do not have write permission to the library</source>
+        <translation type="unfinished">Keine Schreibrechte für die Bibliothek</translation>
+    </message>
+    <message>
+        <source>Folder without write permission</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The name ends with a space or a period</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The name contains invalid characters (| :)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Read-only library: it will not be uploaded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Changed on both sides: saved as a conflict copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not in a library: it will not be uploaded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Library cannot be synced since it has too many files.</source>
+        <translation type="unfinished">Die Bibliothek kann nicht synchronisiert werden, weil sie zu viele Dateien enthält.</translation>
+    </message>
+    <message>
+        <source>You can only move within or between libraries</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Waiting for confirmation to delete files</source>
+        <translation type="unfinished">Die Löschbestätigung wir abgewartet.</translation>
+    </message>
+    <message>
+        <source>The name contains symbols not allowed by Windows</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Library file limit reached</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Failed to upload file blocks. Please check network or firewall.</source>
+        <translation type="unfinished">Einzelne Dateipakete konnten nicht hochgeladen werden. Bitte überprüfen Sie Ihr Netzwerk oder die Firewall.</translation>
+    </message>
+    <message>
+        <source>Failed to download file. Please check disk space or folder permissions</source>
+        <translation type="unfinished">Die Datei konnte nicht heruntergeladen werden. Bitte kontrollieren Sie den Speicherplatz oder die Berechtigungen im Ordner</translation>
+    </message>
+    <message>
+        <source>Upper/lower case conflict: not downloaded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Failed to change library name since some files are opened in it</source>
+        <translation type="unfinished">Der Name der Bibliothek konnte nicht geändert werden, da Dateien in ihr geöffnet sind</translation>
+    </message>
+    <message>
+        <source>Unknown error</source>
+        <translation type="unfinished">Unbekannter Fehler</translation>
+    </message>
+    <message>
+        <source>Root folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Just now</source>
+        <translation type="unfinished">gerade eben</translation>
+    </message>
+    <message>
+        <source>%1 min ago</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 h ago</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Yesterday</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transfer Progress</source>
+        <translation type="unfinished">Verlauf des Datentransfers</translation>
+    </message>
+    <message>
+        <source>Download and upload speed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search for a file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Descriptions for sync errors</source>
+        <translation type="unfinished">Beschreibungen für Fehler bei der Synchronisation</translation>
+    </message>
+    <message>
+        <source>Uploading · %1%</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Downloading · %1%</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 of %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Uploaded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Downloaded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>In progress (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>In progress</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Uploaded</source>
+        <comment>filter</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Downloaded</source>
+        <comment>filter</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No files found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No files match &quot;%1&quot;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No errors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All files are syncing correctly.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No uploaded files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Files you upload to the server appear here, with the upload time.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No downloaded files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Files you download from the server appear here, with the download time.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No transfers in progress</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When SeaDrive uploads or downloads a file, you see its progress here and, at the end, when it was completed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove the error from the list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete file sync error failed</source>
+        <translation type="unfinished">Löschung konnte nicht synchronisiert werden</translation>
     </message>
 </context>
 <context>

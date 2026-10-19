@@ -20,18 +20,18 @@ const int kSaveDelayMSecs = 600;
 } // namespace
 
 SyncPage::SyncPage(QWidget *parent)
-    : SettingsPage(tr("Sincronizzazione"),
-                   tr("Stato dei trasferimenti, limiti di velocità e cache."),
+    : SettingsPage(tr("Sync"),
+                   tr("Transfer status, speed limits and cache."),
                    parent),
       loading_(false),
       search_row_(nullptr)
 {
     // --- Status (was in the tray menu)
-    addGroup(tr("Stato"));
+    addGroup(tr("Status"));
 
-    QPushButton *transfer_btn = makeButton(tr("Dettagli"));
-    transfer_row_ = addRow(tr("Trasferimenti"), tr("Nessun trasferimento in corso."), transfer_btn);
-    transfer_btn->setAccessibleName(tr("Mostra l'avanzamento dei trasferimenti"));
+    QPushButton *transfer_btn = makeButton(tr("Details"));
+    transfer_row_ = addRow(tr("Transfers"), tr("No transfers in progress."), transfer_btn);
+    transfer_btn->setAccessibleName(tr("Show transfer progress"));
     connect(transfer_btn, &QPushButton::clicked, this, [] {
         gui->trayIcon()->showTransferProgressDialog();
     });
@@ -40,35 +40,35 @@ SyncPage::SyncPage(QWidget *parent)
     QHBoxLayout *el = new QHBoxLayout(errors_ctrl);
     el->setContentsMargins(0, 0, 0, 0);
     el->setSpacing(12);
-    errors_pill_ = makePill(tr("Nessun errore"), "success");
-    QPushButton *errors_btn = makeButton(tr("Mostra"));
-    errors_btn->setAccessibleName(tr("Mostra gli errori di sincronizzazione"));
+    errors_pill_ = makePill(tr("No errors"), "success");
+    QPushButton *errors_btn = makeButton(tr("Show"));
+    errors_btn->setAccessibleName(tr("Show file sync errors"));
     el->addWidget(errors_pill_);
     el->addWidget(errors_btn);
-    errors_row_ = addRow(tr("Errori di sincronizzazione"),
-                         tr("File che non è stato possibile caricare o scaricare."),
+    errors_row_ = addRow(tr("File Sync Errors"),
+                         tr("Files that could not be uploaded or downloaded."),
                          errors_ctrl);
     connect(errors_btn, &QPushButton::clicked, this, [] {
         gui->trayIcon()->showSyncErrorsDialog();
     });
 
 #if defined(Q_OS_WIN32) || defined(Q_OS_MACOS)
-    QPushButton *search_btn = makeButton(tr("Cerca…"));
-    search_row_ = addRow(tr("Cerca file"),
-                         tr("Cerca nei file delle librerie sul server."),
+    QPushButton *search_btn = makeButton(tr("Search…"));
+    search_row_ = addRow(tr("Search files"),
+                         tr("Search the files of your libraries on the server."),
                          search_btn);
-    search_btn->setAccessibleName(tr("Cerca file"));
+    search_btn->setAccessibleName(tr("Search files"));
     connect(search_btn, &QPushButton::clicked, this, [] {
         gui->trayIcon()->showSearchDialog();
     });
 #endif
 
     // --- Speed limits
-    addGroup(tr("Limiti di velocità"));
+    addGroup(tr("Speed limits"));
 
     download_limit_ = makeSpin(0, 100000, tr(" KB/s"));
-    addRow(tr("Velocità massima di download"),
-           tr("0 significa nessun limite."),
+    addRow(tr("Download speed limit"),
+           tr("0 means no limit."),
            download_limit_);
     saveOnChange(download_limit_, [](int v) {
         SettingsManager *mgr = gui->settingsManager();
@@ -76,8 +76,8 @@ SyncPage::SyncPage(QWidget *parent)
     });
 
     upload_limit_ = makeSpin(0, 100000, tr(" KB/s"));
-    addRow(tr("Velocità massima di upload"),
-           tr("0 significa nessun limite."),
+    addRow(tr("Upload speed limit"),
+           tr("0 means no limit."),
            upload_limit_);
     saveOnChange(upload_limit_, [](int v) {
         SettingsManager *mgr = gui->settingsManager();
@@ -88,8 +88,8 @@ SyncPage::SyncPage(QWidget *parent)
     addGroup(tr("Cache"));
 
     cache_size_ = makeSpin(1, 10000, tr(" GB"));
-    addRow(tr("Dimensione massima della cache"),
-           tr("Oltre questo limite i file scaricati meno usati vengono liberati."),
+    addRow(tr("Cache size limit"),
+           tr("Above this limit, the least used downloaded files are freed."),
            cache_size_);
     saveOnChange(cache_size_, [](int v) {
         SettingsManager *mgr = gui->settingsManager();
@@ -97,8 +97,8 @@ SyncPage::SyncPage(QWidget *parent)
     });
 
     cache_interval_ = makeSpin(1, 14400, tr(" min"));
-    addRow(tr("Intervallo di pulizia della cache"),
-           tr("Ogni quanto controllare se la cache supera il limite."),
+    addRow(tr("Cache clean interval"),
+           tr("How often to check whether the cache is over the limit."),
            cache_interval_);
     saveOnChange(cache_interval_, [](int v) {
         SettingsManager *mgr = gui->settingsManager();
@@ -106,11 +106,11 @@ SyncPage::SyncPage(QWidget *parent)
     });
 
     // --- Advanced
-    addGroup(tr("Avanzate"));
+    addGroup(tr("Advanced"));
 
-    delete_threshold_ = makeSpin(1, 100000, tr(" file"));
-    addRow(tr("Chiedi conferma prima di eliminare molti file"),
-           tr("Chiede conferma quando si eliminano più file di questo numero in una volta."),
+    delete_threshold_ = makeSpin(1, 100000, tr(" files"));
+    addRow(tr("Confirm before deleting many files"),
+           tr("Asks for confirmation when more files than this are deleted at once."),
            delete_threshold_);
     saveOnChange(delete_threshold_, [](int v) {
         SettingsManager *mgr = gui->settingsManager();
@@ -118,14 +118,14 @@ SyncPage::SyncPage(QWidget *parent)
     });
 
     sync_temp_ = new ToggleSwitch;
-    addRow(tr("Sincronizza i file temporanei di Office"),
-           tr("Carica anche i file temporanei creati da Microsoft Office e LibreOffice."),
+    addRow(tr("Enable sync temporary files of MSOffice/Libreoffice"),
+           tr("Also uploads the temporary files created by Microsoft Office and LibreOffice."),
            sync_temp_);
     connect(sync_temp_, SIGNAL(toggled(bool)), this, SLOT(onSyncTempToggled(bool)));
 
     cert_verify_disabled_ = new ToggleSwitch;
-    addRow(tr("Non verificare il certificato del server"),
-           tr("Sconsigliato: disattiva il controllo del certificato HTTPS durante la sincronizzazione."),
+    addRow(tr("Do not verify server certificate in HTTPS syncing"),
+           tr("Not recommended: turns off the HTTPS certificate check while syncing."),
            cert_verify_disabled_);
     connect(cert_verify_disabled_, SIGNAL(toggled(bool)), this, SLOT(onCertVerifyToggled(bool)));
 
@@ -230,18 +230,18 @@ void SyncPage::refreshStatus()
 
     QLabel *desc = rowDescription(transfer_row_);
     if (syncing) {
-        desc->setText(tr("In upload %1 · in download %2")
+        desc->setText(tr("Up %1, Down %2")
                           .arg(translateTransferRate(sent), translateTransferRate(recv)));
     } else {
-        desc->setText(tr("Nessun trasferimento in corso."));
+        desc->setText(tr("No transfers in progress."));
     }
 
     int n_errors = gui->trayIcon() ? gui->trayIcon()->syncErrors().size() : 0;
     if (n_errors == 0) {
-        setPill(errors_pill_, tr("Nessun errore"), "success");
+        setPill(errors_pill_, tr("No errors"), "success");
     } else {
         setPill(errors_pill_,
-                n_errors == 1 ? tr("1 errore") : tr("%1 errori").arg(n_errors),
+                tr("%n error(s)", nullptr, n_errors),
                 "warning");
     }
 }

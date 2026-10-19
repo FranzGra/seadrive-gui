@@ -24,8 +24,8 @@ QLabel *plainLabel(const QString& text, const char *object_name)
 } // namespace
 
 EncryptedReposPage::EncryptedReposPage(QWidget *parent)
-    : SettingsPage(tr("Librerie cifrate"),
-                   tr("Le librerie cifrate si aprono nell'unità virtuale solo dopo averle sbloccate con la loro password."),
+    : SettingsPage(tr("Encrypted Libraries"),
+                   tr("Encrypted libraries open in the virtual drive only after you unlock them with their password."),
                    parent),
       model_(nullptr),
       busy_(false),
@@ -47,7 +47,7 @@ EncryptedReposPage::EncryptedReposPage(QWidget *parent)
         }
     }
 
-    addNote(tr("Quando blocchi una libreria, la chiave salvata su questo computer viene cancellata."));
+    addNote(tr("When you lock a library, the key saved on this computer is deleted."));
     addStretch();
 
     connect(this, SIGNAL(pageShown()), this, SLOT(onPageShown()));
@@ -117,8 +117,8 @@ void EncryptedReposPage::rebuild()
         QWidget *empty = new QWidget;
         QVBoxLayout *el = new QVBoxLayout(empty);
         el->setContentsMargins(DesignTokens::kPadding, 20, DesignTokens::kPadding, 20);
-        el->addWidget(plainLabel(tr("Nessuna libreria cifrata"), "rowTitle"));
-        el->addWidget(plainLabel(tr("Le librerie protette da password dei tuoi account compariranno qui."),
+        el->addWidget(plainLabel(tr("No Encrypted Library."), "rowTitle"));
+        el->addWidget(plainLabel(tr("Password-protected libraries of your accounts will appear here."),
                                  "rowDesc"));
         list_layout_->addWidget(empty);
         return;
@@ -163,18 +163,18 @@ QWidget *EncryptedReposPage::createItem(const EncryptedRepoInfo& info)
     texts->addWidget(plainLabel(detail, "rowDesc"));
     h->addLayout(texts, 1);
 
-    QLabel *pill = makePill(info.is_password_set ? tr("Sbloccata") : tr("Bloccata"),
+    QLabel *pill = makePill(info.is_password_set ? tr("Unlocked") : tr("Locked"),
                             info.is_password_set ? "success" : "neutral");
     h->addWidget(pill, 0, Qt::AlignVCenter);
 
     QPushButton *btn;
     if (info.is_password_set) {
-        btn = makeButton(tr("Blocca"));
-        btn->setAccessibleName(tr("Blocca la libreria %1").arg(info.repo_name));
+        btn = makeButton(tr("Lock"));
+        btn->setAccessibleName(tr("Lock library %1").arg(info.repo_name));
         connect(btn, &QPushButton::clicked, this, [this, info] { lockRepo(info); });
     } else {
-        btn = makeButton(tr("Sblocca…"), ButtonPrimary);
-        btn->setAccessibleName(tr("Sblocca la libreria %1").arg(info.repo_name));
+        btn = makeButton(tr("Unlock…"), ButtonPrimary);
+        btn->setAccessibleName(tr("Unlock library %1").arg(info.repo_name));
         connect(btn, &QPushButton::clicked, this, [this, info] { unlockRepo(info); });
     }
     h->addWidget(btn, 0, Qt::AlignVCenter);
@@ -188,8 +188,8 @@ void EncryptedReposPage::unlockRepo(const EncryptedRepoInfo& info)
     busy_ = true;
     bool ok = false;
     QString password = QInputDialog::getText(window(),
-                                             tr("Sblocca libreria"),
-                                             tr("Password della libreria \"%1\":").arg(info.repo_name),
+                                             tr("Unlock library"),
+                                             tr("Password for library \"%1\":").arg(info.repo_name),
                                              QLineEdit::Password, QString(), &ok);
     if (ok && !password.isEmpty()) {
         model_->slotSetEncRepoPassword(info.domain_id, info.repo_id, password);
@@ -206,7 +206,7 @@ void EncryptedReposPage::lockRepo(const EncryptedRepoInfo& info)
 {
     busy_ = true;
     bool ok = gui->yesOrCancelBox(
-        tr("Dopo il blocco la chiave locale di questa libreria viene cancellata e la libreria non è più accessibile nell'unità virtuale. Vuoi continuare?"),
+        tr("After locking, the local key of this library is deleted and the library can no longer be accessed in the virtual drive. Do you want to continue?"),
         window(), true);
     if (ok) {
         model_->slotClearEncRepoPassword(info.domain_id, info.repo_id);

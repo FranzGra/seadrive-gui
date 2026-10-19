@@ -22,8 +22,8 @@ bool needsServer(SettingsManager::ProxyType type)
 } // namespace
 
 NetworkPage::NetworkPage(QWidget *parent)
-    : SettingsPage(tr("Rete e proxy"),
-                   tr("Come %1 si collega ai server. Le modifiche si salvano da sole.")
+    : SettingsPage(tr("Network and proxy"),
+                   tr("How %1 connects to the servers. Changes are saved automatically.")
                        .arg(getBrand()),
                    parent),
       loading_(false)
@@ -31,20 +31,20 @@ NetworkPage::NetworkPage(QWidget *parent)
     addGroup(tr("Proxy"));
 
     type_ = new QComboBox;
-    type_->insertItem(SettingsManager::NoProxy, tr("Nessuno"));
-    type_->insertItem(SettingsManager::HttpProxy, tr("Proxy HTTP"));
-    type_->insertItem(SettingsManager::SocksProxy, tr("Proxy SOCKS5"));
-    type_->insertItem(SettingsManager::SystemProxy, tr("Proxy di sistema"));
+    type_->insertItem(SettingsManager::NoProxy, tr("None"));
+    type_->insertItem(SettingsManager::HttpProxy, tr("HTTP Proxy"));
+    type_->insertItem(SettingsManager::SocksProxy, tr("Socks5 Proxy"));
+    type_->insertItem(SettingsManager::SystemProxy, tr("System Proxy"));
     type_->setSizeAdjustPolicy(QComboBox::AdjustToContents);
-    addRow(tr("Tipo di proxy"),
-           tr("\"Proxy di sistema\" usa le impostazioni del computer."),
+    addRow(tr("Proxy type"),
+           tr("\"System Proxy\" uses the computer settings."),
            type_);
     connect(type_, SIGNAL(currentIndexChanged(int)), this, SLOT(onTypeChanged(int)));
 
     host_ = new QLineEdit;
-    host_->setPlaceholderText(tr("proxy.esempio.it"));
+    host_->setPlaceholderText(tr("proxy.example.com"));
     host_->setMinimumWidth(220);
-    host_row_ = addRow(tr("Server"), tr("Nome o indirizzo IP del proxy."), host_);
+    host_row_ = addRow(tr("Server"), tr("Name or IP address of the proxy."), host_);
     connect(host_, SIGNAL(textEdited(const QString&)), this, SLOT(onFieldChanged()));
     connect(host_, SIGNAL(editingFinished()), this, SLOT(applyProxy()));
 
@@ -54,17 +54,17 @@ NetworkPage::NetworkPage(QWidget *parent)
     port_->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     port_->setKeyboardTracking(false);
     port_->setMinimumWidth(120);
-    port_row_ = addRow(tr("Porta"), QString(), port_);
+    port_row_ = addRow(tr("Port"), QString(), port_);
     connect(port_, SIGNAL(valueChanged(int)), this, SLOT(onFieldChanged()));
     connect(port_, SIGNAL(editingFinished()), this, SLOT(applyProxy()));
 
     require_password_ = new ToggleSwitch;
-    require_row_ = addRow(tr("Il proxy richiede una password"), QString(), require_password_);
+    require_row_ = addRow(tr("Proxy server requires a password"), QString(), require_password_);
     connect(require_password_, SIGNAL(toggled(bool)), this, SLOT(onRequirePasswordToggled(bool)));
 
     username_ = new QLineEdit;
     username_->setMinimumWidth(220);
-    username_row_ = addRow(tr("Nome utente"), QString(), username_);
+    username_row_ = addRow(tr("Username"), QString(), username_);
     connect(username_, SIGNAL(textEdited(const QString&)), this, SLOT(onFieldChanged()));
     connect(username_, SIGNAL(editingFinished()), this, SLOT(applyProxy()));
 
@@ -77,7 +77,7 @@ NetworkPage::NetworkPage(QWidget *parent)
 
     status_ = addNote(QString());
     status_->setVisible(false);
-    status_->setAccessibleName(tr("Stato del proxy"));
+    status_->setAccessibleName(tr("Proxy status"));
 
     addStretch();
 
@@ -182,17 +182,17 @@ QString NetworkPage::validate() const
         return QString();
     }
     if (host_->text().trimmed().isEmpty()) {
-        return tr("Inserisci l'indirizzo del server proxy.");
+        return tr("The proxy host address can't be empty");
     }
     if (port_->value() == 0) {
-        return tr("Inserisci una porta valida per il proxy.");
+        return tr("The proxy port is incorrect");
     }
     if (require_password_->isChecked()) {
         if (username_->text().trimmed().isEmpty()) {
-            return tr("Inserisci il nome utente del proxy.");
+            return tr("Proxy username can't be empty");
         }
         if (password_->text().trimmed().isEmpty()) {
-            return tr("Inserisci la password del proxy.");
+            return tr("Proxy password can't be empty");
         }
     }
     return QString();
@@ -241,7 +241,7 @@ void NetworkPage::applyProxy()
 
     if (new_proxy != mgr->getProxy()) {
         mgr->setProxy(new_proxy);
-        showStatus(tr("Impostazioni del proxy salvate."), false);
+        showStatus(tr("Proxy settings saved."), false);
     } else {
         showStatus(QString(), false);
     }

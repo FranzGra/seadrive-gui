@@ -21,8 +21,8 @@ const char *kColorSchemeKey = "color_scheme";
 } // namespace
 
 GeneralPage::GeneralPage(QWidget *parent)
-    : SettingsPage(tr("Generale"),
-                   tr("Avvio, notifiche, lingua e aspetto di %1.").arg(getBrand()),
+    : SettingsPage(tr("General"),
+                   tr("Startup, notifications, language and appearance of %1.").arg(getBrand()),
                    parent),
       loading_(false),
       auto_start_(nullptr),
@@ -32,85 +32,85 @@ GeneralPage::GeneralPage(QWidget *parent)
       folder_row_(nullptr)
 {
     // --- Start and notifications
-    addGroup(tr("Avvio e notifiche"));
+    addGroup(tr("Startup and notifications"));
 
 #if defined(Q_OS_WIN32) || defined(Q_OS_MACOS)
     auto_start_ = new ToggleSwitch;
-    addRow(tr("Avvia %1 all'accesso").arg(getBrand()),
-           tr("Apre %1 automaticamente quando accedi al computer.").arg(getBrand()),
+    addRow(tr("Auto start %1 after login").arg(getBrand()),
+           tr("Opens %1 automatically when you sign in to the computer.").arg(getBrand()),
            auto_start_);
     connect(auto_start_, SIGNAL(toggled(bool)), this, SLOT(onAutoStartToggled(bool)));
 #endif
 
     notify_ = new ToggleSwitch;
-    addRow(tr("Notifiche"),
-           tr("Avvisa quando le librerie sono state sincronizzate."),
+    addRow(tr("Notifications"),
+           tr("Notify when libraries are synchronized"),
            notify_);
     connect(notify_, SIGNAL(toggled(bool)), this, SLOT(onNotifyToggled(bool)));
 
 #if defined(Q_OS_WIN32)
     shell_ext_ = new ToggleSwitch;
-    addRow(tr("Estensione di Esplora risorse"),
-           tr("Mostra lo stato dei file e le voci di %1 nel menu del tasto destro.").arg(getBrand()),
+    addRow(tr("Enable Explorer Extension"),
+           tr("Shows the file status and the %1 items in the right-click menu.").arg(getBrand()),
            shell_ext_);
     connect(shell_ext_, SIGNAL(toggled(bool)), this, SLOT(onShellExtToggled(bool)));
 #endif
 
 #if defined(Q_OS_MACOS)
     hide_incompat_ = new ToggleSwitch;
-    addRow(tr("Nascondi l'avviso sui percorsi non compatibili con Windows"),
-           tr("Non mostrare il messaggio quando un nome di file non è valido su Windows."),
+    addRow(tr("Hide Windows incompatibility paths Message"),
+           tr("Don't show the message when a file name is not valid on Windows."),
            hide_incompat_);
     connect(hide_incompat_, SIGNAL(toggled(bool)), this, SLOT(onHideIncompatToggled(bool)));
 #endif
 
     // --- Look and language
-    addGroup(tr("Aspetto e lingua"));
+    addGroup(tr("Appearance and language"));
 
     language_ = new QComboBox;
     language_->addItems(I18NHelper::getInstance()->getLanguages());
     // The first entry is "-- System --" in the shared helper.
     if (language_->count() > 0) {
-        language_->setItemText(0, tr("Lingua del sistema"));
+        language_->setItemText(0, tr("System language"));
     }
     language_->setSizeAdjustPolicy(QComboBox::AdjustToContents);
-    addRow(tr("Lingua"),
-           tr("Serve un riavvio di %1 per applicarla.").arg(getBrand()),
+    addRow(tr("Language"),
+           tr("%1 must be restarted to apply it.").arg(getBrand()),
            language_);
     connect(language_, SIGNAL(currentIndexChanged(int)), this, SLOT(onLanguageChanged(int)));
 
     theme_ = new QComboBox;
-    theme_->insertItem(SchemeSystem, tr("Come il sistema"));
-    theme_->insertItem(SchemeLight, tr("Chiaro"));
-    theme_->insertItem(SchemeDark, tr("Scuro"));
+    theme_->insertItem(SchemeSystem, tr("Same as system"));
+    theme_->insertItem(SchemeLight, tr("Light"));
+    theme_->insertItem(SchemeDark, tr("Dark"));
     theme_->setSizeAdjustPolicy(QComboBox::AdjustToContents);
-    addRow(tr("Tema"),
-           tr("Colori chiari o scuri per le finestre di %1.").arg(getBrand()),
+    addRow(tr("Theme"),
+           tr("Light or dark colors for the %1 windows.").arg(getBrand()),
            theme_);
     connect(theme_, SIGNAL(currentIndexChanged(int)), this, SLOT(onThemeChanged(int)));
 
     // --- Folder
 #if defined(Q_OS_WIN32) || defined(Q_OS_LINUX)
-    addGroup(tr("Cartella"));
+    addGroup(tr("Folder"));
 
     QWidget *buttons = new QWidget;
     QHBoxLayout *bl = new QHBoxLayout(buttons);
     bl->setContentsMargins(0, 0, 0, 0);
     bl->setSpacing(8);
-    QPushButton *open_btn = makeButton(tr("Apri"));
-    QPushButton *change_btn = makeButton(tr("Cambia…"));
+    QPushButton *open_btn = makeButton(tr("Open"));
+    QPushButton *change_btn = makeButton(tr("Change…"));
     bl->addWidget(open_btn);
     bl->addWidget(change_btn);
     connect(open_btn, SIGNAL(clicked()), this, SLOT(onOpenFolderClicked()));
     connect(change_btn, SIGNAL(clicked()), this, SLOT(onChangeFolderClicked()));
 
 #if defined(Q_OS_WIN32)
-    folder_row_ = addRow(tr("Cartella di %1").arg(getBrand()), QString(), buttons);
+    folder_row_ = addRow(tr("%1 folder").arg(getBrand()), QString(), buttons);
 #else
-    folder_row_ = addRow(tr("Cartella della cache"), QString(), buttons);
+    folder_row_ = addRow(tr("Cache folder"), QString(), buttons);
 #endif
-    change_btn->setAccessibleName(tr("Cambia cartella"));
-    open_btn->setAccessibleName(tr("Apri cartella"));
+    change_btn->setAccessibleName(tr("Change folder"));
+    open_btn->setAccessibleName(tr("Open folder"));
 #endif
 
     addStretch();
@@ -208,7 +208,7 @@ void GeneralPage::onLanguageChanged(int index)
         return;
     }
     I18NHelper::getInstance()->setPreferredLanguage(index);
-    if (gui->yesOrNoBox(tr("Hai cambiato la lingua. Vuoi riavviare %1 ora per applicarla?").arg(getBrand()),
+    if (gui->yesOrNoBox(tr("You have changed language, Restart to apply it?"),
                         window(), true)) {
         gui->restartApp();
     }
@@ -234,7 +234,7 @@ void GeneralPage::onChangeFolderClicked()
 {
 #if defined(Q_OS_WIN32) || defined(Q_OS_LINUX)
     QString dir = QFileDialog::getExistingDirectory(window(),
-                                                    tr("Scegli la cartella"),
+                                                    tr("Please choose the cache folder"),
                                                     current_folder_,
                                                     QFileDialog::ShowDirsOnly
                                                     | QFileDialog::DontResolveSymlinks);
@@ -251,10 +251,10 @@ void GeneralPage::onChangeFolderClicked()
 #if defined(Q_OS_WIN32)
     mgr->setSeadriveRoot(dir);
     RegElement::removeIconRegItem();
-    QString question = tr("Hai cambiato la cartella di %1. Vuoi riavviare ora per applicare la modifica?").arg(getBrand());
+    QString question = tr("You have changed %1 cache folder. Restart to apply it?").arg(getBrand());
 #else
     mgr->setDataDir(dir);
-    QString question = tr("Hai cambiato la cartella della cache. Vuoi riavviare ora per applicare la modifica?");
+    QString question = tr("You have changed cache directory. Restart to apply it?");
 #endif
     load();
     if (gui->yesOrNoBox(question, window(), true)) {

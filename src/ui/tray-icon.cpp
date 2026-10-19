@@ -171,7 +171,7 @@ void SeafileTrayIcon::createContextMenu()
     // (left click) and in the settings window.
     // Same look as the new screens (see modern-menu.h).
     ModernMenu *menu = new ModernMenu(NULL);
-    quit_action_->setText(tr("Esci da SeaDrive"));
+    quit_action_->setText(tr("Quit %1").arg(getBrand()));
     ModernMenu::decorateAction(transfer_progress_action_, icon_exchange);
     ModernMenu::decorateAction(settings_action_, icon_cog);
     ModernMenu::decorateAction(quit_action_, icon_off, true);

@@ -77,12 +77,12 @@ QString statusText(Status status)
 {
     switch (status) {
     case StatusConnected:
-        return QCoreApplication::translate("AccountPage", "Connesso");
+        return QCoreApplication::translate("AccountPage", "Connected");
     case StatusNotConnected:
-        return QCoreApplication::translate("AccountPage", "Non connesso");
+        return QCoreApplication::translate("AccountPage", "Not connected");
     case StatusLoginRequired:
     default:
-        return QCoreApplication::translate("AccountPage", "Accesso richiesto");
+        return QCoreApplication::translate("AccountPage", "Login required");
     }
 }
 
@@ -129,12 +129,12 @@ QPixmap avatar(const QString& name, int size, qreal dpr)
 // ---------------------------------------------------------------------------
 
 AccountPage::AccountPage(QWidget *parent)
-    : SettingsPage(tr("Account"),
-                   tr("Gli account collegati a %1 e il loro stato.").arg(getBrand()),
+    : SettingsPage(tr("Accounts"),
+                   tr("The accounts connected to %1 and their status.").arg(getBrand()),
                    parent),
       busy_(false)
 {
-    addGroup(tr("Account collegati"));
+    addGroup(tr("Connected accounts"));
 
     list_ = new QWidget;
     list_layout_ = new QVBoxLayout(list_);
@@ -156,7 +156,7 @@ AccountPage::AccountPage(QWidget *parent)
     QWidget *actions = new QWidget;
     QHBoxLayout *al = new QHBoxLayout(actions);
     al->setContentsMargins(0, 16, 0, 0);
-    add_btn_ = makeButton(tr("Aggiungi un account"), ButtonPrimary);
+    add_btn_ = makeButton(tr("Add an account"), ButtonPrimary);
     al->addWidget(add_btn_);
     al->addStretch(1);
     addPageWidget(actions);
@@ -234,8 +234,8 @@ void AccountPage::rebuild()
         QWidget *empty = new QWidget;
         QVBoxLayout *el = new QVBoxLayout(empty);
         el->setContentsMargins(DesignTokens::kPadding, 20, DesignTokens::kPadding, 20);
-        QLabel *title = plainLabel(tr("Nessun account"), "rowTitle");
-        QLabel *desc = plainLabel(tr("Aggiungi un account per iniziare a usare %1.").arg(getBrand()),
+        QLabel *title = plainLabel(tr("No accounts"), "rowTitle");
+        QLabel *desc = plainLabel(tr("Add an account to start using %1.").arg(getBrand()),
                                   "rowDesc");
         el->addWidget(title);
         el->addWidget(desc);
@@ -287,7 +287,7 @@ QWidget *AccountPage::createAccountItem(const Account& account)
     qint64 total = account.accountInfo.totalStorage;
     qint64 used = account.accountInfo.usedStorage;
     if (total > 0 && used >= 0) {
-        texts->addWidget(plainLabel(tr("Spazio usato: %1 di %2")
+        texts->addWidget(plainLabel(tr("Space used: %1 of %2")
                                         .arg(readableFileSize(used), readableFileSize(total)),
                                     "rowDesc"));
     }
@@ -304,14 +304,14 @@ QWidget *AccountPage::createAccountItem(const Account& account)
     actions->setSpacing(8);
 
     if (st == AccountDisplay::StatusLoginRequired) {
-        QPushButton *login = makeButton(tr("Accedi"), ButtonPrimary);
-        login->setAccessibleName(tr("Accedi a %1").arg(account.serverUrl.host()));
+        QPushButton *login = makeButton(tr("Login"), ButtonPrimary);
+        login->setAccessibleName(tr("Log in to %1").arg(account.serverUrl.host()));
         connect(login, &QPushButton::clicked, this, [this, account] { loginAccount(account); });
         actions->addWidget(login);
     }
 
-    QPushButton *resync = makeButton(tr("Risincronizza"));
-    resync->setAccessibleName(tr("Risincronizza l'account %1").arg(name));
+    QPushButton *resync = makeButton(tr("Resync"));
+    resync->setAccessibleName(tr("Resync account %1").arg(name));
     connect(resync, &QPushButton::clicked, this, [this, account] {
         busy_ = true;
         resyncAccount(account);
@@ -319,8 +319,8 @@ QWidget *AccountPage::createAccountItem(const Account& account)
     });
     actions->addWidget(resync);
 
-    QPushButton *remove = makeButton(tr("Rimuovi"), ButtonDanger);
-    remove->setAccessibleName(tr("Rimuovi l'account %1").arg(name));
+    QPushButton *remove = makeButton(tr("Delete"), ButtonDanger);
+    remove->setAccessibleName(tr("Remove account %1").arg(name));
     connect(remove, &QPushButton::clicked, this, [this, account] {
         busy_ = true;
         deleteAccount(account);
@@ -343,21 +343,21 @@ void AccountPage::resyncAccount(const Account& account)
 {
     SeafileRpcClient *rpc_client = gui->rpcClient(account.domainID());
     if (!rpc_client || !rpc_client->isConnected()) {
-        gui->warningBox(tr("Impossibile collegarsi al processo in background, riprova più tardi."), window());
+        gui->warningBox(tr("Failed to connect to background process, please try again later"), window());
         return;
     }
 
 #ifndef Q_OS_LINUX
     if (rpc_client->isAccountUploading(account)) {
-        gui->warningBox(tr("Ci sono modifiche in fase di caricamento per questo account, riprova più tardi."), window());
+        gui->warningBox(tr("There are changes being uploaded under the account, please try again later"), window());
         return;
     }
 #endif
 
 #if defined(Q_OS_MACOS)
-    QString question = tr("Vuoi risincronizzare l'account di \"%1\"? Dopo la risincronizzazione trovi ancora i file scaricati in ~/Library/CloudStorage.").arg(account.serverUrl.toString());
+    QString question = tr("Are you sure to resync account from \"%1\"? After resyncing account, you can still find downloaded files at ~/Library/CloudStorage.").arg(account.serverUrl.toString());
 #else
-    QString question = tr("Vuoi risincronizzare l'account di \"%1\"? I file scaricati e quelli in caricamento non verranno eliminati.").arg(account.serverUrl.toString());
+    QString question = tr("Are you sure to resync account from \"%1\"? Downloaded and uploading files will not be removed").arg(account.serverUrl.toString());
 #endif
 
     if (!gui->yesOrNoBox(question, window(), false)) {
@@ -374,22 +374,22 @@ void AccountPage::deleteAccount(const Account& account)
     SeafileRpcClient *rpc_client = gui->rpcClient(account.domainID());
 #ifdef Q_OS_MACOS
     if (!rpc_client || !rpc_client->isConnected()) {
-        gui->warningBox(tr("Impossibile collegarsi al processo in background, riprova più tardi."), window());
+        gui->warningBox(tr("Failed to connect to background process, please try again later"), window());
         return;
     }
 #endif
 
 #ifndef Q_OS_LINUX
     if (rpc_client && rpc_client->isAccountUploading(account)) {
-        gui->warningBox(tr("Ci sono modifiche in fase di caricamento per questo account, riprova più tardi."), window());
+        gui->warningBox(tr("There are changes being uploaded under the account, please try again later"), window());
         return;
     }
 #endif
 
 #if defined(Q_OS_WIN32) || defined(Q_OS_LINUX)
-    QString question = tr("Vuoi rimuovere l'account di \"%1\"? I file scaricati e quelli in caricamento non verranno eliminati.").arg(account.serverUrl.toString());
+    QString question = tr("Are you sure to remove account from \"%1\"? Downloaded and uploading files will not be removed.").arg(account.serverUrl.toString());
 #else
-    QString question = tr("Vuoi rimuovere l'account di \"%1\"? Dopo la rimozione trovi ancora i file scaricati in ~/Library/CloudStorage.").arg(account.serverUrl.toString());
+    QString question = tr("Are you sure to remove account from \"%1\"? After removing account, you can still find downloaded files at ~/Library/CloudStorage.").arg(account.serverUrl.toString());
 #endif
 
     if (!gui->yesOrNoBox(question, window(), false)) {
